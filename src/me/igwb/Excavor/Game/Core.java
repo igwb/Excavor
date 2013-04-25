@@ -1,9 +1,18 @@
 package me.igwb.Excavor.Game;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 
 public class Core {
@@ -12,21 +21,23 @@ public class Core {
 	private MainWindow GameWindow;
 	private MainCanvas GameCanvas;
 	private int FieldSize = 50, GameCanvasSize = 600;
-	
+	int fps = 0;
 	
 	protected void initialize() {
 		GameWindow = new MainWindow();
 		GameCanvas = new MainCanvas();
 		
 		GameWindow.setSize(900,850);
-		GameCanvas.setBounds(50, 50, GameCanvasSize, GameCanvasSize);
+
 		
 		GameWindow.add(GameCanvas);
+		
 		
 		
 		GameWindow.setVisible(true);
 		
 		GameCanvas.createBufferStrategy(2);
+		GameCanvas.setBounds(50, 50, GameCanvasSize, GameCanvasSize);
 		
 		run();
 		
@@ -35,10 +46,25 @@ public class Core {
 	private void run() {
 		log.finer("Game loop started");
 		
-		int i = 0;
+		int frames = 0;
+		long totalTime = 0;
+		long curTime = 0;
+		long lastTime = 0;
 		
-		while(i < 1000) {
+		int i = 0;
+		GameCanvas.setSize(new Dimension(700, 700));
+		while(i < 190000000) {
+			lastTime = curTime;
+			curTime = System.currentTimeMillis();
 			
+			if(totalTime > 1000) {
+				totalTime = 0;
+				fps = frames;
+				frames = 0;
+			}
+			frames ++;
+			
+			GameCanvas.setSize(new Dimension(700, 700));
 			render();
 			i ++;
 		}
@@ -48,18 +74,21 @@ public class Core {
 	
 	private void render() {
 		Graphics g = null;
-		
+
 		try {
 			BufferStrategy buffer = GameCanvas.getBufferStrategy();
 
 			g = buffer.getDrawGraphics();
 
+			g.setColor(Color.WHITE);
+			
+			g.fillRect(0, 0, 600, 600);
+			
+			g.setColor(Color.RED);
+			
+			g.drawRect(0, 0, GameCanvas.getSize().width, GameCanvas.getSize().height);
+			
 			g.setColor(Color.BLACK);
-
-			
-			g.fillRect(0, 0, 20, 20);
-			g.drawRect(0, 0, 600, 600);
-			
 			
 			for (int i = 0; i < Math.pow(GameCanvasSize / FieldSize,2); i++) {
 				
@@ -67,13 +96,24 @@ public class Core {
 			}
 			
 			g.drawString(System.getProperty("user.dir"), 50, 50);
+			g.drawString("FPS: " + fps, 50, 100);
+			
+			//URL url = Resource.class.getResource("/Resource/" + "view.png");
+			Image img = resources.ResourceLoader.getImage(("/resources/view.png"));
+			
+			
+			g.drawImage(img, 0, 0, null);
+			
 			
 			if(!buffer.contentsLost()) {
 				buffer.show();
 			}
 				
-				
+			GameWindow.repaint();
 			Thread.yield();
+			
+		} catch(Exception e) {
+			log.log(Level.SEVERE, "oh oh", e );
 			
 		} finally {
 			if(g != null)
