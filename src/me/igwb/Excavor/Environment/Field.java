@@ -8,6 +8,8 @@ public class Field {
 	
 	public FieldType Type;
 	
+	public static final int SIZE = 50;
+	
 	public Field() {
 		
 	}

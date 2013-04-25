@@ -15,6 +15,15 @@ public class Chunk {
 		
 	}
 	
+	public Field getFieldAt(Point position) {
+		for(Field field : Fields) {
+			if(field.Position.equals(position))
+				return field;
+		}
+		
+		return null;
+	}
+	
 	public Point getPosition() {
 		return Position;
 	}

@@ -2,6 +2,8 @@ package me.igwb.Excavor.Player;
 
 import java.awt.Point;
 
+import me.igwb.Excavor.Environment.Field;
+
 
 public class Player {
 
@@ -19,6 +21,22 @@ public class Player {
 		Position = newPos;
 	}
 	
+	public Point getFieldPosition() {
+		Point p = new Point();
+		
+		p.x = Position.x / Field.SIZE;
+		p.y = Position.y / Field.SIZE;
+		
+		return p;
+	}
+	
+	public void setFieldPosition(Point position) {
+		
+		Position.x = position.x * Field.SIZE;
+		Position.y = position.y * Field.SIZE;
+		
+	}
+	
 	public int getHealth() {
 		return health;
 	}
@@ -26,13 +44,10 @@ public class Player {
 	public void setHealth(int newHealth) throws PlayerDiedException {
 		
 		if(newHealth <= 0) {
-			throw new PlayerDiedException();
+			killPlayer();
 		} else {
 			health = newHealth;
 		}
-			
-		
-		
 	}
 	
 	public Direction getDirection() {
@@ -42,4 +57,10 @@ public class Player {
 	public void setDirection(Direction direction) {
 		Direction = direction;
 	}
+
+	public void killPlayer() {
+		
+	}
+	
+	
 } 
