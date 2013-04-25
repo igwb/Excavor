@@ -2,15 +2,14 @@ package me.igwb.Excavor.Game;
 
 import java.awt.Canvas;
 
-public class MainCanvas extends Canvas{
-
+public class InfoCanvas extends Canvas{
+	
 	private static final long serialVersionUID = 1L;
 
-	public MainCanvas() {
+	public InfoCanvas() {
 		super();
 
 	    setIgnoreRepaint(true);
 		setVisible(true);
-		
 	}
 }

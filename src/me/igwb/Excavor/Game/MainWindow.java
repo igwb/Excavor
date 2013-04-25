@@ -8,15 +8,11 @@ public class MainWindow extends JFrame {
 	
 	
 	public MainWindow() {
-		super("Excavor");
+		super();
 		
-	    // Set the frame's properties
-	    
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setIgnoreRepaint(true);
 	  }
-	
-	
-	
-	}
+
+}
 
