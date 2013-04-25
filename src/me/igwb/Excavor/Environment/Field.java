@@ -4,7 +4,7 @@ import java.awt.Point;
 
 public class Field {
 	
-	public Point Location;
+	public Point Position;
 	
 	public FieldType Type;
 	

@@ -5,12 +5,12 @@ import java.awt.image.ImageObserver;
 
 public class Drawable implements ImageObserver {
 
-	protected Point location;
+	protected Point Position;
 	
 	protected Image Texture;
 	
 	public void Draw(Graphics g) {
-		g.drawImage(Texture, location.x, location.y, this);
+		g.drawImage(Texture, Position.x, Position.y, this);
 	}
 	
 	public Image getImage() {
@@ -18,7 +18,7 @@ public class Drawable implements ImageObserver {
 	}
 	
 	public Point getLocation() {
-		return location;
+		return Position;
 	}
 
 	@Override

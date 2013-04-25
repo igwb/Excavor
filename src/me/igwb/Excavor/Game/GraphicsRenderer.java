@@ -16,7 +16,7 @@ public class GraphicsRenderer {
 	
 	public GraphicsRenderer(URL TexturePath) {
 		try {
-			Textures = ImageSplitter.split(TexturePath, 0, 0);
+			Textures = ImageSplitter.split(TexturePath, 2, 2);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -30,7 +30,7 @@ public class GraphicsRenderer {
 	public void RenderFields(Graphics g) {
 		for(Field field : fields) {
 			Image texture = Textures[field.Type.Image];			
-			g.drawImage(texture, field.Location.x, field.Location.y, null);
+			g.drawImage(texture, field.Position.x, field.Position.y, null);
 		}
 	}
 }

@@ -7,8 +7,9 @@ public class Player {
 
 	private Point Position;
 	private int health;
-	public enum Direction{Up, Right, Left, Down};
+	private Direction Direction;
 	
+	public enum Direction{Up, Right, Left, Down};
 	
 	public Point getPosition(){
 		return Position;
@@ -34,4 +35,11 @@ public class Player {
 		
 	}
 	
+	public Direction getDirection() {
+		return Direction;
+	}
+
+	public void setDirection(Direction direction) {
+		Direction = direction;
+	}
 } 
