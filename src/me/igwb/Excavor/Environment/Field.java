@@ -10,8 +10,17 @@ public class Field {
 	
 	public static final int SIZE = 50;
 	
-	public Field() {
+	public Field(Point position) {
+		Position = position;
+	}
+	
+	public boolean getSeeThru() {
 		
+		for(FieldType types : Types) {
+			if(!types.Transparent)
+				return false;
+		}
+		return true;
 	}
 
 	public FieldType[] getTypes() {

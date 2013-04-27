@@ -55,7 +55,7 @@ public class Chunk {
 		
 		for (int i = 0; i < fields.length; i++) {
 			
-			fields[i] = new Field();
+			fields[i] = new Field(new Point());
 			
 			//get field position
 			
