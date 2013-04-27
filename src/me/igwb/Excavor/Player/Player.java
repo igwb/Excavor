@@ -9,9 +9,17 @@ public class Player {
 
 	private Point Position;
 	private int health;
-	private Direction Direction;
+	private Direction dir = Direction.Up;
 	
 	public enum Direction{Up, Right, Left, Down};
+	
+	private boolean moving;
+	
+	
+	public Player(Point Position) {
+		this.Position = Position;
+	}
+	
 	
 	public Point getPosition(){
 		return Position;
@@ -51,16 +59,22 @@ public class Player {
 	}
 	
 	public Direction getDirection() {
-		return Direction;
+		return dir;
 	}
 
 	public void setDirection(Direction direction) {
-		Direction = direction;
+		dir = direction;
 	}
 
 	public void killPlayer() {
 		
 	}
 	
+	public void setMoving(boolean moving) {
+		this.moving = moving;
+	}
 	
+	public boolean isMoving() {
+		return moving;
+	}
 } 

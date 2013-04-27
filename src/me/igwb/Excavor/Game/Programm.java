@@ -2,13 +2,16 @@ package me.igwb.Excavor.Game;
 
 public class Programm {
 
-	
+	static Core GC;
 	public static void main(String[] args) {
-		Core GC;
+
 		GC = new Core();
 		
 		GC.initialize();
 	}
 
+	public static Core getCore() {
+		return GC;
+	}
 	
 }

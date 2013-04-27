@@ -23,11 +23,11 @@ public class RenderLogic {
 		CenterField = new Point((int)(Size * Math.floor(Center.x / Size)), (int)(Size * Math.floor(Center.x / Size)));
 		
 		//Add CenterField
-		List.add(new Field(CenterField));
+		List.add(Programm.getCore().getChunkManager().getFieldAt((CenterField)));
 		
 		//Upper Right Quadrant
 		for (int i = 0; i < ViewDistance; i++) {
-			cur = new Field(new Point(CenterField.x + Size * i, CenterField.y));
+			cur = Programm.getCore().getChunkManager().getFieldAt(new Point(CenterField.x + Size * i, CenterField.y));
 			
 			if(cur.getSeeThru()) {
 				List.add(cur);
@@ -35,7 +35,7 @@ public class RenderLogic {
 				//Check fields to the right
 				
 				for (int j = 0; j < ViewDistance; j++) {
-					cur = new Field(new Point(CenterField.x + Size * i, CenterField.y + Size * j));
+					cur = Programm.getCore().getChunkManager().getFieldAt(new Point(CenterField.x + Size * i, CenterField.y + Size * j));
 					if(cur.getSeeThru())
 						List.add(cur);
 				}
