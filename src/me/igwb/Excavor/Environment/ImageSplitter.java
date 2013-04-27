@@ -21,6 +21,10 @@ public class ImageSplitter {
 		for (int x = 0; x < rows; x++) {  
             for (int y = 0; y < columns; y++) {
                 imgs[count] = new BufferedImage(chunkWidth, chunkHeight, buffImage.getType());   
+                
+                Graphics gr = imgs[count++].getGraphics();  
+                gr.drawImage(buffImage, 0, 0, chunkWidth, chunkHeight, chunkWidth * y, chunkHeight * x, chunkWidth * y + chunkWidth, chunkHeight * x + chunkHeight, null);  
+                gr.dispose();
             }  
         }
 		
