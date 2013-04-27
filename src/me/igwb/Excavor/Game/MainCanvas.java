@@ -11,6 +11,6 @@ public class MainCanvas extends Canvas {
 
 	    setIgnoreRepaint(true);
 		setVisible(true);
-		
+		setFocusable(false);
 	}
 }

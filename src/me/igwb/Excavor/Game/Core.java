@@ -59,7 +59,9 @@ public class Core {
 		
 		ActivePlayer = new Player(new Point(0,0));
 		
-		run();
+		//run();
+		isRunning = true;
+		gameLoop();
 		
 	}
 	
@@ -74,18 +76,44 @@ public class Core {
 			
 			if(!paused) {
 				
-				UpdateGame();
-				RenderGame();
-				RenderInfo();
+				updateGame();
+				renderGame();
+				renderInfo();
 				
-				Thread.yield();
+			//	Thread.yield();
 			}
 		}
 		
 		log.fine("Game loop ended");
 	}
 	
-	private void RenderGame() {
+	private void gameLoop() {
+		final int DESIRED_FRAMES = 50;
+		final int SKIP_MS = 1000 / DESIRED_FRAMES;
+		
+		long lastFPSTime = System.nanoTime();
+		
+		int loops = 0;
+		
+		
+		while(isRunning) {
+			
+			updateGame();
+			renderGame();
+			renderInfo();
+			
+			loops ++;
+			
+			if(System.nanoTime() - lastFPSTime >= 1000000000) {
+				FPS = loops;
+				loops = 0;
+				lastFPSTime = System.nanoTime();
+			}
+			
+		}
+	}
+	
+	private void renderGame() {
 		Graphics g = null;
 
 		try {
@@ -120,6 +148,7 @@ public class Core {
 				
 		
 			GameWindow.repaint();
+			Thread.yield();
 			
 		} catch(Exception e) {
 			log.log(Level.SEVERE, "oh oh", e );
@@ -130,7 +159,7 @@ public class Core {
 		}
 	}
 
-	private void RenderInfo() {
+	private void renderInfo() {
 		Graphics g = null;
 
 		try {
@@ -158,9 +187,8 @@ public class Core {
 		}
 	}
 
-	private void UpdateGame() {
+	private void updateGame() {
 		Point PlayerPos = ActivePlayer.getPosition();
-		
 		if(ActivePlayer.isMoving()) {
 			switch (ActivePlayer.getDirection()) {
 			case Up:

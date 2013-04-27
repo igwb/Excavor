@@ -3,9 +3,6 @@ package me.igwb.Excavor.Game;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import com.sun.xml.internal.org.jvnet.fastinfoset.stax.LowLevelFastInfosetStreamWriter;
-
-import me.igwb.Excavor.Player.Player;
 import me.igwb.Excavor.Player.Player.Direction;
 
 

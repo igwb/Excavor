@@ -11,5 +11,6 @@ public class InfoCanvas extends Canvas{
 
 	    setIgnoreRepaint(true);
 		setVisible(true);
+		setFocusable(false);
 	}
 }
