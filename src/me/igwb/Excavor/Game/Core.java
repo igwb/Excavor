@@ -51,40 +51,6 @@ public class Core {
 		GameCanvas.createBufferStrategy(2);
 		GameCanvas.setBounds(50, 50, GameCanvasSize, GameCanvasSize);
 		
-		//--
-		
-		Field f = new Field();
-		f.Position = new Point(100, 100);
-		f.Type = FieldType.SMOOTHSTONE1;
-		
-		Field f2 = new Field();
-		f2.Position = new Point(100, 400);
-		f2.Type = FieldType.SMOOTHSTONE2;
-		
-		Field f3 = new Field();
-		f3.Position = new Point(400, 100);
-		f3.Type = FieldType.SMOOTHSTONE3;
-		
-		Field f4 = new Field();
-		f4.Position = new Point(400, 400);
-		f4.Type = FieldType.getType(7);
-		
-		try {
-			texture = ResourceLoader.getImageURL("/resources/Environment.png");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		
-		gr = new GraphicsRenderer(texture);
-		
-		gr.fields.add(f);
-		gr.fields.add(f2);
-		gr.fields.add(f3);
-		gr.fields.add(f4);
-		
-		//--
-		
 		run();
 		
 	}
@@ -146,12 +112,6 @@ public class Core {
 			
 			g.setColor(Color.BLACK);
 			
-			//--
-			
-			doLogic();
-			gr.RenderFields(g);
-			
-			//--
 			
 			for (int i = 0; i < Math.pow(GameCanvasSize / FieldSize,2); i++) {
 				
@@ -178,72 +138,4 @@ public class Core {
 				g.dispose();
 		}
 	}
-
-	private void doLogic() {
-
-		for(Field field : gr.fields) {
-			
-			switch(field.Type) {
-			
-			case SMOOTHSTONE1:
-				
-				if(field.Position.x < 250)
-					field.Position.x++;
-				else
-					field.Position.x = 100;
-				
-				if(field.Position.y < 250)
-					field.Position.y++;
-				else
-					field.Position.y = 100;
-				
-				break;
-			case SMOOTHSTONE2:
-				
-				if(field.Position.x > 250)
-					field.Position.x--;
-				else
-					field.Position.x = 400;
-				
-				if(field.Position.y < 250)
-					field.Position.y++;
-				else
-					field.Position.y = 100;
-				
-				break;
-			case SMOOTHSTONE3:
-				
-				if(field.Position.x < 250)
-					field.Position.x++;
-				else
-					field.Position.x = 100;
-				
-				if(field.Position.y > 250)
-					field.Position.y--;
-				else
-					field.Position.y = 400;
-				
-				break;
-			case COBBLESTONE:
-				
-				if(field.Position.x > 250)
-					field.Position.x--;
-				else
-					field.Position.x = 400;
-				
-				if(field.Position.y > 250)
-					field.Position.y--;
-				else
-					field.Position.y = 400;
-				
-				break;
-			default:
-				break;
-			
-			}
-			
-		}
-		
-	}
-	
 }

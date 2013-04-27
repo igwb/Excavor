@@ -29,8 +29,8 @@ public class GraphicsRenderer {
 	
 	public void RenderFields(Graphics g) {
 		for(Field field : fields) {
-			Image texture = Textures[field.Type.Image];			
-			g.drawImage(texture, field.Position.x, field.Position.y, null);
+			Image texture = Textures[field.getTypes()[0].Image];			
+			g.drawImage(texture, field.getPosition().x, field.getPosition().y, null);
 		}
 	}
 }
