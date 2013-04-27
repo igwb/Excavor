@@ -4,19 +4,19 @@ import java.awt.Point;
 
 public class Chunk {
 
-	private Field[] Fields = new Field[256];
+	private Field[] fields = new Field[400];
 	
-	private Point Position;
+	private Point position;
 
 	public Chunk(Point position, Field[] fields) {
 		
-		Fields = fields;
-		Position = position;
+		this.fields = fields;
+		this.position = position;
 		
 	}
 	
 	public Field getFieldAt(Point position) {
-		for(Field field : Fields) {
+		for(Field field : fields) {
 			if(field.Position.equals(position))
 				return field;
 		}
@@ -25,11 +25,11 @@ public class Chunk {
 	}
 	
 	public Point getPosition() {
-		return Position;
+		return position;
 	}
 
 	private void setPosition(Point position) {
-		Position = position;
+		this.position = position;
 	}
 	
 }

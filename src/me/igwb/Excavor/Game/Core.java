@@ -55,22 +55,22 @@ public class Core {
 		
 		Field f = new Field();
 		f.Position = new Point(100, 100);
-		f.Type = FieldType.TEST;
+		f.Type = FieldType.SMOOTHSTONE1;
 		
 		Field f2 = new Field();
 		f2.Position = new Point(100, 400);
-		f2.Type = FieldType.TEST2;
+		f2.Type = FieldType.SMOOTHSTONE2;
 		
 		Field f3 = new Field();
 		f3.Position = new Point(400, 100);
-		f3.Type = FieldType.TEST1;
+		f3.Type = FieldType.SMOOTHSTONE3;
 		
 		Field f4 = new Field();
 		f4.Position = new Point(400, 400);
-		f4.Type = FieldType.TEST3;
+		f4.Type = FieldType.getType(7);
 		
 		try {
-			texture = ResourceLoader.getImageURL("/resources/view.png");
+			texture = ResourceLoader.getImageURL("/resources/Environment.png");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -185,7 +185,7 @@ public class Core {
 			
 			switch(field.Type) {
 			
-			case TEST:
+			case SMOOTHSTONE1:
 				
 				if(field.Position.x < 250)
 					field.Position.x++;
@@ -198,7 +198,7 @@ public class Core {
 					field.Position.y = 100;
 				
 				break;
-			case TEST1:
+			case SMOOTHSTONE2:
 				
 				if(field.Position.x > 250)
 					field.Position.x--;
@@ -211,7 +211,7 @@ public class Core {
 					field.Position.y = 100;
 				
 				break;
-			case TEST2:
+			case SMOOTHSTONE3:
 				
 				if(field.Position.x < 250)
 					field.Position.x++;
@@ -224,7 +224,7 @@ public class Core {
 					field.Position.y = 400;
 				
 				break;
-			case TEST3:
+			case COBBLESTONE:
 				
 				if(field.Position.x > 250)
 					field.Position.x--;

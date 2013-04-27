@@ -16,7 +16,7 @@ public class GraphicsRenderer {
 	
 	public GraphicsRenderer(URL TexturePath) {
 		try {
-			Textures = ImageSplitter.split(TexturePath, 2, 2);
+			Textures = ImageSplitter.split(TexturePath, 24, 24);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
