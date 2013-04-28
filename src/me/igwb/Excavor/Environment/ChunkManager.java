@@ -12,8 +12,9 @@ public class ChunkManager {
 		
 	}
 	
-	public void loadChunk(URL chunkPath) {
-		
+	public void loadChunk(String chunkPath) {
+		Chunk chunk = Chunk.load(chunkPath);
+		chunks.add(chunk);
 	}
 	
 	public void unloadChunk(Point position) {
