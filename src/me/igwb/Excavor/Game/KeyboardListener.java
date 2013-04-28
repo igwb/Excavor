@@ -35,7 +35,8 @@ public class KeyboardListener implements KeyListener{
 		case 'x' : case 'X':
 			Programm.getCore().getActivePlayer().setHealth(
 			Programm.getCore().getActivePlayer().getHealth() + 1);
-			break;			
+			break;
+			
 		case 'c' : case 'C':
 			Programm.getCore().getActivePlayer().setArmor(
 			Programm.getCore().getActivePlayer().getArmor() - 1);

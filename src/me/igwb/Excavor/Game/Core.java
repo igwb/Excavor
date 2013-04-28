@@ -67,7 +67,7 @@ public class Core {
 			
 			
 			ActivePlayer = new Player(new Point(0,0));
-			ActivePlayer.initializePlayerBasedHUD(InfoCanvasSize.width, InfoCanvasSize.height);
+			
 			
 			viewLimiter = resources.ResourceLoader.getImage(("/resources/view.png")) ;
 			
@@ -197,8 +197,6 @@ public class Core {
 			g.fillRect(0, 0, InfoCanvasSize.width, InfoCanvasSize.height);
 				
 		
-			ActivePlayer.updatePlayerBasedHUD(g);
-			
 			if(!buffer.contentsLost()) {
 				buffer.show();
 			}
