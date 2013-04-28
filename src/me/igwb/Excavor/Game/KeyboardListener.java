@@ -10,23 +10,49 @@ public class KeyboardListener implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		boolean moving = Programm.getCore().getActivePlayer().isMoving();
+		
 		
 		switch (arg0.getKeyChar()) {
 		case 'w': case 'W':
-			Programm.getCore().getActivePlayer().setDirection(Direction.Up);
-			Programm.getCore().getActivePlayer().setMoving(true);
+			if(moving && Programm.getCore().getActivePlayer().getDirection() == Direction.Left | Programm.getCore().getActivePlayer().getDirection() == Direction.UpLeft) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.UpLeft);
+			} else if(moving && Programm.getCore().getActivePlayer().getDirection() == Direction.Right | Programm.getCore().getActivePlayer().getDirection() == Direction.UpRight) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.UpRight);
+			} else {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Up);
+				Programm.getCore().getActivePlayer().setMoving(true);
+			}
 			break;
 		case 'a': case 'A':
-			Programm.getCore().getActivePlayer().setDirection(Direction.Left);
-			Programm.getCore().getActivePlayer().setMoving(true);
+			if(moving && Programm.getCore().getActivePlayer().getDirection() == Direction.Up | Programm.getCore().getActivePlayer().getDirection() == Direction.UpLeft) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.UpLeft);
+			} else if(moving && Programm.getCore().getActivePlayer().getDirection() == Direction.Down | Programm.getCore().getActivePlayer().getDirection() == Direction.DownLeft) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.DownLeft);
+			} else {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Left);
+				Programm.getCore().getActivePlayer().setMoving(true);
+			}
 			break;
 		case 's': case 'S':
-			Programm.getCore().getActivePlayer().setDirection(Direction.Down);
-			Programm.getCore().getActivePlayer().setMoving(true);
+			if(moving && Programm.getCore().getActivePlayer().getDirection() == Direction.Left | Programm.getCore().getActivePlayer().getDirection() == Direction.DownLeft) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.DownLeft);
+			} else if(moving && Programm.getCore().getActivePlayer().getDirection() == Direction.Right | Programm.getCore().getActivePlayer().getDirection() == Direction.DownRight) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.DownRight);
+			} else {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Down);
+				Programm.getCore().getActivePlayer().setMoving(true);
+			}
 			break;
 		case 'd': case 'D':
-			Programm.getCore().getActivePlayer().setDirection(Direction.Right);
-			Programm.getCore().getActivePlayer().setMoving(true);
+			if(moving && Programm.getCore().getActivePlayer().getDirection() == Direction.Up | Programm.getCore().getActivePlayer().getDirection() == Direction.UpRight) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.UpRight);
+			} else if(moving && Programm.getCore().getActivePlayer().getDirection() == Direction.Down | Programm.getCore().getActivePlayer().getDirection() == Direction.DownRight) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.DownRight);
+			} else {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Right);
+				Programm.getCore().getActivePlayer().setMoving(true);
+			}
 			break;
 		case 'y' : case 'Y':
 			Programm.getCore().getActivePlayer().setHealth(
@@ -47,29 +73,51 @@ public class KeyboardListener implements KeyListener{
 			break;
 		default:
 			break;
-		}
-		
+		}	
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		switch (arg0.getKeyChar()) {
 		case 'w': case 'W':
-			Programm.getCore().getActivePlayer().setMoving(false);
+			if(Programm.getCore().getActivePlayer().getDirection() == Direction.UpLeft) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Left);
+			} else if(Programm.getCore().getActivePlayer().getDirection() == Direction.UpRight) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Right);
+			} else {
+				Programm.getCore().getActivePlayer().setMoving(false);
+			}
 			break;
 		case 'a': case 'A':
-			Programm.getCore().getActivePlayer().setMoving(false);
+			if(Programm.getCore().getActivePlayer().getDirection() == Direction.UpLeft) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Up);
+			} else if(Programm.getCore().getActivePlayer().getDirection() == Direction.DownLeft) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Down);
+			} else {
+				Programm.getCore().getActivePlayer().setMoving(false);
+			}
 			break;
 		case 's': case 'S':
-			Programm.getCore().getActivePlayer().setMoving(false);
+			if(Programm.getCore().getActivePlayer().getDirection() == Direction.DownLeft) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Left);
+			} else if(Programm.getCore().getActivePlayer().getDirection() == Direction.DownRight) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Right);
+			} else {
+				Programm.getCore().getActivePlayer().setMoving(false);
+			}
 			break;
 		case 'd': case 'D':
-			Programm.getCore().getActivePlayer().setMoving(false);
+			if(Programm.getCore().getActivePlayer().getDirection() == Direction.UpRight) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Up);
+			} else if(Programm.getCore().getActivePlayer().getDirection() == Direction.DownRight) {
+				Programm.getCore().getActivePlayer().setDirection(Direction.Down);
+			} else {
+				Programm.getCore().getActivePlayer().setMoving(false);
+			}
 			break;
 		default:
 			break;
 		}
-		
 	}
 
 	@Override
@@ -77,5 +125,4 @@ public class KeyboardListener implements KeyListener{
 		
 		
 	}
-
 }

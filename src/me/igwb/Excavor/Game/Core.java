@@ -92,8 +92,6 @@ public class Core {
 		
 		
 		while(isRunning) {
-			
-			if(!paused) {
 				updateLength = System.nanoTime() - lastLoop;
 				lastLoop = System.nanoTime();
 
@@ -106,19 +104,19 @@ public class Core {
 					loops = 0;
 					lastFPSTime = System.nanoTime();
 				}
-
-				updateGame(delta);
-				renderGame();
-				renderHUD();
-
+				
+				if(!paused) {
+					updateGame(delta);
+					renderGame();
+					renderHUD();
+				}
+				
 				try {
-					Thread.sleep( (lastLoop - System.nanoTime() + OPTIMAL_TIME)/1000000);
+					Thread.sleep((System.nanoTime() - lastLoop + OPTIMAL_TIME)/1000000);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else {
-				Thread.yield();
-			}
+
 				
 		}
 	}
@@ -228,11 +226,23 @@ public class Core {
 			case Up:
 				PlayerPos = new Point(PlayerPos.x, PlayerPos.y + moveDistance);
 				break;
+			case UpLeft:
+				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y + moveDistance);
+				break;
+			case UpRight:
+				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y + moveDistance);
+				break;
 			case Right:
 				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y);
 				break;
 			case Down:
 				PlayerPos = new Point(PlayerPos.x, PlayerPos.y - moveDistance);
+				break;
+			case DownLeft:
+				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y - moveDistance);
+				break;
+			case DownRight:
+				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y - moveDistance);
 				break;
 			case Left:
 				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y);
@@ -242,9 +252,7 @@ public class Core {
 			}
 			
 			ActivePlayer.setPosition(PlayerPos);
-		}
-		
-		
+		}	
 	}
 	
 	
