@@ -23,9 +23,9 @@ public class Core {
 	private MainCanvas GameCanvas;
 	private HUDCanvas MainInfo;
 	private ChunkManager CM;
-	private RenderLogic RL;
+	private RenderLogic RL;	
 	private Dimension FieldSize = new Dimension(50,50), GameCanvasSize = new Dimension(600,600), InfoCanvasSize = new Dimension(600,80);
-	boolean isRunning = false, paused = false, debug = false;
+	boolean isRunning = false, paused = false, debug = true;
 	private int FPS;
 	
 	private Image viewLimiter;
@@ -53,6 +53,9 @@ public class Core {
 			GameWindow.add(MainInfo);
 			
 			GameWindow.addKeyListener(new KeyboardListener());
+			GameWindow.addFocusListener(new GameFocusListener());
+			
+			GameWindow.setTitle("Excavor");
 			
 			GameWindow.setVisible(true);
 			
@@ -70,15 +73,15 @@ public class Core {
 			
 			isRunning = true;
 			gameLoop();
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
 	
 	private void gameLoop() {
-		final int DESIRED_FRAMES = 200;
+		final int DESIRED_FRAMES = 150;
 		final int OPTIMAL_TIME = 1000000000 / DESIRED_FRAMES;
 		
 		long lastLoop = System.nanoTime();
@@ -89,29 +92,34 @@ public class Core {
 		
 		
 		while(isRunning) {
-			updateLength = System.nanoTime() - lastLoop;
-			lastLoop = System.nanoTime();
 			
-			double delta = updateLength / ((double)OPTIMAL_TIME);
-			
-			loops ++;
-			
-			if(System.nanoTime() - lastFPSTime >= 1000000000) {
-				FPS = loops;
-				loops = 0;
-				lastFPSTime = System.nanoTime();
+			if(!paused) {
+				updateLength = System.nanoTime() - lastLoop;
+				lastLoop = System.nanoTime();
+
+				double delta = updateLength / ((double)OPTIMAL_TIME);
+
+				loops ++;
+
+				if(System.nanoTime() - lastFPSTime >= 1000000000) {
+					FPS = loops;
+					loops = 0;
+					lastFPSTime = System.nanoTime();
+				}
+
+				updateGame(delta);
+				renderGame();
+				renderInfo();
+
+				try {
+					Thread.sleep( (lastLoop - System.nanoTime() + OPTIMAL_TIME)/1000000);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			} else {
+				Thread.yield();
 			}
-			
-			updateGame(delta);
-			renderGame();
-			renderInfo();
-			
-			try {
-				Thread.sleep( (lastLoop - System.nanoTime() + OPTIMAL_TIME)/1000000);
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			
+				
 		}
 	}
 	
@@ -129,8 +137,6 @@ public class Core {
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, 600, 600);
 			
-			g.setColor(Color.RED);
-			g.drawString("FPS: " + FPS, 100, 100);
 			
 			if(debug) {
 				g.setColor(Color.RED);
@@ -160,9 +166,7 @@ public class Core {
 			
 			
 			//Drawing the view limiter
-			
 			g.drawImage(viewLimiter, 0, 0, null);
-			
 			
 			if(!buffer.contentsLost()) {
 				buffer.show();
@@ -236,6 +240,20 @@ public class Core {
 		}
 		
 		
+	}
+	
+	
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+		if(paused) {
+			GameWindow.setTitle("Excavor - PAUSED");
+		} else {
+			GameWindow.setTitle("Excavor");
+		}
+	}
+	
+	public boolean getPaused() {
+		return paused;
 	}
 	
 	public ChunkManager getChunkManager() {
