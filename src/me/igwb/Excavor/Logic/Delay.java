@@ -11,6 +11,7 @@ public class Delay
 	{
 		this.time = System.currentTimeMillis();
 		this.delay = delay;
+		this.formerDelay = delay;
 	}
 	
 	public void expand(double addDelay)

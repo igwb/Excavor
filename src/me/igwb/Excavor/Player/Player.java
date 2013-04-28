@@ -25,7 +25,7 @@ public class Player {
 	
 	private Image[] player;
 	
-	public enum Direction{Up, Right, Left, Down};
+	public enum Direction{Up, Right, Left, Down, UpLeft, UpRight, DownLeft, DownRight};
 	
 	private boolean moving;
 	
@@ -161,10 +161,13 @@ public class Player {
 				delay = null;
 		}
 		
-		g.drawImage(Health, 15, 2, null);
-		g.drawImage(Armor, 15, 2, null);
-		
+		g.drawImage(Health, 15, 2, null);		
 		g.drawImage(getHealthBar(), 15, 2, null);
+		
+		if(armor <= 0)
+			return;
+		
+		g.drawImage(Armor, 15, 2, null);
 		g.drawImage(getArmorBar(), 15, 2, null);
 		
 		if((int)((double) health / (double) maxHealth) * 100 <= 25)
@@ -173,11 +176,14 @@ public class Player {
 	
 	public Image getArmorBar() {
 		
-		int width = (int)((double) armor / (double) maxArmor) * aBar.getWidth(null) - 17;
+		int width = (int)((double) armor / (double) maxArmor * 259) + 295;
 
+		if(width <= 0)
+			width = 1;
+		
 		BufferedImage buffImage = new BufferedImage(width, aBar.getHeight(null), IndexColorModel.TRANSLUCENT);
 		
-		if((int)((double) armor / (double) maxArmor) * 100 <= 25) {
+		if((int)((double) armor / (double) maxArmor * 100) <= 25) {
 			delayNeeded = true;
 			
 			if(red)
@@ -196,11 +202,14 @@ public class Player {
 	
 	public Image getHealthBar() {
 		
-		int width = (int)((double) health / (double) maxHealth) * hBar.getWidth(null) - 17;
+		int width = (int)((double) health / (double) maxHealth * 541) + 14;
 
+		if(width <= 0)
+			width = 1;
+		
 		BufferedImage buffImage = new BufferedImage(width, hBar.getHeight(null), IndexColorModel.TRANSLUCENT);
 		
-		if((int)((double) health / (double) maxHealth) * 100 <= 25) {
+		if((int)((double) health / (double) maxHealth * 100) <= 25) {
 			delayNeeded = true;
 			
 			if(red)
