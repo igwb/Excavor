@@ -1,10 +1,10 @@
-package me.mytl.Excavor.Logic;
+package me.igwb.Excavor.Logic;
 
 public class Delay
 {
 	private double time;
 	
-	private double delay;
+	private double delay, formerDelay;
 	
 	
 	public Delay(double delay)
@@ -18,6 +18,11 @@ public class Delay
 		delay += addDelay;
 	}
 	
+	public void expand()
+	{
+		delay += formerDelay;
+	}
+	
 	public boolean checkDelay()
 	{
 		if (time + delay <= System.currentTimeMillis()) {
@@ -27,9 +32,8 @@ public class Delay
 		}
 	}
 	
-	public double getTimeLeft() {
-		
-		return ( time + delay ) - System.currentTimeMillis();
-		
+	public double getTimeLeft()
+	{		
+		return ( time + delay ) - System.currentTimeMillis();		
 	}
 }

@@ -21,7 +21,7 @@ public class Core {
 	private Logger log = Logger.getLogger(Core.class.getName());
 	private MainWindow GameWindow;
 	private MainCanvas GameCanvas;
-	private InfoCanvas MainInfo;
+	private HUDCanvas MainInfo;
 	private ChunkManager CM;
 	private RenderLogic RL;
 	private Dimension FieldSize = new Dimension(50,50), GameCanvasSize = new Dimension(600,600), InfoCanvasSize = new Dimension(600,80);
@@ -40,7 +40,7 @@ public class Core {
 		try {
 			GameWindow = new MainWindow();
 			GameCanvas = new MainCanvas();
-			MainInfo = new InfoCanvas();
+			MainInfo = new HUDCanvas();
 			
 			GameWindow.setLayout(null);
 			GameWindow.setSize(900,850);
