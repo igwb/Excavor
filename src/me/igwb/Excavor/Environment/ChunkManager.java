@@ -1,7 +1,6 @@
 package me.igwb.Excavor.Environment;
 
 import java.awt.Point;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class ChunkManager {

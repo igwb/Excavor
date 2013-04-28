@@ -17,7 +17,6 @@ public class RenderLogic {
 		
 		ArrayList<Field> List = new ArrayList<Field>();
 		Point CenterField, max, min;
-		Field cur;
 		
 		
 		CenterField = new Point((int)(Size * Math.floor(Center.x / Size)), (int)(Size * Math.floor(Center.x / Size)));

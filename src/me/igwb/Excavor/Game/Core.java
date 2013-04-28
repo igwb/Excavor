@@ -21,10 +21,10 @@ public class Core {
 	private Logger log = Logger.getLogger(Core.class.getName());
 	private MainWindow GameWindow;
 	private MainCanvas GameCanvas;
-	private HUDCanvas MainInfo;
+	private HUDCanvas MainHUD;
 	private ChunkManager CM;
 	private RenderLogic RL;	
-	private Dimension FieldSize = new Dimension(50,50), GameCanvasSize = new Dimension(600,600), InfoCanvasSize = new Dimension(600,80);
+	private Dimension FieldSize = new Dimension(50,50), GameCanvasSize = new Dimension(600,600), HUDCanvasSize = new Dimension(600,80);
 	boolean isRunning = false, paused = false, debug = true;
 	private int FPS;
 	
@@ -40,17 +40,17 @@ public class Core {
 		try {
 			GameWindow = new MainWindow();
 			GameCanvas = new MainCanvas();
-			MainInfo = new HUDCanvas();
+			MainHUD = new HUDCanvas();
 			
 			GameWindow.setLayout(null);
 			GameWindow.setSize(900,850);
 
 			GameCanvas.setBounds(50, 50, GameCanvasSize.width, GameCanvasSize.height);
-			MainInfo.setBounds(50, 675, InfoCanvasSize.width, InfoCanvasSize.height);
+			MainHUD.setBounds(50, 675, HUDCanvasSize.width, HUDCanvasSize.height);
 			
 			
 			GameWindow.add(GameCanvas);
-			GameWindow.add(MainInfo);
+			GameWindow.add(MainHUD);
 			
 			GameWindow.addKeyListener(new KeyboardListener());
 			GameWindow.addFocusListener(new GameFocusListener());
@@ -60,14 +60,14 @@ public class Core {
 			GameWindow.setVisible(true);
 			
 			GameCanvas.createBufferStrategy(2);
-			MainInfo.createBufferStrategy(2);
+			MainHUD.createBufferStrategy(2);
 			
 			RL = new RenderLogic(FieldSize);
 			CM = new ChunkManager();
 			
 			
 			ActivePlayer = new Player(new Point(0,0));
-			
+			ActivePlayer.initializePlayerBasedHUD(HUDCanvasSize.width, HUDCanvasSize.height);
 			
 			viewLimiter = resources.ResourceLoader.getImage(("/resources/view.png")) ;
 			
@@ -109,12 +109,12 @@ public class Core {
 
 				updateGame(delta);
 				renderGame();
-				renderInfo();
+				renderHUD();
 
 				try {
 					Thread.sleep( (lastLoop - System.nanoTime() + OPTIMAL_TIME)/1000000);
 				} catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 			} else {
 				Thread.yield();
@@ -154,6 +154,9 @@ public class Core {
 			
 			g.setColor(Color.BLACK);
 			
+			
+			//TODO: FIX THE DAMN CHUNKCLASS, MYTL
+			
 			//Fields = RL.getRenderFields(ActivePlayer.getPosition(),12);
 			
 			//for (Field field : Fields) {
@@ -185,18 +188,20 @@ public class Core {
 		}
 	}
 
-	private void renderInfo() {
+	private void renderHUD() {
 		Graphics g = null;
 
 		try {
-			BufferStrategy buffer = MainInfo.getBufferStrategy();
+			BufferStrategy buffer = MainHUD.getBufferStrategy();
 
 			g = buffer.getDrawGraphics();
 			
 			g.setColor(Color.GRAY);
-			g.fillRect(0, 0, InfoCanvasSize.width, InfoCanvasSize.height);
+			g.fillRect(0, 0, HUDCanvasSize.width, HUDCanvasSize.height);
 				
 		
+			ActivePlayer.updatePlayerBasedHUD(g);
+			
 			if(!buffer.contentsLost()) {
 				buffer.show();
 			}
