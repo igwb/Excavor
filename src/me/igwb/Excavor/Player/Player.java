@@ -8,7 +8,7 @@ import me.igwb.Excavor.Environment.Field;
 public class Player {
 
 	private Point Position;
-	private int health;
+	private int health, armor, maxHealth, maxArmor;
 	private Direction dir = Direction.Up;
 	
 	public enum Direction{Up, Right, Left, Down};
@@ -49,7 +49,7 @@ public class Player {
 		return health;
 	}
 	
-	public void setHealth(int newHealth) throws PlayerDiedException {
+	public void setHealth(int newHealth) {
 		
 		if(newHealth <= 0) {
 			killPlayer();
@@ -58,6 +58,36 @@ public class Player {
 		}
 	}
 	
+	public int getArmor() {
+		return armor;
+	}
+
+
+	public void setArmor(int armor) {
+		this.armor = armor;
+	}
+
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+
+
+	public int getMaxArmor() {
+		return maxArmor;
+	}
+
+
+	public void setMaxArmor(int maxArmor) {
+		this.maxArmor = maxArmor;
+	}
+
+
 	public Direction getDirection() {
 		return dir;
 	}

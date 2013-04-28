@@ -28,6 +28,23 @@ public class KeyboardListener implements KeyListener{
 			Programm.getCore().getActivePlayer().setDirection(Direction.Right);
 			Programm.getCore().getActivePlayer().setMoving(true);
 			break;
+		case 'y' : case 'Y':
+			Programm.getCore().getActivePlayer().setHealth(
+			Programm.getCore().getActivePlayer().getHealth() - 1);
+			break;
+		case 'x' : case 'X':
+			Programm.getCore().getActivePlayer().setHealth(
+			Programm.getCore().getActivePlayer().getHealth() + 1);
+			break;
+			
+		case 'c' : case 'C':
+			Programm.getCore().getActivePlayer().setArmor(
+			Programm.getCore().getActivePlayer().getArmor() - 1);
+			break;
+		case 'v' : case 'V':
+			Programm.getCore().getActivePlayer().setArmor(
+			Programm.getCore().getActivePlayer().getArmor() + 1);
+			break;
 		default:
 			break;
 		}
