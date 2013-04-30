@@ -4,29 +4,30 @@ public class Delay
 {
 	private double time;
 	
-	private double delay, formerDelay;
+	private double delay;
 	
 	
 	public Delay(double delay)
 	{
 		this.time = System.currentTimeMillis();
 		this.delay = delay;
-		this.formerDelay = delay;
 	}
 	
-	public void expand(double addDelay)
+	public void expand(double Delay)
 	{
-		delay += addDelay;
+		time = System.currentTimeMillis();
+		
+		delay = Delay;
 	}
 	
 	public void expand()
 	{
-		delay += formerDelay;
+		time = System.currentTimeMillis();
 	}
 	
 	public boolean checkDelay()
 	{
-		if (time + delay <= System.currentTimeMillis()) {
+		if (time + delay <= System.currentTimeMillis()) {			
 			return true;
 		} else {
 			return false;

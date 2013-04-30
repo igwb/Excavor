@@ -4,6 +4,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import me.igwb.Excavor.Player.Player.Direction;
+import me.igwb.Excavor.UI.ConversationManager;
+import me.igwb.Excavor.UI.Label;
+import me.igwb.Excavor.UI.PopUpManager;
 
 
 public class KeyboardListener implements KeyListener{
@@ -12,6 +15,7 @@ public class KeyboardListener implements KeyListener{
 	public void keyPressed(KeyEvent arg0) {
 		boolean moving = Programm.getCore().getActivePlayer().isMoving();
 		
+		ConversationManager.keyPressed(arg0);
 		
 		switch (arg0.getKeyChar()) {
 		case 'w': case 'W':
@@ -71,7 +75,13 @@ public class KeyboardListener implements KeyListener{
 			Programm.getCore().getActivePlayer().setArmor(
 			Programm.getCore().getActivePlayer().getArmor() + 1);
 			break;
+		case 'p' : case 'P':
+			PopUpManager.show(new Label("You've activated this test PopUp!"), false);		
+			break;
+		case KeyEvent.VK_SPACE:
+			break;			
 		default:
+			PopUpManager.show(new Label("You've pressed the uneventfull key '" + arg0.getKeyChar() + "'!"), false);
 			break;
 		}	
 	}

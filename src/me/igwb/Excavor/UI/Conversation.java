@@ -11,12 +11,13 @@ public class Conversation {
 		public ButtonLayout Layout;
 		
 		public Conversation(Image background, Rectangle position, ButtonLayout layout) {
-			Background = background;
+			Background = background.getScaledInstance(position.width, position.height, 1);
 			Position = position;
 			Layout = layout;
 		}
 		
 		public void Render(Graphics g) {
+			g.drawImage(Background, Position.x, Position.y, null);
 			Layout.Render(g);
 		}
 		

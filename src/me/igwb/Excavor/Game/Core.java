@@ -5,15 +5,26 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import resources.ResourceLoader;
+
 import me.igwb.Excavor.Environment.ChunkManager;
 import me.igwb.Excavor.Environment.Field;
+import me.igwb.Excavor.Environment.ImageSplitter;
 import me.igwb.Excavor.Player.Player;
+import me.igwb.Excavor.UI.Button;
+import me.igwb.Excavor.UI.ButtonLayout;
+import me.igwb.Excavor.UI.ConversationManager;
+import me.igwb.Excavor.UI.Label;
+import me.igwb.Excavor.UI.PopUpManager;
 
 
 public class Core {
@@ -25,7 +36,7 @@ public class Core {
 	private ChunkManager CM;
 	private RenderLogic RL;	
 	private Dimension FieldSize = new Dimension(50,50), GameCanvasSize = new Dimension(600,600), HUDCanvasSize = new Dimension(600,80);
-	boolean isRunning = false, paused = false, debug = true;
+	boolean isRunning = false, paused = false, debug = true, allowKeys = false;
 	private int FPS;
 	
 	private Image viewLimiter;
@@ -65,9 +76,14 @@ public class Core {
 			RL = new RenderLogic(FieldSize);
 			CM = new ChunkManager();
 			
+			CM.loadChunk("C:\\Users\\Luka\\Desktop\\Chunk;0,0.txt");
 			
+			PopUpManager.initialize(ImageSplitter.split(ResourceLoader.getURL("/resources/HUD.png"), 10, 1)[6], 1500, 2000, new Point(60, 60), new Rectangle(0, 0, GameCanvasSize.width, 80));
+
 			ActivePlayer = new Player(new Point(0,0));
 			ActivePlayer.initializePlayerBasedHUD(HUDCanvasSize.width, HUDCanvasSize.height);
+			ActivePlayer.setPosition(new Point(10, 10));
+			
 			
 			viewLimiter = resources.ResourceLoader.getImage(("/resources/view.png")) ;
 			
@@ -90,7 +106,9 @@ public class Core {
 		
 		int loops = 0;
 		
-		
+		//---
+		layout = new ButtonLayout(new Button[] { Button.Yes(10, 50, 200, 80, Color.WHITE), Button.No(10, 150, 200, 80, Color.WHITE) }, viewLimiter);		
+		//---
 		while(isRunning) {
 				updateLength = System.nanoTime() - lastLoop;
 				lastLoop = System.nanoTime();
@@ -121,6 +139,9 @@ public class Core {
 		}
 	}
 	
+	private boolean show = true;
+	private ButtonLayout layout;
+	
 	private void renderGame() {
 		
 		Graphics g = null;
@@ -129,12 +150,27 @@ public class Core {
 			
 			BufferStrategy buffer = GameCanvas.getBufferStrategy();
 
+			
 			g = buffer.getDrawGraphics();
 
 			//Resetting the canvas!
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, 600, 600);
-			
+
+			//---
+			if(show) {
+				BufferedImage im = new BufferedImage(600, 600, IndexColorModel.TRANSLUCENT);
+				Graphics g1 = im.getGraphics();
+				Label l = new Label(" Do you want to continue?");
+				l.position = new Point(10, 40);
+				l.color = Color.WHITE;
+				g1.setColor(Color.GREEN);
+				g1.fillRect(0, 0, 600, 600);
+				l.Render(g1);
+				ConversationManager.show(im, new Rectangle(0, 0, 600, 600), layout, g);
+				show = false;
+			}
+			//---
 			
 			if(debug) {
 				g.setColor(Color.RED);
@@ -155,24 +191,24 @@ public class Core {
 			
 			//TODO: FIX THE DAMN CHUNKCLASS, MYTL
 			
-			//Fields = RL.getRenderFields(ActivePlayer.getPosition(),12);
+			/*Fields = RL.getRenderFields(ActivePlayer.getPosition(),12);
 			
-			//for (Field field : Fields) {
-			//g.drawRect((int)(0 + Math.abs(ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(0 + Math.abs(ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)), FieldSize.width, FieldSize.height);				
-			//}
+			for (Field field : Fields) {
+				g.drawRect((int)(0 + Math.abs(ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(0 + Math.abs(ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)), FieldSize.width, FieldSize.height);				
+			}*/
 			
 			g.drawRect((int)(0 + ((-1) * ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(0 + (ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)- FieldSize.height), FieldSize.width, FieldSize.height);
-			
-	
-			
 			
 			//Drawing the view limiter
 			g.drawImage(viewLimiter, 0, 0, null);
 			
+			ConversationManager.Render(g);
+			PopUpManager.Render(g);
+			
 			if(!buffer.contentsLost()) {
 				buffer.show();
 			}
-				
+			
 		
 			GameWindow.repaint();
 			Thread.yield();
@@ -218,6 +254,16 @@ public class Core {
 
 	private void updateGame(double delta) {
 		Point PlayerPos = ActivePlayer.getPosition();
+		
+		if(!ConversationManager.canUpdate()) {
+			if(layout.wasButtonPressed()) {
+				if(layout.getIndex() == 0)
+					ConversationManager.destroy();
+				else
+					System.exit(0);
+			}
+			return;
+		}
 		
 		int moveDistance = (int)Math.ceil(1 * delta);
 		

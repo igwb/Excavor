@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class InGameWindow implements KeyListener {
+public class ConversationManager {
 
 	private static Conversation C;
 	
@@ -17,32 +17,37 @@ public class InGameWindow implements KeyListener {
 		
 		C.Render(g);
 	}
-
-	@Override
-	public void keyPressed(KeyEvent arg0) {
+	
+	public static void Render(Graphics g) {
+		
+		if(C != null)
+			C.Render(g);
+		
+	}
+	
+	public static void destroy() {
+		
+		if(C != null)
+			C = null;
+		
+	}
+	
+	public static boolean canUpdate() {
+		return C == null;
+	}
+	
+	public static void keyPressed(KeyEvent arg0) {
 		if(C == null)
 			return;
 		
-		if(arg0.getKeyCode() == KeyEvent.VK_W)
+		if(arg0.getKeyCode() == KeyEvent.VK_S)
 			C.Layout.moveIndexUp();
 		
-		else if(arg0.getKeyCode() == KeyEvent.VK_S)
+		else if(arg0.getKeyCode() == KeyEvent.VK_W)
 			C.Layout.moveIndexDown();
 		
 		else if(arg0.getKeyCode() == KeyEvent.VK_SPACE)
 			C.Layout.setButtonPressed(true);
-	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }
