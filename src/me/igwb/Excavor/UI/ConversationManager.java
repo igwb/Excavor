@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class ConversationManager {
 
@@ -32,7 +31,7 @@ public class ConversationManager {
 		
 	}
 	
-	public static boolean canUpdate() {
+	public static boolean allowUpdate() {
 		return C == null;
 	}
 	

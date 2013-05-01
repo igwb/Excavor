@@ -9,14 +9,13 @@ import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import resources.ResourceLoader;
 
 import me.igwb.Excavor.Environment.Field;
 import me.igwb.Excavor.Environment.ImageSplitter;
 import me.igwb.Excavor.Logic.Delay;
-import me.igwb.Excavor.UI.Label;
-import me.igwb.Excavor.UI.PopUpManager;
 
 
 public class Player {
@@ -236,5 +235,20 @@ public class Player {
 		}
 		
 		return buffImage;
+	}
+	
+	public String[] getStats() {
+		
+		ArrayList<String> lines = new ArrayList<String>();
+		
+		lines.add("#Playerstats: " + new java.util.Date().toString());
+		lines.add("#Player condition");
+		lines.add("health=" + health + "/" + maxHealth);
+		lines.add("armor=" + armor + "/" + maxArmor);
+		lines.add("#Player -> world");
+		lines.add("position=" + Position.toString());
+		lines.add("direction=" + dir.toString());
+		
+		return lines.toArray(new String[lines.size()]);
 	}
 } 

@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 
 import me.igwb.Excavor.Player.Player.Direction;
 import me.igwb.Excavor.UI.ConversationManager;
+import me.igwb.Excavor.UI.DeveloperConsole;
 import me.igwb.Excavor.UI.Label;
 import me.igwb.Excavor.UI.PopUpManager;
 
@@ -15,7 +16,13 @@ public class KeyboardListener implements KeyListener{
 	public void keyPressed(KeyEvent arg0) {
 		boolean moving = Programm.getCore().getActivePlayer().isMoving();
 		
+		DeveloperConsole.keyPressed(arg0);
+		if(!DeveloperConsole.allowUpdate())
+			return;
+		
 		ConversationManager.keyPressed(arg0);
+		if(!ConversationManager.allowUpdate())
+			return;
 		
 		switch (arg0.getKeyChar()) {
 		case 'w': case 'W':
@@ -132,7 +139,6 @@ public class KeyboardListener implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		
-		
+		DeveloperConsole.keyTyped(arg0);		
 	}
 }

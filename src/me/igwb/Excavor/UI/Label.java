@@ -1,12 +1,7 @@
 package me.igwb.Excavor.UI;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.IndexColorModel;
 import java.io.*;
 
 import resources.ResourceLoader;

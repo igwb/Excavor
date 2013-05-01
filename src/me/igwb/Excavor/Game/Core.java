@@ -23,6 +23,7 @@ import me.igwb.Excavor.Player.Player;
 import me.igwb.Excavor.UI.Button;
 import me.igwb.Excavor.UI.ButtonLayout;
 import me.igwb.Excavor.UI.ConversationManager;
+import me.igwb.Excavor.UI.DeveloperConsole;
 import me.igwb.Excavor.UI.Label;
 import me.igwb.Excavor.UI.PopUpManager;
 
@@ -36,7 +37,7 @@ public class Core {
 	private ChunkManager CM;
 	private RenderLogic RL;	
 	private Dimension FieldSize = new Dimension(50,50), GameCanvasSize = new Dimension(600,600), HUDCanvasSize = new Dimension(600,80);
-	boolean isRunning = false, paused = false, debug = true, allowKeys = false;
+	boolean isRunning = false, paused = false, debug = true;
 	private int FPS;
 	
 	private Image viewLimiter;
@@ -76,7 +77,9 @@ public class Core {
 			RL = new RenderLogic(FieldSize);
 			CM = new ChunkManager();
 			
+			//---
 			CM.loadChunk("C:\\Users\\Luka\\Desktop\\Chunk;0,0.txt");
+			//---
 			
 			PopUpManager.initialize(ImageSplitter.split(ResourceLoader.getURL("/resources/HUD.png"), 10, 1)[6], 1500, 2000, new Point(60, 60), new Rectangle(0, 0, GameCanvasSize.width, 80));
 
@@ -84,6 +87,7 @@ public class Core {
 			ActivePlayer.initializePlayerBasedHUD(HUDCanvasSize.width, HUDCanvasSize.height);
 			ActivePlayer.setPosition(new Point(10, 10));
 			
+			DeveloperConsole.initialize(GameCanvasSize.width, GameCanvasSize.height / 3);
 			
 			viewLimiter = resources.ResourceLoader.getImage(("/resources/view.png")) ;
 			
@@ -205,6 +209,8 @@ public class Core {
 			ConversationManager.Render(g);
 			PopUpManager.Render(g);
 			
+			DeveloperConsole.render(g);
+			
 			if(!buffer.contentsLost()) {
 				buffer.show();
 			}
@@ -215,6 +221,7 @@ public class Core {
 			
 		} catch(Exception e) {
 			log.log(Level.SEVERE, "oh oh", e );
+			DeveloperConsole.printException(e);
 			
 		} finally {
 			if(g != null)
@@ -245,6 +252,7 @@ public class Core {
 			
 		} catch(Exception e) {
 			log.log(Level.SEVERE, "oh oh", e );
+			DeveloperConsole.printException(e);
 			
 		} finally {
 			if(g != null)
@@ -255,7 +263,11 @@ public class Core {
 	private void updateGame(double delta) {
 		Point PlayerPos = ActivePlayer.getPosition();
 		
-		if(!ConversationManager.canUpdate()) {
+		//---
+		if(!DeveloperConsole.allowUpdate())
+			return;
+		
+		if(!ConversationManager.allowUpdate()) {
 			if(layout.wasButtonPressed()) {
 				if(layout.getIndex() == 0)
 					ConversationManager.destroy();
@@ -264,6 +276,7 @@ public class Core {
 			}
 			return;
 		}
+		//---
 		
 		int moveDistance = (int)Math.ceil(1 * delta);
 		
