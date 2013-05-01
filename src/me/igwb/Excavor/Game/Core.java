@@ -64,7 +64,7 @@ public class Core {
 			
 			RL = new RenderLogic(FieldSize);
 			CM = new ChunkManager();
-			
+			CM.loadChunk("C:\\Users\\Bodo Beyer\\Desktop\\Chunk;0,0");
 			
 			ActivePlayer = new Player(new Point(0,0));
 			ActivePlayer.initializePlayerBasedHUD(HUDCanvasSize.width, HUDCanvasSize.height);
@@ -155,13 +155,14 @@ public class Core {
 			
 			//TODO: FIX THE DAMN CHUNKCLASS, MYTL
 			
-			//Fields = RL.getRenderFields(ActivePlayer.getPosition(),12);
+			Fields = RL.getRenderFields(ActivePlayer.getPosition(),12);
 			
-			//for (Field field : Fields) {
-			//g.drawRect((int)(0 + Math.abs(ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(0 + Math.abs(ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)), FieldSize.width, FieldSize.height);				
-			//}
+			for (Field field : Fields) {
+				g.drawRect((int)(field.getPosition().x * FieldSize.width + ((-1) * ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(field.getPosition().y * FieldSize.height + (ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)- FieldSize.height), FieldSize.width, FieldSize.height);			
 			
-			g.drawRect((int)(0 + ((-1) * ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(0 + (ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)- FieldSize.height), FieldSize.width, FieldSize.height);
+			}
+			
+			//g.drawRect((int)(0 + ((-1) * ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(0 + (ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)- FieldSize.height), FieldSize.width, FieldSize.height);
 			
 	
 			
