@@ -34,7 +34,7 @@ public class Chunk {
 		String input = "";
 		
 		int x = Integer.parseInt(Path.split(";")[1].split(",")[0]);
-		int y = Integer.parseInt(Path.split(";")[1].split(",")[1]);
+		int y = Integer.parseInt(Path.split(";")[1].split(",")[1].replaceAll(".txt", ""));
 		
 		Point position = new Point(x, y);
 		
@@ -48,6 +48,7 @@ public class Chunk {
 			reader.close();
 			
 		} catch (IOException e) {
+			e.printStackTrace();
 			return null;
 		}
 		
