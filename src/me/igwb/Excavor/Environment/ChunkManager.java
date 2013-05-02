@@ -22,7 +22,7 @@ public class ChunkManager {
 	
 	public Chunk getChunkAt(Point position) {
 		for(Chunk chunk : chunks) {
-			if(chunk.getPosition() == position)
+			if(chunk.getPosition().equals(position))
 				return chunk;
 		}
 		
@@ -30,10 +30,24 @@ public class ChunkManager {
 	}
 	
 	public Field getFieldAt(Point position) {
-		int X = position.x / 20;
-		int Y = position.y / 20;
 		
-		return getChunkAt(new Point(X, Y)).getFieldAt(position);
+		int X = (int)Math.floor(position.x / 20);
+		int Y = (int)Math.floor(position.y / 20);
+
+		Chunk fieldChunk = getChunkAt(new Point(X, Y));
+
+		if(fieldChunk == null) {
+			Field errorField  = new Field(position);
+			FieldType[] type = new FieldType[1];
+			type[0] = FieldType.getType("ERROR");
+
+			errorField.setTypes(type);
+			return errorField;
+
+		} else {
+
+			return fieldChunk.getFieldAt(position);
+		}
 	}
 	
 }

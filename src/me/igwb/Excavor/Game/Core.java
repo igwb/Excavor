@@ -78,7 +78,7 @@ public class Core {
 			CM = new ChunkManager();
 			
 			//---
-			CM.loadChunk("C:\\Users\\Luka\\Desktop\\Chunk;0,0.txt");
+			CM.loadChunk(System.getProperty("user.dir") + "/map/Chunk;0,0");
 			//---
 			
 			PopUpManager.initialize(ImageSplitter.split(ResourceLoader.getURL("/resources/HUD.png"), 10, 1)[6], 1500, 2000, new Point(60, 60), new Rectangle(0, 0, GameCanvasSize.width, 80));
@@ -193,15 +193,14 @@ public class Core {
 			g.setColor(Color.BLACK);
 			
 			
-			//TODO: FIX THE DAMN CHUNKCLASS, MYTL
-			
-			/*Fields = RL.getRenderFields(ActivePlayer.getPosition(),12);
+			Fields = RL.getRenderFields(ActivePlayer.getPosition(),12);
 			
 			for (Field field : Fields) {
-				g.drawRect((int)(0 + Math.abs(ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(0 + Math.abs(ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)), FieldSize.width, FieldSize.height);				
-			}*/
+				g.drawRect((int)(field.getPosition().x * FieldSize.width + ((-1) * ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(field.getPosition().y * FieldSize.height + (ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)- FieldSize.height), FieldSize.width, FieldSize.height);	
+
+			}
 			
-			g.drawRect((int)(0 + ((-1) * ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(0 + (ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)- FieldSize.height), FieldSize.width, FieldSize.height);
+			//g.drawRect((int)(0 + ((-1) * ActivePlayer.getPosition().x) + Math.floor(GameCanvasSize.getWidth()/2)), (int)(0 + (ActivePlayer.getPosition().y) + Math.floor(GameCanvasSize.getHeight()/2)- FieldSize.height), FieldSize.width, FieldSize.height);
 			
 			//Drawing the view limiter
 			g.drawImage(viewLimiter, 0, 0, null);

@@ -15,7 +15,7 @@ public class RenderLogic {
 	
 	public ArrayList<Field> getRenderFields(Point Center, int ViewDistance) {
 		
-		ArrayList<Field> List = new ArrayList<Field>();
+		ArrayList<Field> List = new ArrayList<Field>(), adjicentFields;
 		Point CenterField, max, min;
 		
 		
@@ -28,7 +28,14 @@ public class RenderLogic {
 		List.add(Programm.getCore().getChunkManager().getFieldAt((CenterField)));
 		
 		for (int i = 0; i < List.size(); i++) {
-			List.addAll(getAdjicentRender(List.get(i), max, min));
+			adjicentFields = getAdjicentRender(List.get(i), max, min);
+			for (int j = 0; j < adjicentFields.size(); j++) {
+				Field cur = adjicentFields.get(j);
+				
+				if(!List.contains(cur)) {
+					List.add(cur);
+				}
+			}
 		}
 		
 		
@@ -49,49 +56,49 @@ public class RenderLogic {
 		
 		curPoint = new Point(RootField.getPosition().x, RootField.getPosition().y + 1);
 		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
+		if(curField != null && curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
 			List.add(curField);
 		}
 		
 		curPoint = new Point(RootField.getPosition().x + 1, RootField.getPosition().y + 1);
 		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
+		if(curField != null && curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
 			List.add(curField);
 		}
 		
 		curPoint = new Point(RootField.getPosition().x + 1, RootField.getPosition().y);
 		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
+		if(curField != null && curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
 			List.add(curField);
 		}
 		
 		curPoint = new Point(RootField.getPosition().x + 1 , RootField.getPosition().y - 1);
 		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
+		if(curField != null && curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
 			List.add(curField);
 		}
 		
 		curPoint = new Point(RootField.getPosition().x, RootField.getPosition().y - 1);
 		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
+		if(curField != null && curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
 			List.add(curField);
 		}
 		
 		curPoint = new Point(RootField.getPosition().x - 1, RootField.getPosition().y - 1);
 		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
+		if(curField != null && curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
 			List.add(curField);
 		}
 		
 		curPoint = new Point(RootField.getPosition().x - 1, RootField.getPosition().y);
 		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
+		if(curField != null && curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
 			List.add(curField);
 		}
 		
 		curPoint = new Point(RootField.getPosition().x - 1, RootField.getPosition().y + 1);
 		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
+		if(curField != null && curField.getSeeThru() && curPoint.x <= max.x && curPoint.y <= max.y && curPoint.x >= min.x && curPoint.y >= min.y) {
 			List.add(curField);
 		}
 		
