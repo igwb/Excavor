@@ -1,5 +1,7 @@
 package me.igwb.Excavor.Player;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -7,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import resources.ResourceLoader;
 
@@ -33,8 +36,8 @@ public class Player {
 	public Player(Point Position) {
 		this.Position = Position;
 		
-		health = 100;
-		armor = 100;
+		health = 50;
+		armor = 0;
 		
 		maxHealth = 100;
 		maxArmor = 100;
@@ -43,7 +46,7 @@ public class Player {
 	
 	public void initializePlayerBasedHUD(int maxWidth, int maxHeight) throws IOException {
 		
-		URL image = ResourceLoader.getImageURL("/resources/HUD.png");
+		URL image = ResourceLoader.getURL("/resources/HUD.png");
 		
 		Health = ImageSplitter.split(image, 10, 1)[0].getScaledInstance(maxWidth, maxHeight, 0);
 		hBar = ImageSplitter.split(image, 10, 1)[1].getScaledInstance(maxWidth, maxHeight, 0);
@@ -88,6 +91,7 @@ public class Player {
 		
 		if(newHealth <= 0) {
 			killPlayer();
+			health = newHealth;
 		} else {
 			health = newHealth;
 		}
@@ -132,7 +136,7 @@ public class Player {
 	}
 
 	public void killPlayer() {
-		
+		//System.exit(health);
 	}
 	
 	public void setMoving(boolean moving) {
@@ -161,6 +165,14 @@ public class Player {
 				delay = null;
 		}
 		
+		if(health <= 0) {
+			
+			g.setColor(Color.GREEN);
+			g.setFont(Font.getFont("Sans Bold"));
+			g.drawString("Wow... you don't look so good...", 15, 15);
+			return;
+		}
+		
 		g.drawImage(Health, 15, 2, null);		
 		g.drawImage(getHealthBar(), 15, 2, null);
 		
@@ -176,7 +188,7 @@ public class Player {
 	
 	public Image getArmorBar() {
 		
-		int width = (int)((double) armor / (double) maxArmor * 259) + 295;
+		int width = (int)((double) armor / (double) maxArmor * 259) + 297;
 
 		if(width <= 0)
 			width = 1;
@@ -202,7 +214,7 @@ public class Player {
 	
 	public Image getHealthBar() {
 		
-		int width = (int)((double) health / (double) maxHealth * 541) + 14;
+		int width = (int)((double) health / (double) maxHealth * 541) + 13;
 
 		if(width <= 0)
 			width = 1;
@@ -223,5 +235,20 @@ public class Player {
 		}
 		
 		return buffImage;
+	}
+	
+	public String[] getStats() {
+		
+		ArrayList<String> lines = new ArrayList<String>();
+		
+		lines.add("#Playerstats: " + new java.util.Date().toString());
+		lines.add("#Player condition");
+		lines.add("health=" + health + "/" + maxHealth);
+		lines.add("armor=" + armor + "/" + maxArmor);
+		lines.add("#Player -> world");
+		lines.add("position=" + Position.toString());
+		lines.add("direction=" + dir.toString());
+		
+		return lines.toArray(new String[lines.size()]);
 	}
 } 

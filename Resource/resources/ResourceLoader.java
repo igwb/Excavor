@@ -16,7 +16,7 @@ public class ResourceLoader {
 		return img;
 	}
 	
-	public static URL getImageURL(String path) throws IOException {		
+	public static URL getURL(String path) throws IOException {		
 		
 		return ResourceLoader.class.getResource(path);
 		
