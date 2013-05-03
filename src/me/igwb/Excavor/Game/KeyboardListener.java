@@ -83,7 +83,7 @@ public class KeyboardListener implements KeyListener{
 		case KeyEvent.VK_SPACE:
 			break;
 		case KeyEvent.VK_ESCAPE:
-			Programm.getCore().show = true;
+			//Programm.getCore().show = true;
 		default:
 			PopUpManager.show(new Label("You've pressed the uneventfull key '" + arg0.getKeyChar() + "'!"), false);
 			break;
