@@ -3,10 +3,11 @@ package me.igwb.Excavor.UI;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import me.igwb.Excavor.Game.CommandHandler;
+import me.igwb.Excavor.Game.Programm;
 
 import resources.ResourceLoader;
 
@@ -25,19 +26,22 @@ public class DeveloperConsole {
 	
 	private static boolean show = false;
 	
+	private static ExceptionRecorder er = new ExceptionRecorder();
+	
 	public static void initialize(int width, int height) {
 		
 		lines = new ArrayList<String>();
 		input = new ArrayList<String>();
 		lines.add("");
+		input.add("");
 		
 		try {
-			font = Font.createFont(Font.PLAIN, ResourceLoader.getURL("/resources/Sans Bold.ttf").openStream());
+		font = Font.createFont(Font.PLAIN, ResourceLoader.getURL("/resources/Sans Bold.ttf").openStream());
 		} catch (FontFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		font = font.deriveFont(10);
+		font = font.deriveFont((float) 10).deriveFont(Font.PLAIN);
 		
 		back = new BufferedImage(width, height, 3);
 		Graphics2D g = back.createGraphics();
@@ -51,6 +55,9 @@ public class DeveloperConsole {
 		
 		g.setColor(Color.GREEN);
 		g.drawRect(0, 0, width - 1, height - 1);
+						
+		System.setErr(new PrintStream(er));
+		System.setOut(new PrintStream(er));
 	}
 	
 	public static void keyPressed(KeyEvent arg0) {
@@ -131,11 +138,25 @@ public class DeveloperConsole {
 		if(!show)
 			return;	
 		
+		g.setFont(font);
+		
 		BufferedImage image = new BufferedImage(back.getWidth(), back.getHeight(), 3);		
 		Graphics2D g2D = image.createGraphics();
-		g2D.drawImage(back, 0, 0, null);
+		g2D.setFont(font);
+		
+		g2D.drawImage(back, 0, 0, null);		
 		
 		g2D.setColor(Color.WHITE);
+		
+		if(exception != "") {
+		
+			message("[System " + new java.util.Date().toString() + "]");
+			
+			message(exception);
+			
+			exception = "";
+		
+		}
 		
 		for(int i = BeginAt; i < lines.size(); i++)
 			g2D.drawString(lines.get(i), 15, 13 * (i - BeginAt) - 2);
@@ -149,17 +170,30 @@ public class DeveloperConsole {
 		g.drawImage(image, 0, 0, null);
 	}
 	
-	public static void message(String message) {		
-		String line = lines.get(lines.size() - 1);
+	public static void message(String message) {	
+		
+		for(String s : message.split("\n")) {
+			
+		String line = lines.get(lines.size() - 1);		
+		lines.set(lines.size() - 1, s);
 		lines.add(line);
 		
-		lines.set(lines.size() -2, message);		
+		}
+	}
+	
+	private static String exception = "";
+	
+	public static void write(int ascii) throws IOException {
+		
+		exception += (char) ascii;
+		
 	}
 	
 	public static boolean allowUpdate() {
 		return !show;
 	}
 	
+	@Deprecated
 	public static void printException(Exception e) {
 		
 		if(e == null)
@@ -172,5 +206,4 @@ public class DeveloperConsole {
 		for(StackTraceElement ste : e.getStackTrace())
 			message(ste.toString());
 	}
-	
 }
