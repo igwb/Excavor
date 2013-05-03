@@ -6,13 +6,12 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import resources.EnvironmentLoader;
 import resources.ResourceLoader;
 
 import me.igwb.Excavor.Environment.ChunkManager;
 import me.igwb.Excavor.Environment.ImageSplitter;
 import me.igwb.Excavor.Player.Player;
-import me.igwb.Excavor.UI.ButtonLayout;
-import me.igwb.Excavor.UI.ConversationManager;
 import me.igwb.Excavor.UI.DeveloperConsole;
 import me.igwb.Excavor.UI.PopUpManager;
 
@@ -28,7 +27,7 @@ public class Core {
 	private ChunkManager CM;
 	private RenderLogic renderManager;	
 	
-	public final Dimension FieldSize = new Dimension(50,50), GameCanvasSize = new Dimension(600,600), HUDCanvasSize = new Dimension(600,80);
+	public final Dimension GameCanvasSize = new Dimension(600,600), HUDCanvasSize = new Dimension(600,80);
 	
 	boolean isRunning = false, paused = false, debug = true;
 	
@@ -44,6 +43,8 @@ public class Core {
 	
 	protected void initialize() {
 		try {
+			EnvironmentLoader.initialize();
+			
 			GameWindow = new MainWindow();
 			GameCanvas = new MainCanvas();
 			MainHUD = new HUDCanvas();
@@ -78,7 +79,7 @@ public class Core {
 			PopUpManager.initialize(ImageSplitter.split(ResourceLoader.getURL("/resources/HUD.png"), 10, 1)[6], 1500, 2000, new Point(60, 60), new Rectangle(0, 0, GameCanvasSize.width, 80));
 
 			ActivePlayer = new Player(new Point(0,0));
-
+			ActivePlayer.setPosition(new Point(0,51));
 			
 			DeveloperConsole.initialize(GameCanvasSize.width, GameCanvasSize.height / 3);
 			
@@ -182,25 +183,25 @@ public class Core {
 		if(ActivePlayer.isMoving()) {
 			switch (ActivePlayer.getDirection()) {
 			case Up:
-				PlayerPos = new Point(PlayerPos.x, PlayerPos.y + moveDistance);
+				PlayerPos = new Point(PlayerPos.x, PlayerPos.y - moveDistance);
 				break;
 			case UpLeft:
-				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y + moveDistance);
+				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y - moveDistance);
 				break;
 			case UpRight:
-				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y + moveDistance);
+				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y - moveDistance);
 				break;
 			case Right:
 				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y);
 				break;
 			case Down:
-				PlayerPos = new Point(PlayerPos.x, PlayerPos.y - moveDistance);
+				PlayerPos = new Point(PlayerPos.x, PlayerPos.y + moveDistance);
 				break;
 			case DownLeft:
-				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y - moveDistance);
+				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y + moveDistance);
 				break;
 			case DownRight:
-				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y - moveDistance);
+				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y + moveDistance);
 				break;
 			case Left:
 				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y);

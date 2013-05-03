@@ -17,6 +17,12 @@ public class ChunkManager {
 	}
 	
 	public void unloadChunk(Point position) {
+	
+		for(Chunk chunk : chunks) {
+			if(chunk.getPosition().equals(position))
+				chunks.remove(chunk);
+
+		}
 		
 	}
 	
