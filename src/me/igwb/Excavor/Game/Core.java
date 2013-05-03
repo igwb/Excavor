@@ -53,7 +53,7 @@ public class Core {
 			GameWindow.setSize(900,850);
 
 			GameCanvas.setBounds(50, 50, GameCanvasSize.width, GameCanvasSize.height);
-			MainHUD.setBounds(50, 675, HUDCanvasSize.width, HUDCanvasSize.height);
+			MainHUD.setBounds(50, 655, HUDCanvasSize.width, HUDCanvasSize.height);
 			
 			
 			GameWindow.add(GameCanvas);

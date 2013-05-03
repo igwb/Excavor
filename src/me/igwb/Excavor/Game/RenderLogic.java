@@ -170,7 +170,7 @@ public class RenderLogic {
 
 			g = buffer.getDrawGraphics();
 
-			g.setColor(Color.GRAY);
+			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, GC.HUDCanvasSize.width, GC.HUDCanvasSize.height);
 
 
