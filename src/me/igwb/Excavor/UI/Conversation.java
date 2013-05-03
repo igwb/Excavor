@@ -21,7 +21,7 @@ public class Conversation {
 			Background = background.getScaledInstance(Position.width, Position.height, 0);
 			Layout = layout;
 			
-			Programm.getCore().converse();			
+			//Programm.getCore().converse();			
 			
 		}
 		
@@ -33,7 +33,7 @@ public class Conversation {
 				Background = null;
 				Layout = null;			
 				
-				Programm.getCore().converse();
+				//Programm.getCore().converse();
 			}
 		}
 		

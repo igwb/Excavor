@@ -21,7 +21,7 @@ import me.igwb.Excavor.Environment.FieldType;
 import me.igwb.Excavor.Environment.ImageSplitter;
 import me.igwb.Excavor.Logic.Delay;
 import me.igwb.Excavor.Player.Player;
-import me.igwb.Excavor.UI.ConversationManager;
+//import me.igwb.Excavor.UI.ConversationManager;
 import me.igwb.Excavor.UI.DeveloperConsole;
 import me.igwb.Excavor.UI.PopUpManager;
 
@@ -133,7 +133,7 @@ public class RenderLogic {
 				g.drawLine(GC.GameCanvasSize.width, 0, 0, GC.GameCanvasSize.height);
 			}
 			
-			ConversationManager.Render(g);
+			//ConversationManager.Render(g);
 			PopUpManager.Render(g);
 			
 			DeveloperConsole.render(g);

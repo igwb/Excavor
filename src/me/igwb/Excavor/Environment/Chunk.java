@@ -7,7 +7,7 @@ public class Chunk {
 
 	private Field[] fields = new Field[400];
 	
-	public static int SIZE = 16;
+	public static int SIZE = 20;
 	
 	private Point position;
 
