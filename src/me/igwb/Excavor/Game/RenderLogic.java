@@ -150,7 +150,6 @@ public class RenderLogic {
 			
 		} catch(Exception e) {
 			GC.log.log(Level.SEVERE, "oh oh", e );
-			DeveloperConsole.printException(e);
 			
 		} finally {
 			if(g != null)
@@ -225,7 +224,6 @@ public class RenderLogic {
 
 		} catch(Exception e) {
 			GC.log.log(Level.SEVERE, "oh oh", e );
-			DeveloperConsole.printException(e);
 
 		} finally {
 			if(g != null)

@@ -1,13 +1,7 @@
 package me.igwb.Excavor.UI;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferStrategy;
-
-import me.igwb.Excavor.Game.Programm;
 
 public class Conversation {
 
