@@ -17,12 +17,23 @@ public class ChunkManager {
 	}
 	
 	public void unloadChunk(Point position) {
+	
+		for(Chunk chunk : chunks) {
+			if(chunk.getPosition().equals(position))
+				chunks.remove(chunk);
+
+		}
 		
 	}
 	
 	public Chunk getChunkAt(Point position) {
+		Point chunkPos = new Point();
+		
+		chunkPos.x = (int)Math.floor(Math.floor(position.x / Field.SIZE) / Chunk.SIZE);
+		chunkPos.y = (int)Math.floor(Math.floor(position.y / Field.SIZE) / Chunk.SIZE);
+		
 		for(Chunk chunk : chunks) {
-			if(chunk.getPosition().equals(position))
+			if(chunk.getPosition().equals(chunkPos))
 				return chunk;
 		}
 		
@@ -31,8 +42,8 @@ public class ChunkManager {
 	
 	public Field getFieldAt(Point position) {
 		
-		int X = (int)Math.floor(position.x / 20);
-		int Y = (int)Math.floor(position.y / 20);
+		int X = (int)Math.floor(position.x / Field.SIZE) * Field.SIZE;
+		int Y = (int)Math.floor(position.y / Field.SIZE) * Field.SIZE;
 
 		Chunk fieldChunk = getChunkAt(new Point(X, Y));
 
