@@ -45,7 +45,6 @@ public class Field {
 	}
 
 	public void setPosition(Point position) {
-		Math.floor(position.x / Field.SIZE);
 		
 		Position = new Point((int)Math.floor(position.x / Field.SIZE) * Field.SIZE, (int)Math.floor(position.y / Field.SIZE) * Field.SIZE);
 	}

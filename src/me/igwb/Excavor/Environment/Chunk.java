@@ -7,6 +7,8 @@ public class Chunk {
 
 	private Field[] fields = new Field[400];
 	
+	public static int SIZE = 16;
+	
 	private Point position;
 
 	public Chunk(Point position, Field[] fields) {
@@ -63,20 +65,20 @@ public class Chunk {
 			y = (i / 20) + (position.y * 20);
 			x = (i - (y * 20)) + (position.x * 20);
 			
-			Point p = new Point(x, y);
+			Point p = new Point(x * Field.SIZE, y * Field.SIZE);
 			
 			//get types from file
 			
 			String[] types = input.split(";")[i].split(",");
-			int[] typeIDs = new int[types.length];
+			//int[] typeIDs = new int[types.length];
+			
+			//for(int j = 0; j < types.length; j++)				
+			//	typeIDs[j] = Integer.parseInt(types[j]);
+			
+			FieldType[] fieldTypes = new FieldType[types.length];
 			
 			for(int j = 0; j < types.length; j++)				
-				typeIDs[j] = Integer.parseInt(types[j]);
-			
-			FieldType[] fieldTypes = new FieldType[typeIDs.length];
-			
-			for(int j = 0; j < typeIDs.length; j++)				
-				fieldTypes[j] = FieldType.getType(typeIDs[j]);
+				fieldTypes[j] = FieldType.getType(Integer.parseInt(types[j]));
 			
 			//set variables
 			

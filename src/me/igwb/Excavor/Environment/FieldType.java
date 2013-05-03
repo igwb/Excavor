@@ -15,7 +15,9 @@ public enum FieldType {
 	STONEWALL_RIGHT		(10, false, false, "Stonewall - Right"),
 	STONECORNER_LEFT	(11, false, false, "Stonecorner - Left"),
 	STONECORNER_RIGHT	(12, false, false, "Stonecorner - Right"),
-	ERROR				(13, true, false, true, "ERROR");
+	ERROR				(13, true, false, true, "ERROR"),
+	WIDE_TREE			(14, false, false, true, "ERROR"),
+	SPIKY_TREE			(15, false, false, true, "ERROR");
 	
 	public int Image;
 	
