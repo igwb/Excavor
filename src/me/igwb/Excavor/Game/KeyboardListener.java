@@ -17,8 +17,8 @@ public class KeyboardListener implements KeyListener{
 		if(!DeveloperConsole.allowUpdate())
 			return;
 			
-		if(Conversation.keyPressed(arg0))
-			return;
+		//if(Conversation.keyPressed(arg0))
+			//return;
 		
 		switch (arg0.getKeyChar()) {
 		case 'w': case 'W':
