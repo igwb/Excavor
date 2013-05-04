@@ -2,9 +2,6 @@ package resources;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
 
 import me.igwb.Excavor.Environment.FieldType;
 import me.igwb.Excavor.Environment.ImageSplitter;
