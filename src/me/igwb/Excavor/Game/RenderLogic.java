@@ -150,7 +150,6 @@ public class RenderLogic {
 			
 		} catch(Exception e) {
 			GC.log.log(Level.SEVERE, "oh oh", e );
-			DeveloperConsole.printException(e);
 			
 		} finally {
 			if(g != null)
@@ -170,7 +169,7 @@ public class RenderLogic {
 
 			g = buffer.getDrawGraphics();
 
-			g.setColor(Color.GRAY);
+			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, GC.HUDCanvasSize.width, GC.HUDCanvasSize.height);
 
 
@@ -225,7 +224,6 @@ public class RenderLogic {
 
 		} catch(Exception e) {
 			GC.log.log(Level.SEVERE, "oh oh", e );
-			DeveloperConsole.printException(e);
 
 		} finally {
 			if(g != null)
