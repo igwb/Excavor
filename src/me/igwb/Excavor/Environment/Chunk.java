@@ -69,12 +69,12 @@ public class Chunk {
 		//Loop for the read lines.
 		for (int i = 0; i < input.length; i++) {
 			
-			curLine = input[i].split("-");
+			curLine = input[i].split(";");
 			
 			//Loop for the fields in a line
 			for (int j = 0; j < curLine.length; j++) {
 				
-				if(!curLine[j].equals(null) && !curLine[j].equals("-") && !curLine[j].equals("") && curLine[j].length() > 0) {
+				if(!curLine[j].equals(null) && !curLine[j].equals(";") && !curLine[j].equals("") && curLine[j].length() > 0) {
 				
 				curFields = curLine[j].split("/");
 				} else {
@@ -83,7 +83,7 @@ public class Chunk {
 		
 				//Loop for the layers
 				for (int z = 0; z < curFields.length; z++) {
-					curData = curFields[z].split(";");
+					curData = curFields[z].split("-");
 
 					x = ((int)(i + (chunkX * SIZE) - Math.floor((i / SIZE) * SIZE)));
 					y = ((int)(Math.floor((i / SIZE)) + (chunkY * SIZE)));
