@@ -49,7 +49,7 @@ public class PopUpManager {
 	private static Delay delay;
 	private static boolean vanish = false;
 	
-	public static void Render(Graphics g) {
+	public static void render(Graphics g) {
 		
 		if(Labels.size() <= 0)
 			return;

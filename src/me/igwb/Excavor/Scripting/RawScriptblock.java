@@ -10,7 +10,7 @@ public class RawScriptblock {
 	
 	public String name = "", input = "";
 	
-	public boolean complete = false;
+	public Scriptblock parent;
 	
 	public Scriptblock getScriptblock() {
 		
@@ -22,30 +22,45 @@ public class RawScriptblock {
 		
 		char[] charIn = input.toCharArray();
 		
-		for(int i = 0; i < charIn.length; i++)		
-			if(!Character.isWhitespace(charIn[i])) {
+		String Input = "";
+		
+		for(int i = 0; i < charIn.length; i++) {
 				
 				if(charIn[i] == '{') {
 
 					int deep = 0;
 					
-					RawScriptblock raw = new RawScriptblock();
+					i++;
 					
-					for(int j = i; charIn[i] != '}' && deep >= 0; i++) {
+					RawScriptblock raw = new RawScriptblock();
+					raw.name = Input.split(";")[Input.split(";").length - 1];
+					Input = Input.substring(0, Input.length() - raw.name.length());
+					raw.parent = superBlock;
+					
+					for(; charIn[i] != '}' || deep > 0; i++) {
 						
 						if(charIn[i] == '{')
 							deep++;
 						
 						else if(charIn[i] == '}')
 							deep--;
-						
-						else
-							raw.input += charIn[i];
+
+						raw.input += charIn[i];
 					}
-				}				
-			}
+					
+					childs.add(raw.getScriptblock());
+					
+				} else
+					Input += charIn[i];
+		}
 		
-		return null;
+		for(String s : Input.split(";"))
+			commands.add(new RawCommand(s).getCommand());
+		
+		superBlock.setChilds(childs);
+		superBlock.setCommands(commands);
+		
+		return superBlock;
 	}
 	
 }

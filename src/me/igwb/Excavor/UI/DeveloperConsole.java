@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.ConsoleHandler;
 
 import me.igwb.Excavor.Game.CommandHandler;
 
@@ -120,7 +121,7 @@ public class DeveloperConsole {
 		if(show && !arg0.isActionKey())
 		switch(arg0.getKeyChar()) {
 			
-		case KeyEvent.VK_BACK_SPACE : case KeyEvent.VK_ENTER : case KeyEvent.VK_CONTROL: 
+		case KeyEvent.VK_BACK_SPACE : case KeyEvent.VK_ENTER : case KeyEvent.VK_CONTROL : case KeyEvent.VK_ESCAPE: 
 			return;
 			
 		default:
@@ -185,7 +186,6 @@ public class DeveloperConsole {
 	public static void write(int ascii) throws IOException {
 		
 		exception += (char) ascii;
-		
 	}
 	
 	public static boolean allowUpdate() {

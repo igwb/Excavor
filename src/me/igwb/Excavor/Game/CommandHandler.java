@@ -39,11 +39,20 @@ public class CommandHandler {
 				DeveloperConsole.message(line);
 			break;
 			
-		case "fuck you" : case "fuckyou" : case "fuck u": case "fucku":
+		case "fuckyou" : case "fucku":
 			DeveloperConsole.message("Fuck yourself...");
 			DeveloperConsole.message("Your save has been deleted!");
 			Thread.sleep(5000);
 			System.exit(0);
+			
+		case "fuck":
+			if(cmd.length > 2 && cmd[1] == "you" && cmd[1] == "u") {
+				DeveloperConsole.message("Fuck yourself...");
+				DeveloperConsole.message("Your save has been deleted!");
+				Thread.sleep(5000);
+				System.exit(0);
+			}
+				
 			
 		default:
 			DeveloperConsole.message("Command \"" + cmd[0] + "\" not found!");

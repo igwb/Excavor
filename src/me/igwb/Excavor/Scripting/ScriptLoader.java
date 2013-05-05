@@ -1,57 +1,55 @@
 package me.igwb.Excavor.Scripting;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.net.URL;
+
 import me.igwb.Excavor.UI.Conversation;
 
 public class ScriptLoader {
 
+	public static Conversation loadConversation(URL path) {
+		
+		String input = "";
+		
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(path.getPath()));
+			
+			while(reader.ready()) {
+				input += reader.readLine();
+			}
+			
+			reader.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return loadConversation(input);
+	}
+	
 	public static Conversation loadConversation(String input) {
 		
 		char[] charIn = input.toCharArray();
 		
 		RawScriptblock superBlock = new RawScriptblock();
+		superBlock.name = "";
+		
+		boolean skipwhite = false;
 		
 		for(int i = 0; i < charIn.length; i++)			
-			if(!Character.isWhitespace(charIn[i])) {
+			if(!Character.isWhitespace(charIn[i]) || skipwhite) {
+			
+				if(charIn[i] == '"')
+					skipwhite = !skipwhite;
 				
-				if(charIn[i] == '{') {				
-					
-					if(!superBlock.name.equalsIgnoreCase("Conversation"))
-						return null;
-					
-					boolean canFinish = true;
-					boolean checkwhite = true;
-					
-					//loop 2 'yay'
-					for(int j = i; i < charIn.length; i++) {						
-						if(!Character.isWhitespace(charIn[i]) || !checkwhite) {
-							
-							if(charIn[i] ==  '"')
-								checkwhite = !checkwhite;
-							
-							if(charIn[i] == '{')				
-								canFinish = false;
-							
-							else if(charIn[i] == '}')
-								if(canFinish)
-									break;
-								else
-									canFinish = true;
-							
-							superBlock.input += charIn[i];
-							
-						}
-						
-					}
-					superBlock.complete = true;
-					break;
-				}
-				
-				if(!superBlock.complete)
-					superBlock.name += charIn[i];
+				superBlock.input += charIn[i];
 				
 			}
 		
-		return null;
+		Scriptblock sb = superBlock.getScriptblock().getChild("Conversation");
+		
+		return new Conversation(sb);
 	}
-	
 }

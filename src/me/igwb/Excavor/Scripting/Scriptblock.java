@@ -47,4 +47,20 @@ public class Scriptblock {
 		this.commands = commands;
 	}
 	
+	
+	public Scriptblock getChild(String name) {
+		for(Scriptblock sb : childs)
+			if(sb.getName().equalsIgnoreCase(name))
+				return sb;
+		
+		return null;
+	}
+	
+	public Command getCommand(String name) {
+		for(Command cmd : commands)
+			if(cmd.name.equalsIgnoreCase(name))
+				return cmd;
+		
+		return null;
+	}
 }

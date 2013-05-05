@@ -3,7 +3,6 @@ package me.igwb.Excavor.Game;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import resources.EnvironmentLoader;
@@ -12,6 +11,7 @@ import resources.ResourceLoader;
 import me.igwb.Excavor.Environment.ChunkManager;
 import me.igwb.Excavor.Environment.ImageSplitter;
 import me.igwb.Excavor.Player.Player;
+import me.igwb.Excavor.UI.ConversationManager;
 import me.igwb.Excavor.UI.DeveloperConsole;
 import me.igwb.Excavor.UI.PopUpManager;
 
@@ -43,6 +43,7 @@ public class Core {
 	
 	protected void initialize() {
 		try {
+			DeveloperConsole.initialize(GameCanvasSize.width, GameCanvasSize.height / 3);
 			EnvironmentLoader.initialize();
 			
 			GameWindow = new MainWindow();
@@ -75,17 +76,17 @@ public class Core {
 			
 			CM.loadChunk(System.getProperty("user.dir") + "/map/Chunk;0,0");
 
+			ConversationManager.initialize("");
 			
 			PopUpManager.initialize(ImageSplitter.split(ResourceLoader.getURL("/resources/HUD.png"), 10, 1)[6], 1500, 2000, new Point(60, 60), new Rectangle(0, 0, GameCanvasSize.width, 80));
 
-			ActivePlayer = new Player(new Point(0,0));
-			
-			DeveloperConsole.initialize(GameCanvasSize.width, GameCanvasSize.height / 3);
-			
+			ActivePlayer = new Player(new Point(0,0));			
+
 			isRunning = true;
 			gameLoop();
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -101,6 +102,9 @@ public class Core {
 		
 		int loops = 0;
 		
+		//---
+		//ConversationManager.startConversation("Test conversation");
+		//---
 
 		while(isRunning) {
 				updateLength = System.nanoTime() - lastLoop;
@@ -178,6 +182,14 @@ public class Core {
 		Point PlayerPos = ActivePlayer.getPosition();
 		
 		int moveDistance = (int)Math.ceil(1 * delta);
+		
+		if(!DeveloperConsole.allowUpdate())
+			return;
+		
+		ConversationManager.update();
+		
+		if(!ConversationManager.allowUpdate())
+			return;
 		
 		if(ActivePlayer.isMoving()) {
 			switch (ActivePlayer.getDirection()) {
