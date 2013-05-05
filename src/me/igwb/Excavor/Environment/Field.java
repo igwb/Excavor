@@ -7,6 +7,7 @@ public class Field {
 	private Position location;
 	
 	private FieldType[] Types;
+	private Field[] zFields;
 	private int[] events;
 	
 	
@@ -31,6 +32,24 @@ public class Field {
 		return Types;
 	}
 
+	
+	/**
+	 * Returns fields on the z-axis at this fields position, not including the lowest one.
+	 * Returns null if the field is not the lowest field.
+	 * @return
+	 */
+	public Field[] getZFields() {
+		if(this.location.getZ() == 0) {
+			return zFields;
+		} else {
+			return null;
+		}
+	}
+	
+	public void setZFields(Field[] zFields) {
+		this.zFields = zFields;
+	}
+	
 	public void setTypes(FieldType[] types) {
 		
 		Types = types;

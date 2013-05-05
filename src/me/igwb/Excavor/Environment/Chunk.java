@@ -37,6 +37,9 @@ public class Chunk {
 		String input[], curLine[], curFields[], curData[], curSubData[];
 		
 		Field[] fields = new Field[(int)Math.pow(SIZE, 2)];
+		Field[] zFields;
+		Field usedField;
+		
 		
 		FieldType types[];
 		int events[], x, y;
@@ -81,6 +84,12 @@ public class Chunk {
 					continue;
 				}
 		
+				if(curFields.length > 1) {
+					zFields = new Field[curFields.length - 1];
+				} else {
+					zFields = null;
+				}
+				
 				//Loop for the layers
 				for (int z = 0; z < curFields.length; z++) {
 					curData = curFields[z].split("-");
@@ -88,7 +97,12 @@ public class Chunk {
 					x = ((int)(i + (chunkX * SIZE) - Math.floor((i / SIZE) * SIZE)));
 					y = ((int)(Math.floor((i / SIZE)) + (chunkY * SIZE)));
 
-					fields[i] = new Field(new Position(x, y, z));
+					if(z >= 1) {
+						usedField = new Field(new Position(x, y, z));
+					} else {
+						usedField = new Field(new Position(x, y, z));
+					}
+					
 
 
 					curSubData = curData[0].split(",");
@@ -104,7 +118,7 @@ public class Chunk {
 							events[s] = Integer.parseInt(curSubData[s]);
 						}
 
-						fields[i].setEvents(events);
+						usedField.setEvents(events);
 
 						curSubData = curData[1].split(",");
 					}
@@ -115,8 +129,16 @@ public class Chunk {
 						types[s] = FieldType.getType(Integer.parseInt(curSubData[s]));
 					}
 
-					fields[i].setTypes(types);
+					usedField.setTypes(types);
+					
+					
+					if(z >= 1) {
+						zFields[z - 1] = usedField;
+					} else {
+						fields[i] = usedField;
+					}
 				}
+				fields[i].setZFields(zFields);
 			}
 		}
 		
