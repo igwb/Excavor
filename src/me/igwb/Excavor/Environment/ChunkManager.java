@@ -11,8 +11,8 @@ public class ChunkManager {
 		
 	}
 	
-	public void loadChunk(String chunkPath) {
-		Chunk chunk = Chunk.load(chunkPath);
+	public void loadChunk(int chunkX, int chunkY) {
+		Chunk chunk = Chunk.load(chunkX, chunkY);
 		chunks.add(chunk);
 	}
 	
@@ -48,7 +48,7 @@ public class ChunkManager {
 		Chunk fieldChunk = getChunkAt(new Point(X, Y));
 
 		if(fieldChunk == null) {
-			Field errorField  = new Field(position);
+			Field errorField  = new Field(new Position());
 			FieldType[] type = new FieldType[1];
 			type[0] = FieldType.getType("ERROR");
 

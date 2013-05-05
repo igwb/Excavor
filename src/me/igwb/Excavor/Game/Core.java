@@ -73,7 +73,7 @@ public class Core {
 			CM = new ChunkManager();
 			
 			
-			CM.loadChunk(System.getProperty("user.dir") + "/map/Chunk;0,0");
+			CM.loadChunk(0,0);
 
 			
 			PopUpManager.initialize(ImageSplitter.split(ResourceLoader.getURL("/resources/HUD.png"), 10, 1)[6], 1500, 2000, new Point(60, 60), new Rectangle(0, 0, GameCanvasSize.width, 80));

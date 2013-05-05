@@ -1,19 +1,20 @@
 package me.igwb.Excavor.Environment;
 
-import java.awt.Point;
 
 
 public class Field {
 	
-	private Point Position;
+	private Position location;
 	
 	private FieldType[] Types;
+	private int[] events;
+	
 	
 	public static final int SIZE = 50;
 	
-	public Field(Point position) {
+	public Field(Position loc) {
 		
-		setPosition(position);
+		setLocation(loc);
 	}
 	
 	public boolean getSeeThru() {
@@ -35,25 +36,30 @@ public class Field {
 		Types = types;
 	}
 
+	public void setEvents(int[] events) {
+		
+		this.events = events;
+	}
+	
 	/**
-	 * Returns the absolute position of a field.
+	 * Returns the position of a field.
 	 * 
 	 * @return Point - the position
 	 */
-	public Point getPosition() {
-		return Position;
+	public Position getLocation() {
+		return location;
 	}
 
-	public void setPosition(Point position) {
+	public void setLocation(Position loc) {
 		
-		Position = new Point((int)Math.floor(position.x / Field.SIZE) * Field.SIZE, (int)Math.floor(position.y / Field.SIZE) * Field.SIZE);
+		location = loc;
 	}
 	
 	
 	public boolean equals(Object obj) {
 		
 		if(obj instanceof Field) {
-			if(Position.equals(((Field) obj).Position)) {
+			if(location.equals(((Field) obj).getLocation())) {
 				return true;
 			} else {
 				return false;
