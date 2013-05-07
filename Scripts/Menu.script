@@ -1,0 +1,49 @@
+
+Conversation {
+
+	Background = ["/Media/Window_small.png", 0, 0, 600, 600];
+	Entrypoint = Main;
+	Name = "Menu";
+	Selection = "/Media/Selection.png";
+
+	Main
+	{
+
+		CenterOutput(120, 18);
+
+		Output = ["Menu", 240, 273, 18];
+
+		CenterInput(120, 15);
+
+		Input = ["Resume", 240, 283, 15, Close] & 
+			["Options", 240, 301, 15, Options] & 
+			["Save and Exit", 240, 319, 15, SaveExit];
+
+	}
+
+	Close
+	{
+
+		EndConversation(10);		
+
+	}
+
+	Options
+	{
+
+		Output = ["Options", 240, 273, 18];
+	
+		Input = ["Resume", 240, 283, 15, Close] & 
+			["Options", 240, 301, 15, Options] & 
+			["Save and Exit", 240, 319, 15, SaveExit];
+
+		EndConversation(0);
+
+	}
+	
+	SaveExit
+	{
+		DispatchCommand(exit);
+		GoTo(Part 1);
+	}
+}
