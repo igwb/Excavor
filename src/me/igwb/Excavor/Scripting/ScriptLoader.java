@@ -1,6 +1,7 @@
 package me.igwb.Excavor.Scripting;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.net.URL;
 
@@ -8,12 +9,13 @@ import me.igwb.Excavor.UI.Conversation;
 
 public class ScriptLoader {
 
-	public static Conversation loadConversation(URL path) {
+	public static Conversation loadConversation(URL url) {
 		
 		String input = "";
 		
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(path.getPath()));
+			File file = new File(url.getPath());
+			BufferedReader reader = new BufferedReader(new FileReader(file));
 			
 			while(reader.ready()) {
 				input += reader.readLine();
@@ -26,25 +28,23 @@ public class ScriptLoader {
 			return null;
 		}
 		
-		return loadConversation(input);
+		return loadConversation(input.toCharArray());
 	}
 	
-	public static Conversation loadConversation(String input) {
-		
-		char[] charIn = input.toCharArray();
+	public static Conversation loadConversation(char[] input) {
 		
 		RawScriptblock superBlock = new RawScriptblock();
 		superBlock.name = "";
 		
 		boolean skipwhite = false;
 		
-		for(int i = 0; i < charIn.length; i++)			
-			if(!Character.isWhitespace(charIn[i]) || skipwhite) {
+		for(int i = 0; i < input.length; i++)			
+			if(!Character.isWhitespace(input[i]) || skipwhite) {
 			
-				if(charIn[i] == '"')
+				if(input[i] == '"')
 					skipwhite = !skipwhite;
 				
-				superBlock.input += charIn[i];
+				superBlock.input += input[i];
 				
 			}
 		

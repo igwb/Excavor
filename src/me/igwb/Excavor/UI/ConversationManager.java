@@ -19,15 +19,20 @@ public class ConversationManager {
 	
 	public static void initialize(String loadFrom) throws Exception {
 		
+		try {
+		
 		conversations = new ArrayList<Conversation>();
 		
-		File d = new File(loadFrom);
+		File d = new File(System.getProperty("user.dir") + "/" + loadFrom);
 		
 		if(d.exists())
 			for(String s : d.list())
-				conversations.add(ScriptLoader.loadConversation(ResourceLoader.getURL(s, true)));
+				if(s.endsWith(".script"))
+					conversations.add(ScriptLoader.loadConversation(ResourceLoader.getURL(loadFrom + "/" + s, true)));
 		
-		conversations.add(ScriptLoader.loadConversation(ResourceLoader.getURL("/resources/Script.txt")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void update() {

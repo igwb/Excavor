@@ -22,6 +22,8 @@ public class Conversation {
 		private Label[] Text = new Label[1];
 		private Rectangle Position = new Rectangle(1, 1, 1, 1);
 		private ButtonLayout Layout = ButtonLayout.getStandard(Position, Color.gray);
+		private int widthIn = 0, heightIn = 0;
+		private int widthOut = 0, heightOut = 0;
 		
 		private String step, lastStep, name;
 		
@@ -97,6 +99,16 @@ public class Conversation {
 				
 				label.position = new Point(0, (int) (label.getHeight() * 0.75));
 				
+				if(widthIn > 0 && widthIn > label.getWidth()) {
+					label.position.x = (int)( ((double) widthIn / 2d) - (label.getWidth() / 2d) );
+					rect.width = widthIn;
+				}
+				
+				if(heightIn > 0 && heightIn > label.getHeight()) {
+					label.position.y = (int)( ((double) heightIn / 2d) + (label.getHeight() / 2d) );
+					rect.height = heightIn;
+				}
+				
 				buttons.add(new Button(null, label, rect));			
 			}
 			
@@ -125,10 +137,38 @@ public class Conversation {
 				label.FontSize = Float.parseFloat(region.value[3]);
 				
 				labels.add(label);
+				
+				if(widthOut > 0 && widthOut > label.getWidth()) {
+					label.position.x += (int)( ((double) widthOut / 2d) - (label.getWidth() / 2d) );
+				}
+				
+				if(heightOut > 0 && heightOut > label.getHeight()) {
+					label.position.y += (int)( ((double) heightOut / 2d) + (label.getHeight() / 2d) );
+				}
 			}
 			
 			Text = new Label[1];
 			Text = labels.toArray(Text);
+		}
+
+		private void centerInput(Command cmd) {
+		
+			if(cmd == null)
+				return;
+			
+			widthIn = Integer.parseInt(cmd.getParameter().getAllValues()[0]);
+			heightIn = Integer.parseInt(cmd.getParameter().getAllValues()[1]);
+			
+		}
+
+		private void centerOutput(Command cmd) {
+			
+			if(cmd == null)
+				return;
+			
+			widthOut = Integer.parseInt(cmd.getParameter().getAllValues()[0]);
+			heightOut = Integer.parseInt(cmd.getParameter().getAllValues()[1]);
+			
 		}
 
 		private void handleChange() {
@@ -155,6 +195,14 @@ public class Conversation {
 					} else if(cmd.name.equalsIgnoreCase("GoTo")) {
 						
 						step = cmd.getParameter().getAllValues()[0];
+						
+					} else if(cmd.name.equalsIgnoreCase("CenterInput")) {
+						
+						centerInput(cmd);
+						
+					} else if(cmd.name.equalsIgnoreCase("CenterOutput")) {
+						
+						centerOutput(cmd);
 						
 					}
 					

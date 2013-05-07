@@ -30,15 +30,16 @@ public class ResourceLoader {
 		
 		if(searchExt) {
 			
-			URL url;
+			URL url = null;
 			try {
-				 url = new URL("file://" + System.getProperty("user.dir") + path);
-			} catch (MalformedURLException e) {
+				 url = new URL("file:/" + System.getProperty("user.dir") + "/" + path);
+				 //System.out.println(url.getFile() + "\n" + url.getPath());
+			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}
 			
-			if(new File(url.toString()).exists())
+			if(new File(url.getFile()).exists())
 				return url;
 			else
 				return getURL(path);

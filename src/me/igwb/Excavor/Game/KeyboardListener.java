@@ -84,7 +84,7 @@ public class KeyboardListener implements KeyListener{
 		case KeyEvent.VK_SPACE:
 			break;
 		case KeyEvent.VK_ESCAPE:
-			ConversationManager.startConversation("Test conversation");
+			ConversationManager.startConversation("Menu");
 			break;
 		default:
 			PopUpManager.show(new Label("You've pressed the uneventfull key '" + arg0.getKeyChar() + "'!"), false);
