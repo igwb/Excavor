@@ -6,12 +6,12 @@ public class SavesManager {
 	
 	public static void save(String location) {
 		
-		String path = System.getProperty("user.dir") + "/" + file;
+		/*String path = System.getProperty("user.dir") + "/" + file;
 		
 		lastSave = path;
 		
 		String save = 
-		
+		*/
 		
 	}
 	

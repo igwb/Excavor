@@ -3,8 +3,6 @@ package me.igwb.Excavor.UI;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import resources.ResourceLoader;
@@ -74,5 +72,16 @@ public class ConversationManager {
 			activeConversation.keyPressed(arg0);
 		
 		return allowUpdate();
+	}
+	
+	public static Conversation getConversation(String name) {
+		
+		for(Conversation c : conversations) {
+			if(c.getName().equalsIgnoreCase(name)) {
+				return c;
+			}
+		}
+		
+		return null;
 	}
 }

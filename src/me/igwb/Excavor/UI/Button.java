@@ -16,6 +16,8 @@ public class Button {
 	
 	public Label label;
 	
+	public String nextStep;
+	
 	public Button(Image background, Label label, Rectangle position) {
 		Position = position;
 		Background = background == null ? new BufferedImage(Position.width, Position.height, 3) : background.getScaledInstance(Position.width, Position.height, 0);

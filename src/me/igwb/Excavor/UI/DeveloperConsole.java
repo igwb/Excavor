@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.logging.ConsoleHandler;
 
 import me.igwb.Excavor.Game.CommandHandler;
 
