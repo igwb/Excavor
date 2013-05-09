@@ -3,17 +3,15 @@ package resources;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-
-import com.sun.org.apache.xerces.internal.util.URI;
+import javax.sound.sampled.*;
 
 public class ResourceLoader {
 
 	public static Image getImage(String path) throws IOException {
-		Image img;
+		Image img = null;
 		
 		img = ImageIO.read(ResourceLoader.class.getResource(path));
 		
@@ -47,6 +45,26 @@ public class ResourceLoader {
 		} else
 			return getURL(path);
 		
+	}
+
+	public static Clip getAudio(String path) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+
+        URL url = ResourceLoader.class.getResource(path);
+		AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+			
+		Clip clip = AudioSystem.getClip();
+		clip.open(audioIn);
+		
+		return clip;
+	}
+
+	public static Clip getAudio(URL url) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+		AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+		
+		Clip clip = AudioSystem.getClip();
+		clip.open(audioIn);
+		
+		return clip;
 	}
 	
 }

@@ -44,6 +44,7 @@ public class Core {
 	protected void initialize() {
 		try {
 			DeveloperConsole.initialize(GameCanvasSize.width, GameCanvasSize.height / 3);
+			ValuesManager.loadValuesFrom(System.getProperty("user.dir") + "/configuration.txt");
 			EnvironmentLoader.initialize();
 			
 			GameWindow = new MainWindow();
@@ -73,15 +74,18 @@ public class Core {
 			renderManager = new RenderLogic();
 			CM = new ChunkManager();
 			
-			
 			CM.loadChunk(System.getProperty("user.dir") + "/map/Chunk;0,0");
 
+			StandardListeners.registerListeners();
 			ConversationManager.initialize("Scripts");
-			
+			MediaManager.initialize(ResourceLoader.getURL("/resources/"));
 			PopUpManager.initialize(ImageSplitter.split(ResourceLoader.getURL("/resources/HUD.png"), 10, 1)[6], 1500, 2000, new Point(60, 60), new Rectangle(0, 0, GameCanvasSize.width, 80));
 
-			ActivePlayer = new Player(new Point(0,0));			
-
+			ActivePlayer = new Player(new Point(0,0));
+			
+			MediaManager.setVolume(50f);
+			MediaManager.playClip("TestMusic_Daddy Discord.wav", false);
+			
 			isRunning = true;
 			gameLoop();
 			

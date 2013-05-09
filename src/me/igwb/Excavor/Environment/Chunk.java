@@ -2,8 +2,6 @@ package me.igwb.Excavor.Environment;
 
 import java.awt.Point;
 import java.io.*;
-import java.util.ArrayList;
-
 public class Chunk {
 
 	private Field[] fields = new Field[400];
