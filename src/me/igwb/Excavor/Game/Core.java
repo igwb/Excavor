@@ -10,6 +10,8 @@ import resources.ResourceLoader;
 
 import me.igwb.Excavor.Environment.ChunkManager;
 import me.igwb.Excavor.Environment.ImageSplitter;
+import me.igwb.Excavor.Media.BackgroundMusic;
+import me.igwb.Excavor.Media.MediaManager;
 import me.igwb.Excavor.Player.Player;
 import me.igwb.Excavor.UI.ConversationManager;
 import me.igwb.Excavor.UI.DeveloperConsole;
@@ -34,6 +36,8 @@ public class Core {
 	private int FPS;
 	
 	private Player ActivePlayer;
+	
+	public BackgroundMusic backgroundMusic;
 	
 	public Player getActivePlayer() {
 		return ActivePlayer;
@@ -81,10 +85,13 @@ public class Core {
 			MediaManager.initialize(ResourceLoader.getURL("/resources/"));
 			PopUpManager.initialize(ImageSplitter.split(ResourceLoader.getURL("/resources/HUD.png"), 10, 1)[6], 1500, 2000, new Point(60, 60), new Rectangle(0, 0, GameCanvasSize.width, 80));
 
+			backgroundMusic = new BackgroundMusic(MediaManager.getClip("Excavor-MainTheme(WIP).wav"));
+			backgroundMusic.play(backgroundMusic.getIntro(), backgroundMusic.getLoop());
+			
 			ActivePlayer = new Player(new Point(0,0));
 			
-			MediaManager.setVolume(50f);
-			MediaManager.playClip("TestMusic_Daddy Discord.wav", false);
+			//MediaManager.setVolume(50f);
+			//MediaManager.playClip("TestMusic_Daddy Discord.wav", false);
 			
 			isRunning = true;
 			gameLoop();
@@ -238,8 +245,10 @@ public class Core {
 		this.paused = paused;
 		if(paused) {
 			GameWindow.setTitle("Excavor - PAUSED");
+			MediaManager.pauseAll();
 		} else {
 			GameWindow.setTitle("Excavor");
+			MediaManager.resumeAll();
 		}
 	}
 	

@@ -2,14 +2,19 @@ package me.igwb.Excavor.Game;
 
 import java.util.Map.Entry;
 
+import me.igwb.Excavor.Media.MediaManager;
+
 public class StandardListeners {
 
 	private ValuesListener[] listeners;
-	@SuppressWarnings("unused")
 	private static StandardListeners SL;
 	
 	public static void registerListeners() {
 		SL = new StandardListeners();		
+	}
+	
+	public static StandardListeners getListeners() {
+		return SL;
 	}
 	
 	private StandardListeners() {

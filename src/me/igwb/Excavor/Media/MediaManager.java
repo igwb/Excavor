@@ -1,4 +1,4 @@
-package me.igwb.Excavor.Game;
+package me.igwb.Excavor.Media;
 
 import java.io.File;
 import java.net.URL;
@@ -33,8 +33,7 @@ public class MediaManager {
 		
 		if(c == null) return null;
 		
-		if(loop) c.loop(Clip.LOOP_CONTINUOUSLY);
-		c.start();
+		c.loop(loop ? Clip.LOOP_CONTINUOUSLY : 0);
 		
 		return c;
 	}
@@ -72,5 +71,22 @@ public class MediaManager {
 	public static Clip getClip(String name) {
 		Clip c = Clips.get(name);
 		return c;
+	}
+	
+	private static ArrayList<Clip> Paused = new ArrayList<Clip>();
+	public static void pauseAll() {
+		for(Clip c : Clips.values()) {			
+			if(c.isRunning() && c != null) {
+				c.stop();
+				Paused.add(c);
+			}
+		}
+	}
+	
+	public static void resumeAll() {
+		for(Clip c : Paused) {			
+			c.start();
+		}
+		Paused.clear();
 	}
 }
