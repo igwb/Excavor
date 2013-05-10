@@ -15,6 +15,14 @@ public enum RegisteredMedia {
 	public void setType(MediaType type) {
 		this.type = type;
 	}
+	
+	public static RegisteredMedia getMedia(String mediaName) {
+		for(RegisteredMedia m : RegisteredMedia.getAll())
+			if(m.getMediaName().equalsIgnoreCase(mediaName))
+				return m;
+		
+		return null;
+	}
 
 	RegisteredMedia(String path, String mediaName, MediaType type) {
 		this.path = path;

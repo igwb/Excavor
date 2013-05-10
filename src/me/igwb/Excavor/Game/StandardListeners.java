@@ -3,6 +3,7 @@ package me.igwb.Excavor.Game;
 import java.util.Map.Entry;
 
 import me.igwb.Excavor.Media.MediaManager;
+import me.igwb.Excavor.Media.RegisteredMedia;
 
 public class StandardListeners {
 
@@ -34,21 +35,33 @@ public class StandardListeners {
 
 			if(value.getKey().equalsIgnoreCase("Master")) {
 				
-				
+				MediaManager.setMusicVolume(Float.parseFloat(ValuesManager.getValue("Music")) * (Float.parseFloat(value.getValue()) / 100));
 				
 			}
 			
 			else if(value.getKey().equalsIgnoreCase("Music")) {
 			
-				MediaManager.setVolume(Float.parseFloat(value.getValue()) * (Float.parseFloat(ValuesManager.getValue("Master")) / 100));
-			
+				MediaManager.setMusicVolume(Float.parseFloat(value.getValue()) * (Float.parseFloat(ValuesManager.getValue("Master")) / 100));
+								
 			}
 			
-			else if(value.getKey().equalsIgnoreCase("MuteSound")) {
+			else if(value.getKey().equalsIgnoreCase("MuteMaster")) {
 				
-				if(value.getValue() == "true")
+				if(value.getValue().equals("Muted"))
 					MediaManager.muteAll();
+				else {
+					MediaManager.unMute();
+					if(ValuesManager.getValue("MuteMusic").equalsIgnoreCase("UnMuted"))
+							MediaManager.playClip(RegisteredMedia.ExcavorTheme.getMediaName(), true);
+				}
+			}
+			
+			else if(value.getKey().equalsIgnoreCase("MuteMusic")) {
 				
+				if(value.getValue().equals("Muted"))
+					MediaManager.stopClip(RegisteredMedia.ExcavorTheme.getMediaName());
+				else
+					MediaManager.playClip(RegisteredMedia.ExcavorTheme.getMediaName(), true);
 			}
 			
 		}
