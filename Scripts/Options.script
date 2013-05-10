@@ -30,8 +30,8 @@ Conversation {
 
 	}
 
-	MasterIncrease { increaseValue("Master", 5, 100); increaseValue("Music", 5, 100); GoTo(Main); }
-	MasterDecrease { decreaseValue("Master", 5, 0); decreaseValue("Music", 5, 0); GoTo(Main, 1); }
+	MasterIncrease { increaseValue("Master", 5, 100); GoTo(Main); }
+	MasterDecrease { decreaseValue("Master", 5, 0); GoTo(Main, 1); }
 
 	MusicIncrease { increaseValue("Music", 5, 100); GoTo(Main, 2); }
 	MusicDecrease { decreaseValue("Music", 5, 0); GoTo(Main, 3); }
