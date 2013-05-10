@@ -9,8 +9,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 
 public class Button {
-
-	public char ShortcutKey = 'x';
 	
 	public Image Background = null;
 	
@@ -18,13 +16,14 @@ public class Button {
 	
 	public Label label;
 	
-	public Button(Image background, Label label, Rectangle position, char shortcutKey) {
-		ShortcutKey = shortcutKey;
+	public String nextStep;
+	
+	public Button(Image background, Label label, Rectangle position) {
 		Position = position;
-		Background = background.getScaledInstance(Position.width, Position.height, 0);
+		Background = background == null ? new BufferedImage(Position.width, Position.height, 3) : background.getScaledInstance(Position.width, Position.height, 0);
 		this.label = label;
 	}
-	
+
 	public void Render(Graphics g) {
 		BufferedImage image = new BufferedImage(Background.getWidth(null), Background.getHeight(null), IndexColorModel.TRANSLUCENT);		
 		Graphics G = image.getGraphics();
@@ -49,7 +48,7 @@ public class Button {
 		
 		Rectangle pos = new Rectangle(X, Y, Width, Height);
 		
-		return new Button(i, label, pos, 'y');
+		return new Button(i, label, pos);
 	}
 	
 	public static Button No(int X, int Y, int Width, int Height, Color color) {
@@ -66,7 +65,7 @@ public class Button {
 		
 		Rectangle pos = new Rectangle(X, Y, Width, Height);
 		
-		return new Button(i, label, pos, 'y');
+		return new Button(i, label, pos);
 	}
 	
 	public static Button Ok(int X, int Y, int Width, int Height, Color color) {
@@ -83,6 +82,6 @@ public class Button {
 		
 		Rectangle pos = new Rectangle(X, Y, Width, Height);
 		
-		return new Button(i, label, pos, 'y');
+		return new Button(i, label, pos);
 	}
 }
