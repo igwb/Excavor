@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import me.igwb.Excavor.Game.CommandHandler;
+import me.igwb.Excavor.Game.ValuesManager;
 
 import resources.ResourceLoader;
 
@@ -55,6 +56,12 @@ public class DeveloperConsole {
 		g.setColor(Color.GREEN);
 		g.drawRect(0, 0, width - 1, height - 1);
 						
+		String bool = ValuesManager.getValue("throwIntoDeveloperConsole");
+		boolean throwInHere = Boolean.parseBoolean(bool);
+		
+		if(!throwInHere)
+			return;
+		
 		System.setErr(new PrintStream(er));
 		System.setOut(new PrintStream(er));
 	}

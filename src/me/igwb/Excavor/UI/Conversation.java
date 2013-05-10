@@ -368,6 +368,7 @@ public class Conversation {
 		}
 		
 		public void loop() {
+			try {
 			
 			if(endIn != null)
 				if(endIn.checkDelay())
@@ -395,9 +396,14 @@ public class Conversation {
 				Layout.setButtonPressed(false);
 				
 			}
+			
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		public void render(Graphics g) {
+			try {
 			
 			if(g == null)
 				return;
@@ -414,6 +420,10 @@ public class Conversation {
 				l.Render(g);
 			
 			Layout.Render(g);
+			
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		public boolean keyPressed(KeyEvent key) {

@@ -12,17 +12,16 @@ public class MediaManager {
 
 	static Map<String, Clip> Clips = new HashMap<String, Clip>();
 	
-	public static void initialize(URL url) {
+	public static void initialize() {
 		
 		try {
 
-		File d = new File(url.getPath());
-		
-		if(d.exists())
-			for(String s : d.list())
-				if(s.endsWith(".wav") || s.endsWith(".avi"))
-					Clips.put(s, ResourceLoader.getAudio(new URL(url.toString() + "/" + s)));
-		
+		for(RegisteredMedia m : RegisteredMedia.getAll()) {
+			String path = m.getPath();
+			
+			if(path.endsWith(".wav") || path.endsWith(".avi"))
+				Clips.put(m.getMediaName(), ResourceLoader.getAudio(path));
+		}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

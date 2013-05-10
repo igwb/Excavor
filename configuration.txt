@@ -1,1 +1,6 @@
+[Debugging]
+Debug=true
+throwIntoDeveloperConsole=true;
+
+[Sound]
 Volume=100

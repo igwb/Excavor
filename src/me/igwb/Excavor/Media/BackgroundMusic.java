@@ -10,27 +10,32 @@ public class BackgroundMusic {
 	
 	public BackgroundMusic(Clip musicClip) {
 		MusicClip = musicClip;
+		if(musicClip == null) return;
 		intro = new TimeSpan(0, 25);
 		loop = new TimeSpan(26, 78);
 		outro = new TimeSpan(79, -1);
 	}
 
 	public void play(TimeSpan part, boolean loop) {
+		if(MusicClip == null) return;
 		MusicClip.setFramePosition(part.begin);
 		MusicClip.setLoopPoints(part.begin, part.end);		
 		MusicClip.loop(loop ? Clip.LOOP_CONTINUOUSLY : 0);
 	}
 	
 	public void play() {
+		if(MusicClip == null) return;
 		MusicClip.start();
 	}
 	
 	public void stop(boolean flush) {
+		if(MusicClip == null) return;
 		MusicClip.stop();
 		if(flush) MusicClip.flush();
 	}
 	
 	public void play(TimeSpan span, TimeSpan loop) {
+		if(MusicClip == null) return;
 		MusicClip.setFramePosition(span.begin);
 		MusicClip.setLoopPoints(loop.begin, loop.end);
 		MusicClip.loop(Clip.LOOP_CONTINUOUSLY);
