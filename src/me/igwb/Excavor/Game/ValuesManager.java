@@ -12,6 +12,14 @@ public class ValuesManager {
 	
 	public static void registerListener(ValuesListener listener) {
 		listeners.add(listener);
+		
+		Iterator<Entry<String, String>> iterator = values.entrySet().iterator();
+		
+		while(iterator.hasNext()) {
+			Entry<String, String> entry = iterator.next();
+			
+			listener.valueSet(entry);
+		}
 	}
 	
 	public static void deleteListener(ValuesListener listener) {
@@ -26,7 +34,7 @@ public class ValuesManager {
 		while(iterator.hasNext()) {
 			Entry<String, String> entry = iterator.next();
 			
-			if(entry.getKey() == name) {				
+			if(entry.getKey().equals(name)) {				
 				for(ValuesListener listener : listeners)				
 					listener.valueSet(entry);
 				

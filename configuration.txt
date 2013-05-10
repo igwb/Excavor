@@ -3,4 +3,5 @@ Debug=true
 throwIntoDeveloperConsole=true;
 
 [Sound]
-Volume=100
+Master=100
+Music=100

@@ -32,10 +32,24 @@ public class StandardListeners {
 		@Override
 		public void valueSet(Entry<String, String> value) {
 
-			if(!value.getKey().equalsIgnoreCase("Volume"))
-				return;
+			if(value.getKey().equalsIgnoreCase("Master")) {
+				
+				
+				
+			}
 			
-			MediaManager.setVolume(Float.parseFloat(value.getValue()));
+			else if(value.getKey().equalsIgnoreCase("Music")) {
+			
+				MediaManager.setVolume(Float.parseFloat(value.getValue()) * (Float.parseFloat(ValuesManager.getValue("Master")) / 100));
+			
+			}
+			
+			else if(value.getKey().equalsIgnoreCase("MuteSound")) {
+				
+				if(value.getValue() == "true")
+					MediaManager.muteAll();
+				
+			}
 			
 		}
 		

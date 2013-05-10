@@ -9,13 +9,17 @@ Conversation {
 	Main
 	{
 
-		Output = ["Options", 240, 36, 120, 18, 18] & ["Volume:", 240, 133, 60, 15, 15];
+		Output = ["Options", 240, 36, 120, 18, 18] & ["Master:", 240, 133, 60, 15, 15] & ["Music:", 240, 190, 60, 15, 15];
 
-		showValue("Volume", 300, 133, 60, 15, 15);
+		showValue("Master", 300, 133, 60, 15, 15 & "Music", 300, 190, 60, 15, 15);
 
-		Input = ["+", 240, 100, 60, 15, 15, VolumeIncrease] & ["-", 240, 136, 60, 15, 15, VolumeDecrease] & 
-
+		Input = ["+", 240, 100, 60, 15, 15, MasterIncrease] & ["-", 240, 136, 60, 15, 15, MasterDecrease] & 
+	
+			["+", 240, 160, 60, 15, 15, MusicIncrease] & ["-", 240, 196, 60, 15, 15, MusicDecrease] & 
+			
 			["Back", 240, 500, 120, 15, 15, Close];
+
+		
 
 	}
 
@@ -26,6 +30,9 @@ Conversation {
 
 	}
 
-	VolumeIncrease { increaseValue("Volume", 5, 100); GoTo(Main); }
-	VolumeDecrease { decreaseValue("Volume", 5, 0); GoTo(Main, 1); }
+	MasterIncrease { increaseValue("Master", 5, 100); increaseValue("Music", 5, 100); GoTo(Main); }
+	MasterDecrease { decreaseValue("Master", 5, 0); decreaseValue("Music", 5, 0); GoTo(Main, 1); }
+
+	MusicIncrease { increaseValue("Music", 5, 100); GoTo(Main, 2); }
+	MusicDecrease { decreaseValue("Music", 5, 0); GoTo(Main, 3); }
 }
