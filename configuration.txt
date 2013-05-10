@@ -5,3 +5,5 @@ throwIntoDeveloperConsole=true;
 [Sound]
 Master=100
 Music=100
+MuteMaster=UnMuted
+MuteMusic=UnMuted

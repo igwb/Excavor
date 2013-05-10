@@ -266,6 +266,32 @@ public class Conversation {
 						
 						showConversation(cmd);
 						
+					} else if(cmd.name.equalsIgnoreCase("switch")) {
+						
+						thisOne:
+						for(ParameterRegion region : cmd.getParameter().regions) {
+							
+							boolean canContinue = false;
+							
+							for(String value : region.value[1].split("/")) {
+								
+								if(canContinue) {
+									
+									ValuesManager.setValue(region.value[0], value);
+									continue thisOne;
+									
+								}
+								
+								canContinue = ValuesManager.getValue(region.value[0]).equalsIgnoreCase(value);
+																
+							}
+							
+							String first = region.value[1].split("/")[0];
+							
+							ValuesManager.setValue(region.value[0], first);
+							
+						}
+						
 					}
 					break;
 					
