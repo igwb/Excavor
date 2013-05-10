@@ -1,0 +1,36 @@
+
+Conversation {
+
+	Background = ["/Media/Window_small.png", 0, 0, 600, 600];
+	Entrypoint = Main;
+	Name = "Menu";
+	Selection = "/Media/Selection.png";
+
+	Main
+	{
+
+		Output = ["Menu", 240, 273, 120, 18, 18];
+
+		Input = ["Resume", 240, 283, 120, 15, 15, Close] & 
+			["Options", 240, 301, 120, 15, 15, Options] & 
+			["Save and Exit", 240, 319, 120, 15, 15, SaveExit];
+
+	}
+
+	Close
+	{
+
+		EndConversation(10);
+
+	}
+
+	Options
+	{
+		showConversation("Options", Main, 1);
+	}
+	
+	SaveExit
+	{
+		DispatchCommand(exit);
+	}
+}

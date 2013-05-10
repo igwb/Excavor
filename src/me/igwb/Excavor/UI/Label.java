@@ -53,4 +53,24 @@ public class Label {
 
 		gIm.drawString(Text, position.x, position.y);
 	}
+	
+	public double getWidth() {
+		BufferedImage buffImg = new BufferedImage(1, 1, 3);
+		
+		Graphics2D g2D = buffImg.createGraphics();
+		g2D.setFont(font.deriveFont(FontSize));
+		
+		FontMetrics FM = g2D.getFontMetrics();
+		return FM.stringWidth(Text);
+	}
+	
+	public double getHeight() {
+BufferedImage buffImg = new BufferedImage(1, 1, 3);
+		
+		Graphics2D g2D = buffImg.createGraphics();
+		g2D.setFont(font.deriveFont(FontSize));
+		
+		FontMetrics FM = g2D.getFontMetrics();
+		return FM.getHeight();
+	}
 }

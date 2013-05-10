@@ -2,7 +2,6 @@ package me.igwb.Excavor.Environment;
 
 import java.awt.Point;
 import java.io.*;
-
 public class Chunk {
 
 	private Field[] fields = new Field[400];
@@ -90,5 +89,25 @@ public class Chunk {
 		Chunk chunk = new Chunk(position, fields);
 		
 		return chunk;
+	}
+	
+	public void Save(String location) throws IOException {
+		
+		File dir = new File(location);
+		
+		if(!dir.isDirectory())
+			return;
+		
+		if(!dir.exists())
+			dir.mkdirs();
+		
+		
+		File file = new File(location + "/Chunk;" + position.x + "," + position.y);
+		
+		if(!file.exists())
+			file.createNewFile();
+		
+		
+		
 	}
 }
