@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import me.igwb.Excavor.Game.CommandHandler;
+import me.igwb.Excavor.Game.ValuesManager;
 
 import resources.ResourceLoader;
 
@@ -55,6 +56,12 @@ public class DeveloperConsole {
 		g.setColor(Color.GREEN);
 		g.drawRect(0, 0, width - 1, height - 1);
 						
+		String bool = ValuesManager.getValue("throwIntoDeveloperConsole");
+		boolean throwInHere = Boolean.parseBoolean(bool);
+		
+		if(!throwInHere)
+			return;
+		
 		System.setErr(new PrintStream(er));
 		System.setOut(new PrintStream(er));
 	}
@@ -120,7 +127,7 @@ public class DeveloperConsole {
 		if(show && !arg0.isActionKey())
 		switch(arg0.getKeyChar()) {
 			
-		case KeyEvent.VK_BACK_SPACE : case KeyEvent.VK_ENTER : case KeyEvent.VK_CONTROL: 
+		case KeyEvent.VK_BACK_SPACE : case KeyEvent.VK_ENTER : case KeyEvent.VK_CONTROL : case KeyEvent.VK_ESCAPE: 
 			return;
 			
 		default:
@@ -185,7 +192,6 @@ public class DeveloperConsole {
 	public static void write(int ascii) throws IOException {
 		
 		exception += (char) ascii;
-		
 	}
 	
 	public static boolean allowUpdate() {

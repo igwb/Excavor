@@ -1,6 +1,7 @@
 package me.igwb.Excavor.Environment;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 
 public class Field {
@@ -61,5 +62,25 @@ public class Field {
 		} else {
 			return false;
 		}
+	}
+	
+	public String[] getFieldData() {
+		
+		ArrayList<String> lines = new ArrayList<String>();
+		
+		String types = "";
+		
+		for(FieldType type : Types) {
+			types += type.Image + ",";
+		}
+		
+		types = types.substring(0, types.length() - 1);
+		
+		lines.add("#FieldData: " + new java.util.Date().toString());
+		lines.add("FieldTypes=" + types);
+		lines.add("position=" + Position.x + "," + Position.y);
+		
+		return lines.toArray(new String[lines.size()]);
+		
 	}
 }
