@@ -42,6 +42,9 @@ public class ButtonLayout {
 	}
 	
 	public void setIndex(int index) {
+		if(index >= Buttons.length || index < 0)
+			return;
+		
 		Index = index;
 	}
 	
@@ -102,15 +105,7 @@ public class ButtonLayout {
 		return new ButtonLayout(new Button[] { Button.Ok(Size.x, Size.y, Size.width, Size.height, color) }, image);
 	}
 
-	public boolean getKey(int keyCode) {
-
-		for(int i = 0; i < Buttons.length; i++) {
-			if(Buttons[i].ShortcutKey == (char) keyCode) {
-				Index = i;
-				return true;
-			}
-		}
-		return false;
+	public static ButtonLayout Null() {
+		return new ButtonLayout(new Button[] { Button.Ok(0, 0, 1, 1, Color.BLACK) }, new BufferedImage(1, 1, IndexColorModel.TRANSLUCENT));
 	}
-	
 }

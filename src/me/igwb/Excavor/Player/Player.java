@@ -123,7 +123,7 @@ public class Player {
 	
 	
 	
-	public String[] getStats() {
+	public String[] getPlayerData() {
 		
 		ArrayList<String> lines = new ArrayList<String>();
 		
@@ -132,7 +132,7 @@ public class Player {
 		lines.add("health=" + health + "/" + maxHealth);
 		lines.add("armor=" + armor + "/" + maxArmor);
 		lines.add("#Player -> world");
-		lines.add("position=" + Position.toString());
+		lines.add("position=" + Position.x + "," + Position.y);
 		lines.add("direction=" + dir.toString());
 		
 		return lines.toArray(new String[lines.size()]);

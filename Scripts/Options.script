@@ -1,0 +1,31 @@
+
+Conversation {
+
+	Background = ["/Media/Window_big.png", 0, 0, 600, 600];
+	Entrypoint = Main;
+	Name = "Options";
+	Selection = "/Media/Selection.png";
+
+	Main
+	{
+
+		Output = ["Options", 240, 36, 120, 18, 18] & ["Volume:", 240, 133, 60, 15, 15];
+
+		showValue("Volume", 300, 133, 60, 15, 15);
+
+		Input = ["+", 240, 100, 60, 15, 15, VolumeIncrease] & ["-", 240, 136, 60, 15, 15, VolumeDecrease] & 
+
+			["Back", 240, 500, 120, 15, 15, Close];
+
+	}
+
+	Close
+	{
+
+		EndConversation(10);		
+
+	}
+
+	VolumeIncrease { increaseValue("Volume", 5, 100); GoTo(Main); }
+	VolumeDecrease { decreaseValue("Volume", 5, 0); GoTo(Main, 1); }
+}

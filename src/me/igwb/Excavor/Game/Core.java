@@ -3,8 +3,11 @@ package me.igwb.Excavor.Game;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+<<<<<<< HEAD
 import java.io.IOException;
 import java.util.logging.Level;
+=======
+>>>>>>> 6b2bb6e86c726e360f869e914e69736bb1f20888
 import java.util.logging.Logger;
 
 import resources.EnvironmentLoader;
@@ -12,7 +15,11 @@ import resources.ResourceLoader;
 
 import me.igwb.Excavor.Environment.ChunkManager;
 import me.igwb.Excavor.Environment.ImageSplitter;
+import me.igwb.Excavor.Media.BackgroundMusic;
+import me.igwb.Excavor.Media.MediaManager;
+import me.igwb.Excavor.Media.RegisteredMedia;
 import me.igwb.Excavor.Player.Player;
+import me.igwb.Excavor.UI.ConversationManager;
 import me.igwb.Excavor.UI.DeveloperConsole;
 import me.igwb.Excavor.UI.PopUpManager;
 
@@ -36,6 +43,8 @@ public class Core {
 	
 	private Player ActivePlayer;
 	
+	public BackgroundMusic backgroundMusic;
+	
 	public Player getActivePlayer() {
 		return ActivePlayer;
 	}
@@ -44,6 +53,8 @@ public class Core {
 	
 	protected void initialize() {
 		try {
+			ValuesManager.loadValuesFrom(System.getProperty("user.dir") + "/configuration.txt");
+			DeveloperConsole.initialize(GameCanvasSize.width, GameCanvasSize.height / 3);
 			EnvironmentLoader.initialize();
 			
 			GameWindow = new MainWindow();
@@ -73,20 +84,28 @@ public class Core {
 			renderManager = new RenderLogic();
 			CM = new ChunkManager();
 			
+<<<<<<< HEAD
 			
 			CM.loadChunk(0,0);
+=======
+			CM.loadChunk(System.getProperty("user.dir") + "/map/Chunk;0,0");
+>>>>>>> 6b2bb6e86c726e360f869e914e69736bb1f20888
 
-			
+			StandardListeners.registerListeners();
+			ConversationManager.initialize("Scripts");
+			MediaManager.initialize();
 			PopUpManager.initialize(ImageSplitter.split(ResourceLoader.getURL("/resources/HUD.png"), 10, 1)[6], 1500, 2000, new Point(60, 60), new Rectangle(0, 0, GameCanvasSize.width, 80));
 
-			ActivePlayer = new Player(new Point(0,0));
+			backgroundMusic = new BackgroundMusic(MediaManager.getClip(RegisteredMedia.ExcavorTheme.getMediaName()));
+			backgroundMusic.play(backgroundMusic.getIntro(), backgroundMusic.getLoop());
 			
-			DeveloperConsole.initialize(GameCanvasSize.width, GameCanvasSize.height / 3);
+			ActivePlayer = new Player(new Point(0,0));
 			
 			isRunning = true;
 			gameLoop();
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -102,6 +121,9 @@ public class Core {
 		
 		int loops = 0;
 		
+		//---
+		//ConversationManager.startConversation("Test conversation");
+		//---
 
 		while(isRunning) {
 				updateLength = System.nanoTime() - lastLoop;
@@ -180,6 +202,14 @@ public class Core {
 		
 		int moveDistance = (int)Math.ceil(1 * delta);
 		
+		if(!DeveloperConsole.allowUpdate())
+			return;
+		
+		ConversationManager.update();
+		
+		if(!ConversationManager.allowUpdate())
+			return;
+		
 		if(ActivePlayer.isMoving()) {
 			switch (ActivePlayer.getDirection()) {
 			case Up:
@@ -223,8 +253,10 @@ public class Core {
 		this.paused = paused;
 		if(paused) {
 			GameWindow.setTitle("Excavor - PAUSED");
+			MediaManager.pauseAll();
 		} else {
 			GameWindow.setTitle("Excavor");
+			MediaManager.resumeAll();
 		}
 	}
 	

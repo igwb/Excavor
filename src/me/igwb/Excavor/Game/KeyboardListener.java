@@ -17,7 +17,8 @@ public class KeyboardListener implements KeyListener{
 		if(!DeveloperConsole.allowUpdate())
 			return;
 			
-		if(Conversation.keyPressed(arg0))
+		ConversationManager.keyPressed(arg0);
+		if(!ConversationManager.allowUpdate())
 			return;
 		
 		switch (arg0.getKeyChar()) {
@@ -83,7 +84,11 @@ public class KeyboardListener implements KeyListener{
 		case KeyEvent.VK_SPACE:
 			break;
 		case KeyEvent.VK_ESCAPE:
-			//Programm.getCore().show = true;
+			ConversationManager.startConversation("Menu");
+			break;
+		case 'o' : case 'O':
+			ConversationManager.startConversation("Options");
+			break;
 		default:
 			PopUpManager.show(new Label("You've pressed the uneventfull key '" + arg0.getKeyChar() + "'!"), false);
 			break;
