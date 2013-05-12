@@ -16,6 +16,7 @@ public class Field {
 	
 	public static final Dimension SIZE = new Dimension(104,97);
 	public static final int HEIGHT_OFFSET = 70;
+	public static final int SIDE_HEIGHT = 44;
 	
 	public Field(Position loc) throws IllegalArgumentException {
 		
@@ -90,7 +91,10 @@ public class Field {
 			renderPos.x = renderPos.x + (int)(Field.SIZE.width / 2);
 		}
 					
-					
+		if(location.getZ() > 0) {
+			renderPos.y = renderPos.y - location.getZ() * SIDE_HEIGHT;
+		}
+		
 		return renderPos;
 	}
 	

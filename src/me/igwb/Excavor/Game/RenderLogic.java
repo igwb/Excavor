@@ -100,6 +100,8 @@ public class RenderLogic {
 			Fields = getRenderFields(ActivePlayer.getPosition(),7);
 			
 			for (Field field : Fields) {
+				Field[] zFields = field.getZFields();
+				
 				Point pos = new Point();
 				
 				pos.x = field.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
@@ -109,6 +111,21 @@ public class RenderLogic {
 				for (FieldType t: field.getTypes()) {
 					
 					g.drawImage(EnvironmentLoader.getImage(t), pos.x, pos.y, null);
+				}
+				
+				if(zFields != null) {
+					
+
+					for(Field zField : zFields) {
+						pos.x = zField.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
+						pos.y = zField.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
+
+						
+						for (FieldType t: zField.getTypes()) {
+
+							g.drawImage(EnvironmentLoader.getImage(t), pos.x, pos.y, null);
+						}
+					}
 				}
 				
 			//	GC.log.info("X: " + pos.x + " Y: " + pos.y);
