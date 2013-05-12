@@ -1,0 +1,30 @@
+A chunk file has multiple lines, one for each Y-coordinate.
+The fields in one line are separated by semicolons [ ; ].
+The position in the line is the X-coordinate.
+
+Like this(Example for a 3x3 chunk):
+
+    X0       X1       X2
+ Y0 ;Field 0; Field 1; Field 2;
+ Y1 ;Field 3; Field 4; Field 5;
+ Y2 ;Field 6; Field 7; Field 8;
+
+Each field can have multiple events and types:
+              
+                One field:
+ _________________________________________
+|                                         |
+;Event 1, Event 2 - Type 1, Type 2, Type 3;
+|_________________|_______________________|
+       Event(s)            Type(s)
+
+It also holds the vertical fields which can not have events, but types.
+
+                One field:
+ ___________________________________________________________________
+|                                                                   |
+;Event 1, Event 2 - Type 1, Type 2, Type 3 / Type 1, Type 2 / Type 1;
+|_________________|________________________|________________|_______|
+       Event(s)            Type(s)                Type(s)     Type(s)
+|__________________________________________|________________|_______|
+                     Z0                             Z1          Z2             
