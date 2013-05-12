@@ -79,7 +79,7 @@ public class Core {
 			renderManager = new RenderLogic();
 			CM = new ChunkManager();
 			
-			CM.loadChunk(System.getProperty("user.dir") + "/map/Chunk;0,0");
+			CM.loadChunk(0,0);
 
 			StandardListeners.registerListeners();
 			ConversationManager.initialize("Scripts");

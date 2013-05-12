@@ -1,20 +1,27 @@
 package me.igwb.Excavor.Environment;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 
 
+
 public class Field {
 	
-	private Point Position;
+	private Position location;
 	
 	private FieldType[] Types;
+	private Field[] zFields;
+	private int[] events;
 	
-	public static final int SIZE = 50;
 	
-	public Field(Point position) {
+	public static final Dimension SIZE = new Dimension(104,97);
+	public static final int HEIGHT_OFFSET = 70;
+	public static final int SIDE_HEIGHT = 44;
+	
+	public Field(Position loc) throws IllegalArgumentException {
 		
-		setPosition(position);
+		setLocation(loc);
 	}
 	
 	public boolean getSeeThru() {
@@ -31,30 +38,70 @@ public class Field {
 		return Types;
 	}
 
+	
+	/**
+	 * Returns fields on the z-axis at this fields position, not including the lowest one.
+	 * Returns null if the field is not the lowest field.
+	 * @return
+	 */
+	public Field[] getZFields() {
+		if(this.location.getZ() == 0) {
+			return zFields;
+		} else {
+			return null;
+		}
+	}
+	
+	public void setZFields(Field[] zFields) {
+		this.zFields = zFields;
+	}
+	
 	public void setTypes(FieldType[] types) {
 		
 		Types = types;
 	}
 
+	public void setEvents(int[] events) {
+		
+		this.events = events;
+	}
+	
 	/**
-	 * Returns the absolute position of a field.
+	 * Returns the corner position of a field.
 	 * 
 	 * @return Point - the position
 	 */
-	public Point getPosition() {
-		return Position;
+	public Position getLocation() {
+		return location;
 	}
 
-	public void setPosition(Point position) {
+	public void setLocation(Position loc) throws IllegalArgumentException {
 		
-		Position = new Point((int)Math.floor(position.x / Field.SIZE) * Field.SIZE, (int)Math.floor(position.y / Field.SIZE) * Field.SIZE);
+		location = loc;
 	}
 	
+	
+	public Point getRenderLocation() {
+		
+		Point renderPos = new Point(location.getX() * SIZE.width, location.getY() * SIZE.height - (int)(HEIGHT_OFFSET * location.getY()));
+		
+		
+		//Side offset
+		if(location.getY() % 2 != 0) {
+			renderPos.x = renderPos.x + (int)(Field.SIZE.width / 2);
+		}
+					
+		if(location.getZ() > 0) {
+			renderPos.y = renderPos.y - location.getZ() * SIDE_HEIGHT;
+		}
+		
+		return renderPos;
+	}
 	
 	public boolean equals(Object obj) {
 		
 		if(obj instanceof Field) {
-			if(Position.equals(((Field) obj).Position)) {
+			if(location.equals(((Field) obj).getLocation())) {
 				return true;
 			} else {
 				return false;
@@ -78,9 +125,10 @@ public class Field {
 		
 		lines.add("#FieldData: " + new java.util.Date().toString());
 		lines.add("FieldTypes=" + types);
-		lines.add("position=" + Position.x + "," + Position.y);
+		lines.add("position=" + location.getX() + "," + location.getY() + "," + location.getZ());
 		
 		return lines.toArray(new String[lines.size()]);
 		
 	}
+	
 }
