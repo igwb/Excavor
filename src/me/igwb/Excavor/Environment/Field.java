@@ -1,5 +1,8 @@
 package me.igwb.Excavor.Environment;
 
+import java.awt.Dimension;
+import java.awt.Point;
+
 
 
 public class Field {
@@ -11,9 +14,10 @@ public class Field {
 	private int[] events;
 	
 	
-	public static final int SIZE = 50;
+	public static final Dimension SIZE = new Dimension(104,97);
+	public static final int HEIGHT_OFFSET = 70;
 	
-	public Field(Position loc) {
+	public Field(Position loc) throws IllegalArgumentException {
 		
 		setLocation(loc);
 	}
@@ -61,7 +65,7 @@ public class Field {
 	}
 	
 	/**
-	 * Returns the position of a field.
+	 * Returns the corner position of a field.
 	 * 
 	 * @return Point - the position
 	 */
@@ -69,11 +73,26 @@ public class Field {
 		return location;
 	}
 
-	public void setLocation(Position loc) {
+	public void setLocation(Position loc) throws IllegalArgumentException {
 		
 		location = loc;
 	}
 	
+	
+	public Point getRenderLocation() {
+		Point renderLocation;
+		
+		Point renderPos = new Point(location.getX() * SIZE.width, location.getY() * SIZE.height - (int)(HEIGHT_OFFSET * location.getY()));
+		
+		
+		//Side offset
+		if(location.getY() % 2 != 0) {
+			renderPos.x = renderPos.x + (int)(Field.SIZE.width / 2);
+		}
+					
+					
+		return renderPos;
+	}
 	
 	public boolean equals(Object obj) {
 		

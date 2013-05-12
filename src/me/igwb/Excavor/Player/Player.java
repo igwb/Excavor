@@ -46,16 +46,16 @@ public class Player {
 	public Point getFieldPosition() {
 		Point p = new Point();
 		
-		p.x = Position.x / Field.SIZE;
-		p.y = Position.y / Field.SIZE;
+		p.x = Position.x / Field.SIZE.width;
+		p.y = Position.y / Field.SIZE.height;
 		
 		return p;
 	}
 	
 	public void setFieldPosition(Point position) {
 		
-		Position.x = position.x * Field.SIZE;
-		Position.y = position.y * Field.SIZE;
+		Position.x = position.x * Field.SIZE.width;
+		Position.y = position.y * Field.SIZE.height;
 		
 	}
 	

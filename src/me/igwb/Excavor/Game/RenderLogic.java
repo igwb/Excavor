@@ -19,6 +19,7 @@ import resources.ResourceLoader;
 import me.igwb.Excavor.Environment.Field;
 import me.igwb.Excavor.Environment.FieldType;
 import me.igwb.Excavor.Environment.ImageSplitter;
+import me.igwb.Excavor.Environment.Position;
 import me.igwb.Excavor.Logic.Delay;
 import me.igwb.Excavor.Player.Player;
 //import me.igwb.Excavor.UI.ConversationManager;
@@ -101,17 +102,23 @@ public class RenderLogic {
 			for (Field field : Fields) {
 				Point pos = new Point();
 				
-				pos.x = field.getPosition().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
-				pos.y = field.getPosition().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
+				pos.x = field.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
+				pos.y = field.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
+				
 				
 				for (FieldType t: field.getTypes()) {
 					
 					g.drawImage(EnvironmentLoader.getImage(t), pos.x, pos.y, null);
 				}
 				
-				g.drawRect(pos.x, pos.y, Field.SIZE, Field.SIZE);
+			//	GC.log.info("X: " + pos.x + " Y: " + pos.y);
+			//	GC.log.info("Field: " + field.getLocation().getX() + " " + field.getLocation().getY() + "  " + field.toString());
+				
+				g.drawRect(pos.x, pos.y, 104, 52);
 
-				//g.drawString(field.getPosition().x + " " + field.getPosition().y, pos.x, pos.y + 20);
+				g.setColor(Color.GRAY);
+				g.drawString(field.getLocation().getX() + " " + field.getLocation().getY(), pos.x, pos.y + 20);
+				g.setColor(Color.BLACK);
 			}
 			
 			
@@ -120,7 +127,7 @@ public class RenderLogic {
 			
 			
 			if(GC.debug) {
-				g.setColor(Color.RED);
+				g.setColor(Color.WHITE);
 
 				g.drawString(System.getProperty("user.dir"), 50, 50);
 				g.drawString(ActivePlayer.getDirection().name(), 50, 100);
@@ -297,18 +304,32 @@ public class RenderLogic {
 	
 	public ArrayList<Field> getRenderFields(Point Center, int ViewDistance) {
 		
-		ArrayList<Field> List = new ArrayList<Field>(), adjicentFields;
+		ArrayList<Field> List = new ArrayList<Field>(), adjicentFields, allFields = new ArrayList<Field>();
 		Point CenterField, max, min;
+		Position centerPos;
+		
+		//CenterField = new Point((int)(Math.floor(Center.x / Field.SIZE.width)), (int)(Math.floor(Center.y / (Field.SIZE.height * 0.75))));
+		centerPos = GC.getChunkManager().getFieldFromAbsolute(Center).getLocation();
+		CenterField = new Point(centerPos.getX(), centerPos.getY());
 		
 		
-		CenterField = new Point((int)(Field.SIZE * Math.floor(Center.x / Field.SIZE)), (int)(Field.SIZE * Math.floor(Center.y / Field.SIZE)));
+		min = new Point(CenterField.x - ViewDistance, CenterField.y - (int)(ViewDistance / 0.25));
+		max = new Point(CenterField.x + ViewDistance, CenterField.y + (int)(ViewDistance / 0.25));
 		
-		
-		min = new Point(CenterField.x - ViewDistance * Field.SIZE , CenterField.y - ViewDistance * Field.SIZE);
-		max = new Point(CenterField.x + ViewDistance * Field.SIZE, CenterField.y + ViewDistance * Field.SIZE);
-		
+		for (int y = min.y; y < max.y; y++) {
+			for (int x = min.x; x < max.x; x++) {
 
+
+				allFields.add(Programm.getCore().getChunkManager().getFieldAt(new Point(x,y)));
+			}
+		}
 		
+		
+		GC.log.info("Center: " + CenterField.x + " " + CenterField.y);
+		//GC.log.info("L: " + allFields.size());
+		
+		return allFields;
+		/*
 		//Add CenterField
 		List.add(Programm.getCore().getChunkManager().getFieldAt((CenterField)));
 		
@@ -327,73 +348,9 @@ public class RenderLogic {
 		}
 		
 		
-		return List;
+		return List;*/
 	}
 	
-	private ArrayList<Field> getAdjicentRender(Field RootField, Point max, Point min) {
-		
-		ArrayList<Field> List = new ArrayList<Field>();
-		Point curPoint;
-		Field curField;
-		
-		
-		//return if field is not transparent
-		if(!RootField.getSeeThru()) {
-			return List;
-		}
-		
-		
-		curPoint = new Point(RootField.getPosition().x, RootField.getPosition().y + Field.SIZE);
-		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField != null && curField.getSeeThru() && pointIsInArea(curField.getPosition(), min, max)) {
-			List.add(curField);
-		}
-		
-		curPoint = new Point(RootField.getPosition().x + Field.SIZE, RootField.getPosition().y + Field.SIZE);
-		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField != null && curField.getSeeThru() && pointIsInArea(curField.getPosition(), min, max)) {
-			List.add(curField);
-		}
-		
-		curPoint = new Point(RootField.getPosition().x + Field.SIZE, RootField.getPosition().y);
-		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField != null && curField.getSeeThru() && pointIsInArea(curField.getPosition(), min, max)) {
-			List.add(curField);
-		}
-		
-		curPoint = new Point(RootField.getPosition().x + Field.SIZE , RootField.getPosition().y - Field.SIZE);
-		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField != null && curField.getSeeThru() && pointIsInArea(curField.getPosition(), min, max)) {
-			List.add(curField);
-		}
-		
-		curPoint = new Point(RootField.getPosition().x, RootField.getPosition().y - Field.SIZE);
-		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField != null && curField.getSeeThru() && pointIsInArea(curField.getPosition(), min, max)) {
-			List.add(curField);
-		}
-		
-		curPoint = new Point(RootField.getPosition().x - Field.SIZE, RootField.getPosition().y - Field.SIZE);
-		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField != null && curField.getSeeThru() && pointIsInArea(curField.getPosition(), min, max)) {
-			List.add(curField);
-		}
-		
-		curPoint = new Point(RootField.getPosition().x - Field.SIZE, RootField.getPosition().y);
-		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField != null && curField.getSeeThru() && pointIsInArea(curField.getPosition(), min, max)) {
-			List.add(curField);
-		}
-		
-		curPoint = new Point(RootField.getPosition().x - Field.SIZE, RootField.getPosition().y + Field.SIZE);
-		curField = Programm.getCore().getChunkManager().getFieldAt(curPoint);
-		if(curField != null && curField.getSeeThru() && pointIsInArea(curField.getPosition(), min, max)) {
-			List.add(curField);
-		}
-		
-		return List;
-	}
-
 
 	/**
 	 * Tells if a point is within a defined area.
@@ -403,12 +360,12 @@ public class RenderLogic {
 	 * @param max Lower right corner of the area
 	 * @return boolean - true if the point is in the area
 	 */
-	private boolean pointIsInArea(Point p, Point min, Point max) {
+	private boolean pointIsInArea(Position p, Point min, Point max) {
 		
 		boolean greaterThanMin, lowerThanMax;
 		
-		greaterThanMin = p.x >= min.x && p.y >= min.y;
-		lowerThanMax = p.x <= max.x && p.y <= max.y;
+		greaterThanMin = p.getX() >= min.x && p.getY() >= min.y;
+		lowerThanMax = p.getX() <= max.x && p.getY() <= max.y;
 		
 		
 		return greaterThanMin && lowerThanMax;

@@ -2,6 +2,9 @@ package me.igwb.Excavor.Environment;
 
 import java.awt.Point;
 import java.io.*;
+import java.util.logging.Level;
+
+import me.igwb.Excavor.Game.Programm;
 
 public class Chunk {
 
@@ -21,8 +24,11 @@ public class Chunk {
 	
 	public Field getFieldAt(Point position) {
 		for(Field field : fields) {
-			if(field.getLocation().getX() == position.x && field.getLocation().getY() == position.y);
+			
+			//Programm.getCore().log.log(Level.INFO,field.getLocation().getX() + "==" + position.x + "is: " + (field.getLocation().getX().equals(position.x)) + " | " + field.getLocation().getY() + "==" + position.y + "is: " +  (field.getLocation().getY().equals(position.y)));
+			if(field.getLocation().getX().equals(position.x) && field.getLocation().getY().equals(position.y)) {
 				return field;
+			}
 		}
 		
 		return null;
@@ -94,9 +100,10 @@ public class Chunk {
 				for (int z = 0; z < curFields.length; z++) {
 					curData = curFields[z].split("-");
 
-					x = ((int)(i + (chunkX * SIZE) - Math.floor((i / SIZE) * SIZE)));
-					y = ((int)(Math.floor((i / SIZE)) + (chunkY * SIZE)));
+					x = ((int)(j - 1 + (chunkX * SIZE) - Math.floor(((j - 1) / SIZE) * SIZE)));
+					y = ((int)(i + (chunkY * SIZE)));
 
+					
 					if(z >= 1) {
 						usedField = new Field(new Position(x, y, z));
 					} else {
@@ -135,10 +142,10 @@ public class Chunk {
 					if(z >= 1) {
 						zFields[z - 1] = usedField;
 					} else {
-						fields[i] = usedField;
+						fields[i * SIZE + j - 1] = usedField;
 					}
 				}
-				fields[i].setZFields(zFields);
+				fields[i * SIZE + j - 1].setZFields(zFields);
 			}
 		}
 		

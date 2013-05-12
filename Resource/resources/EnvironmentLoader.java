@@ -18,7 +18,7 @@ public class EnvironmentLoader {
 	
 	public static void initialize() throws IOException {
 		
-		IMG = ImageSplitter.split(ResourceLoader.class.getResource("Environment.png"), 24, 24);
+		IMG = ImageSplitter.split(ResourceLoader.class.getResource("Environment.png"), 10, 10);
 	}
 
 }
