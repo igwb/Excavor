@@ -1,16 +1,10 @@
 package me.igwb.Excavor.Environment;
 
-import java.awt.Color;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-
 import resources.ResourceLoader;
-import sun.awt.image.PixelConverter.Argb;
-
 import me.igwb.Excavor.Game.Programm;
 
 public class ChunkManager {
@@ -66,9 +60,6 @@ public class ChunkManager {
 		
 		
 		c = fieldFinder.getRGB(Math.abs(posPoint.x) - Math.abs(x) * fieldFinder.getWidth(), Math.abs(posPoint.y) - Math.abs(y / 2) * fieldFinder.getHeight());
-		
-		Programm.getCore().log.info("X: " + x + " Y: " + y);
-		Programm.getCore().log.info("C: " + c);
 		
 		
 		switch (c) {

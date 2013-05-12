@@ -2,13 +2,7 @@ package me.igwb.Excavor.Environment;
 
 import java.awt.Point;
 import java.io.*;
-<<<<<<< HEAD
-import java.util.logging.Level;
 
-import me.igwb.Excavor.Game.Programm;
-
-=======
->>>>>>> 6b2bb6e86c726e360f869e914e69736bb1f20888
 public class Chunk {
 
 	private Field[] fields = new Field[400];
@@ -28,7 +22,6 @@ public class Chunk {
 	public Field getFieldAt(Point position) {
 		for(Field field : fields) {
 			
-			//Programm.getCore().log.log(Level.INFO,field.getLocation().getX() + "==" + position.x + "is: " + (field.getLocation().getX().equals(position.x)) + " | " + field.getLocation().getY() + "==" + position.y + "is: " +  (field.getLocation().getY().equals(position.y)));
 			if(field.getLocation().getX().equals(position.x) && field.getLocation().getY().equals(position.y)) {
 				return field;
 			}
@@ -155,25 +148,5 @@ public class Chunk {
 		Chunk chunk = new Chunk(new Point(chunkX, chunkY), fields);
 		
 		return chunk;
-	}
-	
-	public void Save(String location) throws IOException {
-		
-		File dir = new File(location);
-		
-		if(!dir.isDirectory())
-			return;
-		
-		if(!dir.exists())
-			dir.mkdirs();
-		
-		
-		File file = new File(location + "/Chunk;" + position.x + "," + position.y);
-		
-		if(!file.exists())
-			file.createNewFile();
-		
-		
-		
 	}
 }

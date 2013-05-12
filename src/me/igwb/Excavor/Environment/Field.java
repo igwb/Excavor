@@ -82,7 +82,6 @@ public class Field {
 	
 	
 	public Point getRenderLocation() {
-		Point renderLocation;
 		
 		Point renderPos = new Point(location.getX() * SIZE.width, location.getY() * SIZE.height - (int)(HEIGHT_OFFSET * location.getY()));
 		
@@ -126,9 +125,10 @@ public class Field {
 		
 		lines.add("#FieldData: " + new java.util.Date().toString());
 		lines.add("FieldTypes=" + types);
-		lines.add("position=" + Position.x + "," + Position.y);
+		lines.add("position=" + location.getX() + "," + location.getY() + "," + location.getZ());
 		
 		return lines.toArray(new String[lines.size()]);
 		
 	}
+	
 }

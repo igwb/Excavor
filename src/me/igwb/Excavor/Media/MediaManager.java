@@ -1,7 +1,5 @@
 package me.igwb.Excavor.Media;
 
-import java.io.File;
-import java.net.URL;
 import java.util.*;
 
 import javax.sound.sampled.*;

@@ -3,11 +3,6 @@ package me.igwb.Excavor.Game;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-<<<<<<< HEAD
-import java.io.IOException;
-import java.util.logging.Level;
-=======
->>>>>>> 6b2bb6e86c726e360f869e914e69736bb1f20888
 import java.util.logging.Logger;
 
 import resources.EnvironmentLoader;
@@ -84,12 +79,7 @@ public class Core {
 			renderManager = new RenderLogic();
 			CM = new ChunkManager();
 			
-<<<<<<< HEAD
-			
 			CM.loadChunk(0,0);
-=======
-			CM.loadChunk(System.getProperty("user.dir") + "/map/Chunk;0,0");
->>>>>>> 6b2bb6e86c726e360f869e914e69736bb1f20888
 
 			StandardListeners.registerListeners();
 			ConversationManager.initialize("Scripts");

@@ -322,7 +322,7 @@ public class RenderLogic {
 	
 	public ArrayList<Field> getRenderFields(Point Center, int ViewDistance) {
 		
-		ArrayList<Field> List = new ArrayList<Field>(), adjicentFields, allFields = new ArrayList<Field>();
+		ArrayList<Field> List = new ArrayList<Field>(), allFields = new ArrayList<Field>();
 		Point CenterField, max, min;
 		Position centerPos;
 		
@@ -343,50 +343,11 @@ public class RenderLogic {
 		}
 		
 		
-		GC.log.info("Center: " + CenterField.x + " " + CenterField.y);
+		//GC.log.info("Center: " + CenterField.x + " " + CenterField.y);
 		//GC.log.info("L: " + allFields.size());
 		
 		return allFields;
-		/*
-		//Add CenterField
-		List.add(Programm.getCore().getChunkManager().getFieldAt((CenterField)));
-		
-		for (int i = 0; i < List.size(); i++) {
-			
-			adjicentFields = getAdjicentRender(List.get(i), max, min);
-			
-			for (int j = 0; j < adjicentFields.size(); j++) {
-				Field cur = adjicentFields.get(j);
-				
-				if(!List.contains(cur)) {
-				
-					List.add(cur);
-				}
-			}
-		}
-		
-		
-		return List;*/
 	}
 	
-
-	/**
-	 * Tells if a point is within a defined area.
-	 * 
-	 * @param p Point to check
-	 * @param min Upper left corner of the area
-	 * @param max Lower right corner of the area
-	 * @return boolean - true if the point is in the area
-	 */
-	private boolean pointIsInArea(Position p, Point min, Point max) {
-		
-		boolean greaterThanMin, lowerThanMax;
-		
-		greaterThanMin = p.getX() >= min.x && p.getY() >= min.y;
-		lowerThanMax = p.getX() <= max.x && p.getY() <= max.y;
-		
-		
-		return greaterThanMin && lowerThanMax;
-	}
-
+	
 }
