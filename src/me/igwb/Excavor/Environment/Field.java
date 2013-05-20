@@ -2,7 +2,10 @@ package me.igwb.Excavor.Environment;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.util.ArrayList;
+
+import me.igwb.Excavor.Lighting.Light;
 
 
 
@@ -14,14 +17,21 @@ public class Field {
 	private Field[] zFields;
 	private int[] events;
 	
+	private Light light;
 	
 	public static final Dimension SIZE = new Dimension(104,97);
 	public static final int HEIGHT_OFFSET = 70;
 	public static final int SIDE_HEIGHT = 44;
 	
+	public static final Polygon LEFT = new Polygon(new int[] { 0, 52, 52, 0 }, new int[] { 26, 52, 97, 72 }, 4);
+	public static final Polygon TOP = new Polygon(new int[] { 52, 0, 52, 104 }, new int[] { 52, 26, 0, 26 }, 4);
+	public static final Polygon RIGHT = new Polygon(new int[] { 104, 52, 52, 104 }, new int[] { 26, 52, 97, 72 }, 4);
+	
 	public Field(Position loc) throws IllegalArgumentException {
 		
 		setLocation(loc);
+		light = new Light();
+		
 	}
 	
 	public boolean getSeeThru() {
@@ -129,6 +139,14 @@ public class Field {
 		
 		return lines.toArray(new String[lines.size()]);
 		
+	}
+
+	public Light getLight() {
+		return light;
+	}
+
+	public void setLight(Light light) {
+		this.light = light;
 	}
 	
 }
