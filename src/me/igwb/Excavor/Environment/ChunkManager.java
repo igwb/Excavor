@@ -87,57 +87,60 @@ public class ChunkManager {
 		
 		fieldPos = new Point(x,y);
 		
-		return getFieldAt(fieldPos);
+		return getFieldAt(new Position(fieldPos.x, fieldPos.y, 0));
 	}
 
-	private Field getFieldAt(Point position) {
-		int X, Y;
+	/**
+	 * Returns a field by it's position.
+	 * @param pos
+	 * @return
+	 */
+	public Field getFieldAt(Position pos) {
+		int chunkX, chunkY;
 		
-		X = (int)(position.x / Chunk.SIZE);
-		Y = (int)(position.y / Chunk.SIZE);
+		//Find the chunk
+		chunkX = (int)(pos.getX() / Chunk.SIZE);
+		chunkY = (int)(pos.getY() / Chunk.SIZE);
 				
-		if(position.x < 0) {
-			X -= 1;
+		if(pos.getX() < 0) {
+			chunkX -= 1;
 		}
 		  
 		
-		if(position.y < 0) {
-			Y -= 1;
+		if(pos.getY() < 0) {
+			chunkY -= 1;
 		}
 		 
-
-		//Programm.getCore().log.log(Level.INFO, position.toString() + "X: " + X + " Y: " + Y);
 		
-		Chunk fieldChunk = getChunkAt(new Point(X, Y));
+		Chunk fieldChunk = getChunkAt(new Point(chunkX, chunkY));
 
 		if(fieldChunk == null) {
-			Field errorField  = new Field(new Position(position.x, position.y, 0));
-			FieldType[] type = new FieldType[1];
-			type[0] = FieldType.getType("ERROR");
-
-			errorField.setTypes(type);
-			return errorField;
-
+			
+			return getAnErrorField(pos);
 		} else {
 
-			return fieldChunk.getFieldAt(position);
+			Field f = fieldChunk.getFieldAt(new Point(pos.getX(), pos.getY()));
+			
+			if(pos.getZ() == 0)
+				return f;
+			
+			
+			Field[] zFields = f.getZFields();		
+			if((pos.getZ() > 0 & zFields == null) || pos.getZ() > zFields.length)
+				return getAnErrorField(pos);
+			
+			return zFields[pos.getZ()];	
 		}
 	}
 	
-	public Field getFieldAt(Position position) {
-		Field f = getFieldAt(new Point(position.getX(), position.getY()));
+	private Field getAnErrorField(Position pos) {
 		
-		int Z = position.getZ();
+		Field errorField  = new Field(pos);
+		FieldType[] type = new FieldType[1];
+		type[0] = FieldType.getType("ERROR");
+
+		errorField.setTypes(type);
 		
-		if(Z == 0)
-			return f;
-		
-		
-		Field[] fields = f.getZFields();		
-		if((Z > 0 & fields == null) || Z > fields.length)
-			return null;
-		
-		return fields[Z];		
+		return errorField;
 	}
-	
 }
