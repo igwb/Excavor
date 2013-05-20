@@ -3,6 +3,7 @@ package me.igwb.Excavor.Game;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferStrategy;
@@ -13,19 +14,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import resources.EnvironmentLoader;
-import resources.ResourceLoader;
+import resources.*;
 
-import me.igwb.Excavor.Environment.Field;
-import me.igwb.Excavor.Environment.FieldType;
-import me.igwb.Excavor.Environment.ImageSplitter;
-import me.igwb.Excavor.Environment.Position;
+import me.igwb.Excavor.Environment.*;
+import me.igwb.Excavor.Lighting.*;
 import me.igwb.Excavor.Logic.Delay;
 import me.igwb.Excavor.Player.Player;
-import me.igwb.Excavor.UI.ConversationManager;
-//import me.igwb.Excavor.UI.ConversationManager;
-import me.igwb.Excavor.UI.DeveloperConsole;
-import me.igwb.Excavor.UI.PopUpManager;
+import me.igwb.Excavor.UI.*;
 
 public class RenderLogic {
 
@@ -33,6 +28,7 @@ public class RenderLogic {
 	private MainWindow GameWindow;
 	private HUDCanvas MainHud;
 	private Core GC;
+	private Lighting playerLight;
 	private Image aBar, hBar, Armor, Health, redABar, redHBar, viewLimiter;
 	
 	/**
@@ -51,6 +47,8 @@ public class RenderLogic {
 			
 			initializePlayerBasedHUD(GC.HUDCanvasSize.width, GC.HUDCanvasSize.height);
 			viewLimiter = resources.ResourceLoader.getImage(("/resources/view.png"));
+			
+			playerLight = new Lighting(Color.white, 10, 1);
 	}
 
 	
@@ -91,9 +89,7 @@ public class RenderLogic {
 
 			//Resetting the canvas!
 			g.setColor(Color.WHITE);
-			g.fillRect(0, 0, 600, 600);
-			
-
+			g.fillRect(0, 0, 600, 600);			
 			
 			g.setColor(Color.BLACK);
 			
@@ -121,11 +117,20 @@ public class RenderLogic {
 						pos.x = zField.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
 						pos.y = zField.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
 
+						BufferedImage finalImage = new BufferedImage(Field.SIZE.width, Field.SIZE.height, 3);
+						
+						Graphics2D g2D = finalImage.createGraphics();
 						
 						for (FieldType t: zField.getTypes()) {
-
-							g.drawImage(EnvironmentLoader.getImage(t), pos.x, pos.y, null);
+							
+							g2D.drawImage(EnvironmentLoader.getImage(t), 0, 0, null);
+							
 						}
+						
+						g2D.dispose();
+						
+						LightOverlay.Multiply(finalImage, zField.getLight().getOverlay());						
+						g.drawImage(finalImage, pos.x, pos.y, null);						
 					}
 				}
 				
@@ -134,14 +139,18 @@ public class RenderLogic {
 				
 				g.drawRect(pos.x, pos.y, 104, 52);
 
-				g.setColor(Color.GRAY);
-				g.drawString(field.getLocation().getX() + " " + field.getLocation().getY(), pos.x, pos.y + 20);
-				g.setColor(Color.BLACK);
+				if(GC.debug) {
+					g.setColor(Color.GRAY);
+					g.drawString(field.getLocation().getX() + " " + field.getLocation().getY(), pos.x, pos.y + 20);
+					g.setColor(Color.BLACK);
+				}
 			}
 			
 			
+			//LightRendering.Render(g);
+			//playerLight.Render(new Position(300, 300, 50), g);
 			//Drawing the view limiter
-			g.drawImage(viewLimiter, 0, 0, null);
+			//g.drawImage(viewLimiter, 0, 0, null);
 			
 			
 			if(GC.debug) {
@@ -338,7 +347,7 @@ public class RenderLogic {
 			for (int x = min.x; x < max.x; x++) {
 
 
-				allFields.add(Programm.getCore().getChunkManager().getFieldAt(new Point(x,y)));
+				allFields.add(Programm.getCore().getChunkManager().getFieldAt(new Position(x, y, 0)));
 			}
 		}
 		

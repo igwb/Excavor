@@ -48,7 +48,7 @@ public class Core {
 	
 	protected void initialize() {
 		try {
-			ValuesManager.loadValuesFrom(System.getProperty("user.dir") + "/configuration.txt");
+			ValueManager.loadValuesFrom(System.getProperty("user.dir") + "/configuration.txt");
 			DeveloperConsole.initialize(GameCanvasSize.width, GameCanvasSize.height / 3);
 			EnvironmentLoader.initialize();
 			

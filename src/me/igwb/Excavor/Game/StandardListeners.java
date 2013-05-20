@@ -7,7 +7,7 @@ import me.igwb.Excavor.Media.RegisteredMedia;
 
 public class StandardListeners {
 
-	private ValuesListener[] listeners;
+	private ValueListener[] listeners;
 	private static StandardListeners SL;
 	
 	public static void registerListeners() {
@@ -19,29 +19,29 @@ public class StandardListeners {
 	}
 	
 	private StandardListeners() {
-		listeners = new ValuesListener[] 
+		listeners = new ValueListener[] 
 				{ 
 					new VolumeListener() 
 				};
 		
-		for(ValuesListener listener : listeners)
-			ValuesManager.registerListener(listener);
+		for(ValueListener listener : listeners)
+			ValueManager.registerListener(listener);
 	}
 	
-	class VolumeListener implements ValuesListener {
+	class VolumeListener implements ValueListener {
 
 		@Override
 		public void valueSet(Entry<String, String> value) {
 
 			if(value.getKey().equalsIgnoreCase("Master")) {
 				
-				MediaManager.setMusicVolume(Float.parseFloat(ValuesManager.getValue("Music")) * (Float.parseFloat(value.getValue()) / 100));
+				MediaManager.setMusicVolume(Float.parseFloat(ValueManager.getValue("Music")) * (Float.parseFloat(value.getValue()) / 100));
 				
 			}
 			
 			else if(value.getKey().equalsIgnoreCase("Music")) {
 			
-				MediaManager.setMusicVolume(Float.parseFloat(value.getValue()) * (Float.parseFloat(ValuesManager.getValue("Master")) / 100));
+				MediaManager.setMusicVolume(Float.parseFloat(value.getValue()) * (Float.parseFloat(ValueManager.getValue("Master")) / 100));
 								
 			}
 			
@@ -51,7 +51,7 @@ public class StandardListeners {
 					MediaManager.muteAll();
 				else {
 					MediaManager.unMute();
-					if(ValuesManager.getValue("MuteMusic").equalsIgnoreCase("UnMuted"))
+					if(ValueManager.getValue("MuteMusic").equalsIgnoreCase("UnMuted"))
 							MediaManager.playClip(RegisteredMedia.ExcavorTheme.getMediaName(), true);
 				}
 			}

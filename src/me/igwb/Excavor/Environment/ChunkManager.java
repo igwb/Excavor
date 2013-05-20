@@ -89,8 +89,8 @@ public class ChunkManager {
 		
 		return getFieldAt(fieldPos);
 	}
-	
-	public Field getFieldAt(Point position) {
+
+	private Field getFieldAt(Point position) {
 		int X, Y;
 		
 		X = (int)(position.x / Chunk.SIZE);
@@ -122,6 +122,22 @@ public class ChunkManager {
 
 			return fieldChunk.getFieldAt(position);
 		}
+	}
+	
+	public Field getFieldAt(Position position) {
+		Field f = getFieldAt(new Point(position.getX(), position.getY()));
+		
+		int Z = position.getZ();
+		
+		if(Z == 0)
+			return f;
+		
+		
+		Field[] fields = f.getZFields();		
+		if((Z > 0 & fields == null) || Z > fields.length)
+			return null;
+		
+		return fields[Z];		
 	}
 	
 }

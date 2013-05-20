@@ -1,5 +1,7 @@
 package me.igwb.Excavor.Environment;
 
+import java.util.ArrayList;
+
 import me.igwb.Excavor.Game.Programm;
 
 
@@ -130,7 +132,7 @@ public class Position {
 			
 			Position pos = new Position(X, Y, Z);
 			
-			Field field = Programm.getCore().getChunkManager().getFieldAt(pos, 50);
+			Field field = Programm.getCore().getChunkManager().getFieldAt(pos);
 			
 			if(field != null && !field.getSeeThru())
 				return false;
@@ -142,6 +144,37 @@ public class Position {
 		
 		
 		return true;
+	}
+	
+	public ArrayList<Field> LineofFields(Position p) {
+		
+		ArrayList<Field> fields = new ArrayList<Field>();
+		
+		int X = x;
+		int Y = y;
+		int Z = z;
+		
+		Distance dis = distance(p);
+		
+		int YperX = dis.getDistanceX() / dis.getDistanceY();
+		int ZperY = dis.getDistanceY() / dis.getDistanceZ();
+		
+		do {
+			
+			Y = YperX * X;
+			Z = ZperY * Y;
+			
+			Position pos = new Position(X, Y, Z);
+			
+			Field field = Programm.getCore().getChunkManager().getFieldAt(pos);
+			
+			fields.add(field);
+			
+			X++;
+					
+		} while(new Distance(X, Y, Z).getDistance() < dis.getDistance());
+		
+		return fields;
 	}
 	
 }
