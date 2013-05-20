@@ -17,6 +17,8 @@ public class Field {
 	private Field[] zFields;
 	private int[] events;
 	
+	private boolean seeThru = true, walkable = true;
+	
 	private Light light;
 	
 	public static final Dimension SIZE = new Dimension(104,97);
@@ -36,11 +38,7 @@ public class Field {
 	
 	public boolean getSeeThru() {
 		
-		for(FieldType types : Types) {
-			if(!types.Transparent)
-				return false;
-		}
-		return true;
+		return seeThru;
 	}
 
 	public FieldType[] getTypes() {
@@ -48,6 +46,11 @@ public class Field {
 		return Types;
 	}
 
+	
+	public boolean getWalkable() {
+		
+		return walkable;
+	}
 	
 	/**
 	 * Returns fields on the z-axis at this fields position, not including the lowest one.
@@ -64,11 +67,30 @@ public class Field {
 	
 	public void setZFields(Field[] zFields) {
 		this.zFields = zFields;
+		
+		if(this.zFields != null && walkable) {
+			for(Field f : this.zFields) {
+				if(!f.getWalkable())
+					walkable = false;
+			}
+		}
 	}
 	
 	public void setTypes(FieldType[] types) {
 		
 		Types = types;
+		
+		seeThru = true;
+		for(FieldType t : Types) {
+			if(!t.Transparent)
+				seeThru = false;
+		}
+		
+		walkable = true;
+		for(FieldType t : Types) {
+			if(!t.Passable)
+				walkable = false;
+		}
 	}
 
 	public void setEvents(int[] events) {

@@ -10,6 +10,7 @@ import resources.ResourceLoader;
 
 import me.igwb.Excavor.Environment.ChunkManager;
 import me.igwb.Excavor.Environment.ImageSplitter;
+import me.igwb.Excavor.Logic.GameLogic;
 import me.igwb.Excavor.Media.BackgroundMusic;
 import me.igwb.Excavor.Media.MediaManager;
 import me.igwb.Excavor.Media.RegisteredMedia;
@@ -29,6 +30,7 @@ public class Core {
 	
 	private ChunkManager CM;
 	private RenderLogic renderManager;	
+	private GameLogic Brain;
 	
 	public final Dimension GameCanvasSize = new Dimension(600,600), HUDCanvasSize = new Dimension(600,80);
 	
@@ -75,6 +77,8 @@ public class Core {
 			
 			GameCanvas.createBufferStrategy(2);
 			MainHUD.createBufferStrategy(2);
+			
+			Brain = new GameLogic();
 			
 			renderManager = new RenderLogic();
 			CM = new ChunkManager();
@@ -130,7 +134,7 @@ public class Core {
 				}
 				
 				if(!paused) {
-					updateGame(delta);
+					Brain.update(delta);
 					renderManager.renderGame();
 					renderManager.renderHud();
 				}
@@ -182,57 +186,6 @@ public class Core {
 		return MainHUD;
 	}
 	
-	/**
-	 * Updates the games logic
-	 * 
-	 * @param delta controls time offset
-	 */
-	private void updateGame(double delta) {
-		Point PlayerPos = ActivePlayer.getPosition();
-		
-		int moveDistance = (int)Math.ceil(1 * delta);
-		
-		if(!DeveloperConsole.allowUpdate())
-			return;
-		
-		ConversationManager.update();
-		
-		if(!ConversationManager.allowUpdate())
-			return;
-		
-		if(ActivePlayer.isMoving()) {
-			switch (ActivePlayer.getDirection()) {
-			case Up:
-				PlayerPos = new Point(PlayerPos.x, PlayerPos.y - moveDistance);
-				break;
-			case UpLeft:
-				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y - moveDistance);
-				break;
-			case UpRight:
-				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y - moveDistance);
-				break;
-			case Right:
-				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y);
-				break;
-			case Down:
-				PlayerPos = new Point(PlayerPos.x, PlayerPos.y + moveDistance);
-				break;
-			case DownLeft:
-				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y + moveDistance);
-				break;
-			case DownRight:
-				PlayerPos = new Point(PlayerPos.x + moveDistance, PlayerPos.y + moveDistance);
-				break;
-			case Left:
-				PlayerPos = new Point(PlayerPos.x - moveDistance, PlayerPos.y);
-				break;
-			default:
-				break;
-			}
-			
-			ActivePlayer.setPosition(PlayerPos);
-		}	
-	}
 	
 	/**
 	 * Pause or un-pause the game with this method.

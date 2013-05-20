@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import me.igwb.Excavor.Environment.Field;
+import me.igwb.Excavor.Game.Programm;
 
 
 public class Player {
@@ -12,7 +13,7 @@ public class Player {
 	private Point Position;
 	private int health, armor, maxHealth, maxArmor;
 	private Direction dir = Direction.Up;
-	
+	private Field currentField;
 	
 	private Image[] player;
 	
@@ -24,11 +25,14 @@ public class Player {
 	public Player(Point Position) {
 		this.Position = Position;
 		
+		currentField = Programm.getCore().getChunkManager().getFieldFromAbsolute(this.Position);
+		
 		health = 50;
 		armor = 0;
 		
 		maxHealth = 100;
 		maxArmor = 100;
+		
 		
 	}
 	
@@ -41,8 +45,16 @@ public class Player {
 	
 	public void setPosition(Point newPos){
 		Position = newPos;
+		
+		currentField = Programm.getCore().getChunkManager().getFieldFromAbsolute(this.Position);
 	}
 	
+	public Field getField() {
+		
+		return currentField;
+	}
+	
+	@Deprecated
 	public Point getFieldPosition() {
 		Point p = new Point();
 		
@@ -52,6 +64,7 @@ public class Player {
 		return p;
 	}
 	
+	@Deprecated
 	public void setFieldPosition(Point position) {
 		
 		Position.x = position.x * Field.SIZE.width;
