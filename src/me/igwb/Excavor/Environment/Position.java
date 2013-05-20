@@ -3,6 +3,7 @@ package me.igwb.Excavor.Environment;
 import java.util.ArrayList;
 
 import me.igwb.Excavor.Game.Programm;
+import me.igwb.Excavor.Logic.Distance;
 
 public class Position {
 

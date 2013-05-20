@@ -1,4 +1,4 @@
-package me.igwb.Excavor.Environment;
+package me.igwb.Excavor.Logic;
 
 public class Distance {
 
