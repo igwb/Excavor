@@ -4,17 +4,25 @@ import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class ValuesManager {
+public class ValueManager {
 
 	private static Map<String, String> values = new HashMap<String, String>();
 	
-	private static ArrayList<ValuesListener> listeners = new ArrayList<ValuesListener>();
+	private static ArrayList<ValueListener> listeners = new ArrayList<ValueListener>();
 	
-	public static void registerListener(ValuesListener listener) {
+	public static void registerListener(ValueListener listener) {
 		listeners.add(listener);
+		
+		Iterator<Entry<String, String>> iterator = values.entrySet().iterator();
+		
+		while(iterator.hasNext()) {
+			Entry<String, String> entry = iterator.next();
+			
+			listener.valueSet(entry);
+		}
 	}
 	
-	public static void deleteListener(ValuesListener listener) {
+	public static void deleteListener(ValueListener listener) {
 		listeners.remove(listener);
 	}
 	
@@ -26,8 +34,8 @@ public class ValuesManager {
 		while(iterator.hasNext()) {
 			Entry<String, String> entry = iterator.next();
 			
-			if(entry.getKey() == name) {				
-				for(ValuesListener listener : listeners)				
+			if(entry.getKey().equals(name)) {				
+				for(ValueListener listener : listeners)				
 					listener.valueSet(entry);
 				
 				break;
@@ -124,4 +132,5 @@ public class ValuesManager {
 			e.printStackTrace();
 		}		
 	}
+
 }

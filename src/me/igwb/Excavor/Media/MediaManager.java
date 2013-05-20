@@ -1,9 +1,7 @@
 package me.igwb.Excavor.Media;
 
 import java.util.*;
-
 import javax.sound.sampled.*;
-
 import resources.ResourceLoader;
 
 public class MediaManager {
@@ -27,6 +25,7 @@ public class MediaManager {
 	
 	public static Clip playClip(String name, boolean loop){
 		Clip c = Clips.get(name);
+		if(Muted) return c;
 		
 		if(c == null) return null;
 		
@@ -42,6 +41,22 @@ public class MediaManager {
 		return c;
 	}
 	
+	public static void setMusicVolume(float decibel) {
+		
+		for(String name : Clips.keySet()) {
+			if(RegisteredMedia.getMedia(name).getType().equals(MediaType.Music)) {
+				
+			FloatControl volume = (FloatControl) Clips.get(name).getControl(FloatControl.Type.MASTER_GAIN);
+			
+			decibel -= 50;
+		
+			volume.setValue(decibel * 0.120412f);
+			
+			}
+		}
+		
+	}
+	
 	public static void setVolume(String name, float decibel) {
 		Clip c = Clips.get(name);
 		
@@ -51,7 +66,7 @@ public class MediaManager {
 
 		decibel -= 50;
 		
-		volume.setValue((decibel / 100) * 12);
+		volume.setValue(decibel * 0.120412f);
 	}
 	
 	public static void setVolume(float decibel) {
@@ -61,7 +76,7 @@ public class MediaManager {
 
 			decibel -= 50;
 		
-			volume.setValue((decibel / 100) * 12);
+			volume.setValue(decibel * 0.120412f);
 		}
 	}
 	
@@ -81,9 +96,26 @@ public class MediaManager {
 	}
 	
 	public static void resumeAll() {
+		if(!Muted)
 		for(Clip c : Paused) {			
 			c.start();
 		}
 		Paused.clear();
 	}
+
+	public static boolean Muted = false;
+	public static void muteAll() {
+		for(Clip c : Clips.values()) {			
+			if(c.isRunning() && c != null) {
+				c.stop();
+			}
+		}
+		Muted = true;
+	}
+	
+	public static void unMute() {
+		Muted = false;
+	}
+	
+	
 }

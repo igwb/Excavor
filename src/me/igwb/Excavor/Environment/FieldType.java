@@ -17,7 +17,13 @@ public enum FieldType {
 	STONECORNER_RIGHT	(12, false, false, "Stonecorner - Right"),
 	ERROR				(13, true, false, true, "ERROR"),
 	WIDE_TREE			(14, false, false, true, "Tree"),
-	SPIKY_TREE			(15, false, false, true, "Spiky tree");
+	SPIKY_TREE			(15, false, false, true, "Spiky tree"),
+	BLeft				(94, true, true, false, "Blend Left"),
+	BTop				(95, true, true, false, "Blend Top"),
+	BRight				(96, true, true, false, "Blend Right"),
+	SLeft				(97, true, true, false, "Show Left"),
+	STop				(98, true, true, false, "Show Top"),
+	SRight				(99, true, true, false, "Show Right");
 	
 	public int Image;
 	

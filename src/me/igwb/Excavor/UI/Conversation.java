@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import resources.ResourceLoader;
 
 import me.igwb.Excavor.Game.CommandHandler;
-import me.igwb.Excavor.Game.ValuesManager;
+import me.igwb.Excavor.Game.ValueManager;
 import me.igwb.Excavor.Logic.Delay;
 import me.igwb.Excavor.Scripting.*;
 
@@ -175,7 +175,7 @@ public class Conversation {
 			
 			for(ParameterRegion region : cmd.getParameter().regions) {
 				
-				Label label = new Label(ValuesManager.getValue(region.value[0]));
+				Label label = new Label(ValueManager.getValue(region.value[0]));
 				label.position = new Point(Integer.parseInt(region.value[1]), Integer.parseInt(region.value[2]));
 				
 				label.FontSize = Float.parseFloat(region.value[5]);
@@ -202,7 +202,7 @@ public class Conversation {
 			
 			for(ParameterRegion region : cmd.getParameter().regions) {
 				
-				ValuesManager.setValue(region.value[0], region.value[1]);
+				ValueManager.setValue(region.value[0], region.value[1]);
 				
 			}
 			
@@ -266,6 +266,32 @@ public class Conversation {
 						
 						showConversation(cmd);
 						
+					} else if(cmd.name.equalsIgnoreCase("switch")) {
+						
+						thisOne:
+						for(ParameterRegion region : cmd.getParameter().regions) {
+							
+							boolean canContinue = false;
+							
+							for(String value : region.value[1].split("/")) {
+								
+								if(canContinue) {
+									
+									ValueManager.setValue(region.value[0], value);
+									continue thisOne;
+									
+								}
+								
+								canContinue = ValueManager.getValue(region.value[0]).equalsIgnoreCase(value);
+																
+							}
+							
+							String first = region.value[1].split("/")[0];
+							
+							ValueManager.setValue(region.value[0], first);
+							
+						}
+						
 					}
 					break;
 					
@@ -304,7 +330,7 @@ public class Conversation {
 				
 				try {
 					
-				value = Double.parseDouble(ValuesManager.getValue(region.value[0]));
+				value = Double.parseDouble(ValueManager.getValue(region.value[0]));
 				
 				} catch (Exception e) {
 					
@@ -324,7 +350,7 @@ public class Conversation {
 				if(s.endsWith(".0"))
 					s = s.substring(0, s.length() - 2);
 				
-				ValuesManager.setValue(region.value[0], s);
+				ValueManager.setValue(region.value[0], s);
 				
 			}
 		}
@@ -336,7 +362,7 @@ public class Conversation {
 				
 				try {
 					
-				value = Double.parseDouble(ValuesManager.getValue(region.value[0]));
+				value = Double.parseDouble(ValueManager.getValue(region.value[0]));
 				
 				} catch (Exception e) {
 					
@@ -356,7 +382,7 @@ public class Conversation {
 				if(s.endsWith(".0"))
 					s = s.substring(0, s.length() - 2);
 				
-				ValuesManager.setValue(region.value[0], s);
+				ValueManager.setValue(region.value[0], s);
 				
 			}
 		}
