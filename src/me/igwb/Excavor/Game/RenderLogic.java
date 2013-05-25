@@ -16,8 +16,8 @@ import java.util.logging.Level;
 
 import resources.*;
 
+import me.igwb.Excavor.Entities.Lighting.*;
 import me.igwb.Excavor.Environment.*;
-import me.igwb.Excavor.Lighting.*;
 import me.igwb.Excavor.Logic.Delay;
 import me.igwb.Excavor.Player.Player;
 import me.igwb.Excavor.UI.*;
@@ -28,8 +28,9 @@ public class RenderLogic {
 	private MainWindow GameWindow;
 	private HUDCanvas MainHud;
 	private Core GC;
-	private Lighting playerLight;
 	private Image aBar, hBar, Armor, Health, redABar, redHBar, viewLimiter;
+	
+	public static boolean light = false;
 	
 	/**
 	 * Creates an instance of the RenderLogic class.
@@ -48,43 +49,15 @@ public class RenderLogic {
 			initializePlayerBasedHUD(GC.HUDCanvasSize.width, GC.HUDCanvasSize.height);
 			viewLimiter = resources.ResourceLoader.getImage(("/resources/view.png"));
 			
-			playerLight = new Lighting(Color.white, 10, 1);
+			//playerLight = new Lighting(Color.white, 10, 1);
 	}
-
 	
-	/**
-	 *  Loads the graphics needed for the PlayerBased HUD.
-	 *  
-	 * @param maxWidth Maximum width of the canvas the HUD is drawn on.
-	 * @param maxHeight Maximum height of the canvas the HUD is drawn on.
-	 * @throws IOException Thrown if there is a problem with some graphics.
-	 */
-	private void initializePlayerBasedHUD(int maxWidth, int maxHeight) throws IOException {
-		
-		URL image = ResourceLoader.getURL("/resources/HUD.png");
-		
-		Health = ImageSplitter.split(image, 10, 1)[0].getScaledInstance(maxWidth, maxHeight, 0);
-		hBar = ImageSplitter.split(image, 10, 1)[1].getScaledInstance(maxWidth, maxHeight, 0);
-		
-		Armor = ImageSplitter.split(image, 10, 1)[2].getScaledInstance(maxWidth, maxHeight, 0);
-		aBar = ImageSplitter.split(image, 10, 1)[3].getScaledInstance(maxWidth, maxHeight, 0);
-		
-		redHBar = ImageSplitter.split(image, 10, 1)[4].getScaledInstance(maxWidth, maxHeight, 0);
-		redABar = ImageSplitter.split(image, 10, 1)[5].getScaledInstance(maxWidth, maxHeight, 0);
-	}
-
 	protected void renderGame() {
 		
 		Graphics g = null;
 		
-		try {
-			ArrayList<Field> Fields;
-			Player ActivePlayer = GC.getActivePlayer();
-			
-			
-			BufferStrategy buffer = GameCanvas.getBufferStrategy();
-
-			
+		try {			
+			BufferStrategy buffer = GameCanvas.getBufferStrategy();			
 			g = buffer.getDrawGraphics();
 
 			//Resetting the canvas!
@@ -93,59 +66,13 @@ public class RenderLogic {
 			
 			g.setColor(Color.BLACK);
 			
+			long i = System.currentTimeMillis();
 			
-			Fields = getRenderFields(ActivePlayer.getPosition(),7);
+			Image finalScreen = light ? LightOverlay.multiply(renderFields(), renderLight()) : renderFields(); 
 			
-			for (Field field : Fields) {
-				Field[] zFields = field.getZFields();
-				
-				Point pos = new Point();
-				
-				pos.x = field.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
-				pos.y = field.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
-				
-				
-				for (FieldType t: field.getTypes()) {
-					
-					g.drawImage(EnvironmentLoader.getImage(t), pos.x, pos.y, null);
-				}
-				
-				if(zFields != null) {
-					
-
-					for(Field zField : zFields) {
-						pos.x = zField.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
-						pos.y = zField.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
-
-						BufferedImage finalImage = new BufferedImage(Field.SIZE.width, Field.SIZE.height, 3);
-						
-						Graphics2D g2D = finalImage.createGraphics();
-						
-						for (FieldType t: zField.getTypes()) {
-							
-							g2D.drawImage(EnvironmentLoader.getImage(t), 0, 0, null);
-							
-						}
-						
-						g2D.dispose();
-						
-						LightOverlay.Multiply(finalImage, zField.getLight().getOverlay());						
-						g.drawImage(finalImage, pos.x, pos.y, null);						
-					}
-				}
-				
-			//	GC.log.info("X: " + pos.x + " Y: " + pos.y);
-			//	GC.log.info("Field: " + field.getLocation().getX() + " " + field.getLocation().getY() + "  " + field.toString());
-				
-				g.drawRect(pos.x, pos.y, 104, 52);
-
-				if(GC.debug) {
-					g.setColor(Color.GRAY);
-					g.drawString(field.getLocation().getX() + " " + field.getLocation().getY(), pos.x, pos.y + 20);
-					g.setColor(Color.BLACK);
-				}
-			}
+			g.drawImage(finalScreen, 0, 0, null);
 			
+			System.out.println("time: " + (System.currentTimeMillis() - i));
 			
 			//LightRendering.Render(g);
 			//playerLight.Render(new Position(300, 300, 50), g);
@@ -154,6 +81,8 @@ public class RenderLogic {
 			
 			
 			if(GC.debug) {
+				Player ActivePlayer = GC.getActivePlayer();
+				
 				g.setColor(Color.WHITE);
 
 				g.drawString(System.getProperty("user.dir"), 50, 50);
@@ -190,34 +119,103 @@ public class RenderLogic {
 				g.dispose();
 		}
 	}
+
+	protected BufferedImage renderFields() {
+		
+		Player ActivePlayer = GC.getActivePlayer();
+		
+		BufferedImage fieldsImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
+		Graphics2D fieldGraphics = fieldsImage.createGraphics();
+		
+		ArrayList<Field> Fields = getRenderFields(ActivePlayer.getPosition(), 7);
+		
+		for (Field field : Fields) {
+			Field[] zFields = field.getZFields();
+			
+			Point pos = new Point();
+			
+			pos.x = field.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
+			pos.y = field.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
+			
+			if(GC.getGameCanvas().getBounds().intersects(field.getRenderBounds(pos))) {
+				for (FieldType t: field.getTypes()) {
+				
+					fieldGraphics.drawImage(EnvironmentLoader.getImage(t), pos.x, pos.y, null);
+				
+				}
+			}
+			
+			if(zFields != null) {
+				
+
+				for(Field zField : zFields) {
+					pos.x = zField.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
+					pos.y = zField.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
+					
+					if(!GC.getGameCanvas().getBounds().intersects(zField.getRenderBounds(pos)))
+						continue;
+					
+					for (FieldType t: zField.getTypes()) {
+						
+						fieldGraphics.drawImage(EnvironmentLoader.getImage(t), pos.x, pos.y, null);
+						
+					}		
+				}
+			}
+			//	GC.log.info("X: " + pos.x + " Y: " + pos.y);
+			//	GC.log.info("Field: " + field.getLocation().getX() + " " + field.getLocation().getY() + "  " + field.toString());
+
+			if(GC.debug) {
+				fieldGraphics.drawRect(pos.x, pos.y, 104, 52);
+				fieldGraphics.setColor(Color.GRAY);
+				fieldGraphics.drawString(field.getLocation().getX() + " " + field.getLocation().getY(), pos.x, pos.y + 20);
+				fieldGraphics.setColor(Color.BLACK);
+			}
+		}
+		fieldGraphics.dispose();
+
+		return fieldsImage;
+	}
 	
-	private Delay delay;
-	private boolean red = false, delayNeeded = false;
-	
+	protected BufferedImage renderLight() {
+		
+		BufferedImage lightImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
+		Graphics2D g = lightImage.createGraphics();
+		//g.setBackground(LightSourceType.BACKGROUNDCOLOR); TODO: get this shit workin'
+		g.setColor(LightSourceType.BACKGROUNDCOLOR);
+		g.fillRect(0, 0, lightImage.getWidth(), lightImage.getHeight());
+		
+		testLight.Render(g);
+		
+		g.dispose();
+		
+		return lightImage;		
+	}
+
 	protected void renderHud() {
-
+	
 		Graphics g = null;
-
+	
 		try {
 			BufferStrategy buffer = MainHud.getBufferStrategy();
-
+	
 			g = buffer.getDrawGraphics();
-
+	
 			g.setColor(Color.WHITE);
 			g.fillRect(0, 0, GC.HUDCanvasSize.width, GC.HUDCanvasSize.height);
-
-
+	
+	
 			Player ActivePlayer = GC.getActivePlayer();
 			int health, maxHealth, armor;
-
+	
 			health = ActivePlayer.getHealth();
 			maxHealth = ActivePlayer.getMaxHealth();
 			armor = ActivePlayer.getArmor();
-
+	
 			if(delayNeeded) {
 				if(delay == null)
 					delay = new Delay(500);
-
+	
 				if(delay.checkDelay()) {
 					red = !red;
 					delay.expand();
@@ -226,45 +224,100 @@ public class RenderLogic {
 				if(delay != null)
 					delay = null;
 			}
-
+	
 			if(health <= 0) {
-
+	
 				g.setColor(Color.GREEN);
 				g.setFont(Font.getFont("Sans Bold"));
 				g.drawString("Wow... you don't look so good...", 15, 15);
 				return;
 			}
-
+	
 			g.drawImage(Health, 15, 2, null);		
 			g.drawImage(getHealthBar(), 15, 2, null);
-
+	
 			if(armor > 0) {
-
+	
 				g.drawImage(Armor, 15, 2, null);
 				g.drawImage(getArmorBar(), 15, 2, null);
-
+	
 				if((int)((double) health / (double) maxHealth) * 100 <= 25) {
 					delayNeeded = true;
 				}
-
+	
 			}
 			
 			if(!buffer.contentsLost()) {
 				buffer.show();
 			}
-
+	
 			GameWindow.repaint();
 			Thread.yield();
-
+	
 		} catch(Exception e) {
 			GC.log.log(Level.SEVERE, "oh oh", e );
-
+	
 		} finally {
 			if(g != null)
 				g.dispose();
 		}
 	}
+
+	public ArrayList<Field> getRenderFields(Point Center, int ViewDistance) {
+		
+		ArrayList<Field> List = new ArrayList<Field>(), allFields = new ArrayList<Field>();
+		Point CenterField, max, min;
+		Position centerPos;
+		
+		//CenterField = new Point((int)(Math.floor(Center.x / Field.SIZE.width)), (int)(Math.floor(Center.y / (Field.SIZE.height * 0.75))));
+		centerPos = GC.getChunkManager().getFieldFromAbsolute(Center).getLocation();
+		CenterField = new Point(centerPos.getX(), centerPos.getY());
+		
+		
+		min = new Point(CenterField.x - ViewDistance, CenterField.y - (int)(ViewDistance / 0.25));
+		max = new Point(CenterField.x + ViewDistance, CenterField.y + (int)(ViewDistance / 0.25));
+		
+		for (int y = min.y; y < max.y; y++) {
+			for (int x = min.x; x < max.x; x++) {
 	
+				allFields.add(Programm.getCore().getChunkManager().getFieldAt(new Position(x, y, 0)));
+				
+			}
+		}
+		
+		
+		//GC.log.info("Center: " + CenterField.x + " " + CenterField.y);
+		//GC.log.info("L: " + allFields.size());
+		
+		return allFields;
+	}
+
+	private SphereLight testLight = new SphereLight(new Position(300, 300, 10), Color.WHITE, 20);
+	
+	private Delay delay;
+	private boolean red = false, delayNeeded = false;
+	
+	/**
+	 *  Loads the graphics needed for the PlayerBased HUD.
+	 *  
+	 * @param maxWidth Maximum width of the canvas the HUD is drawn on.
+	 * @param maxHeight Maximum height of the canvas the HUD is drawn on.
+	 * @throws IOException Thrown if there is a problem with some graphics.
+	 */
+	private void initializePlayerBasedHUD(int maxWidth, int maxHeight) throws IOException {
+		
+		URL image = ResourceLoader.getURL("/resources/HUD.png");
+		
+		Health = ImageSplitter.split(image, 10, 1)[0].getScaledInstance(maxWidth, maxHeight, 0);
+		hBar = ImageSplitter.split(image, 10, 1)[1].getScaledInstance(maxWidth, maxHeight, 0);
+		
+		Armor = ImageSplitter.split(image, 10, 1)[2].getScaledInstance(maxWidth, maxHeight, 0);
+		aBar = ImageSplitter.split(image, 10, 1)[3].getScaledInstance(maxWidth, maxHeight, 0);
+		
+		redHBar = ImageSplitter.split(image, 10, 1)[4].getScaledInstance(maxWidth, maxHeight, 0);
+		redABar = ImageSplitter.split(image, 10, 1)[5].getScaledInstance(maxWidth, maxHeight, 0);
+	}
+
 	private Image getArmorBar() {
 		Player ActivePlayer = GC.getActivePlayer();
 		int  maxArmor, armor;
@@ -326,36 +379,6 @@ public class RenderLogic {
 		}
 		
 		return buffImage;
-	}
-	
-	
-	public ArrayList<Field> getRenderFields(Point Center, int ViewDistance) {
-		
-		ArrayList<Field> List = new ArrayList<Field>(), allFields = new ArrayList<Field>();
-		Point CenterField, max, min;
-		Position centerPos;
-		
-		//CenterField = new Point((int)(Math.floor(Center.x / Field.SIZE.width)), (int)(Math.floor(Center.y / (Field.SIZE.height * 0.75))));
-		centerPos = GC.getChunkManager().getFieldFromAbsolute(Center).getLocation();
-		CenterField = new Point(centerPos.getX(), centerPos.getY());
-		
-		
-		min = new Point(CenterField.x - ViewDistance, CenterField.y - (int)(ViewDistance / 0.25));
-		max = new Point(CenterField.x + ViewDistance, CenterField.y + (int)(ViewDistance / 0.25));
-		
-		for (int y = min.y; y < max.y; y++) {
-			for (int x = min.x; x < max.x; x++) {
-
-
-				allFields.add(Programm.getCore().getChunkManager().getFieldAt(new Position(x, y, 0)));
-			}
-		}
-		
-		
-		//GC.log.info("Center: " + CenterField.x + " " + CenterField.y);
-		//GC.log.info("L: " + allFields.size());
-		
-		return allFields;
 	}
 	
 	

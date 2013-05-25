@@ -2,25 +2,25 @@ package me.igwb.Excavor.Environment;
 
 public enum FieldType {
 
-	SMOOTHSTONE1		(0, true, "Smooth stone #1"),
-	SMOOTHSTONE2		(1, true, "Smooth stone #2"),
-	SMOOTHSTONE3		(2, true, "Smooth stone #3"),
-	STONEBORDER_LEFT	(3, true, "Stoneborder - Left"),
-	STONEBORDER_UP		(4, true, "Stoneborder - Up"),
-	STONEBORDER_RIGHT	(5, true, "Stoneborder - Right"),
-	STONEBORDER_DOWN	(6, true, "Stoneborder - Down"),
-	COBBLESTONE			(7, true, "Cobblestone"),
-	STONEWALL_UP		(8, false , false, "Stonewall - Up"),
-	STONEWALL_LEFT		(9, false, false, "Stonewall - Left"),
-	STONEWALL_RIGHT		(10, false, false, "Stonewall - Right"),
-	STONECORNER_LEFT	(11, false, false, "Stonecorner - Left"),
-	STONECORNER_RIGHT	(12, false, false, "Stonecorner - Right"),
-	ERROR				(13, true, false, true, "ERROR"),
-	WIDE_TREE			(14, false, false, true, "Tree"),
-	SPIKY_TREE			(15, false, false, true, "Spiky tree"),
-	BLeft				(94, true, true, false, "Blend Left"),
-	BTop				(95, true, true, false, "Blend Top"),
-	BRight				(96, true, true, false, "Blend Right"),
+	STONE				(0, false, "Stone"),
+	GRASS				(1, false, "Grass"),
+	SMOOTHSTONE3		(2, false, "Smooth stone #3"),
+	STONEBORDER_LEFT	(3, false, "Stoneborder - Left"),
+	STONEBORDER_UP		(4, false, "Stoneborder - Up"),
+	STONEBORDER_RIGHT	(5, false, "Stoneborder - Right"),
+	STONEBORDER_DOWN	(6, false, "Stoneborder - Down"),
+	COBBLESTONE			(7, false, "Cobblestone"),
+	STONEWALL_UP		(8, false, "Stonewall - Up"),
+	STONEWALL_LEFT		(9, false, "Stonewall - Left"),
+	STONEWALL_RIGHT		(10, false, "Stonewall - Right"),
+	STONECORNER_LEFT	(11, false, "Stonecorner - Left"),
+	STONECORNER_RIGHT	(12, false, "Stonecorner - Right"),
+	ERROR				(13, true, true, "ERROR"),
+	WIDE_TREE			(14, false, true, "Tree"),
+	SPIKY_TREE			(15, false, true, "Spiky tree"),
+	HLeft				(94, true, true, false, "Hide Left"),
+	HTop				(95, true, true, false, "Hide Top"),
+	HRight				(96, true, true, false, "Hide Right"),
 	SLeft				(97, true, true, false, "Show Left"),
 	STop				(98, true, true, false, "Show Top"),
 	SRight				(99, true, true, false, "Show Right");
@@ -52,7 +52,7 @@ public enum FieldType {
 		Image = i;
 		Passable = passable;
 		RenderAlways = false;
-		Transparent = true;
+		Transparent = false;
 	}
 	
 	public static FieldType getType(int id) {

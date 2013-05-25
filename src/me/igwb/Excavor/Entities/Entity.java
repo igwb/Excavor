@@ -1,17 +1,21 @@
 package me.igwb.Excavor.Entities;
 
+import java.awt.Graphics2D;
+
 import me.igwb.Excavor.Environment.Position;
 
 public interface Entity {
 
-	public void Render();
+	public void Render(Graphics2D g2D);
 	
-	public void PrimaryAction();
+	public void PrimaryAction(String[] information);
 	
-	public void SecondaryAction();
+	public void SecondaryAction(String[] information);
 	
 	public Position getPosition();
 	
-	public Position setPosition();
+	public void setPosition(Position p);
+	
+	public EntityType getEntityType();
 	
 }

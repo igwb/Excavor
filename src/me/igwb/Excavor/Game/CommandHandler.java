@@ -18,6 +18,14 @@ public class CommandHandler {
 		case "exit":
 			System.exit(0);
 			
+		case "debug":
+			Programm.getCore().debug = !Programm.getCore().debug;
+			break;
+			
+		case "light":
+			RenderLogic.light = !RenderLogic.light;
+			break;
+			
 		case "sethealth":
 			Programm.getCore().getActivePlayer().setHealth(Integer.parseInt(cmd[1]));
 			DeveloperConsole.message("Changed Player health to " + cmd[1]);

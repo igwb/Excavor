@@ -119,7 +119,6 @@ public class ChunkManager {
 			return errorField;
 
 		} else {
-
 			return fieldChunk.getFieldAt(position);
 		}
 	}
@@ -133,7 +132,7 @@ public class ChunkManager {
 			return f;
 		
 		
-		Field[] fields = f.getZFields();		
+		Field[] fields = f.getZFields();
 		if((Z > 0 & fields == null) || Z > fields.length)
 			return null;
 		

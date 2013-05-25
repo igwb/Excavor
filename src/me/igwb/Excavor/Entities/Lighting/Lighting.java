@@ -1,4 +1,4 @@
-package me.igwb.Excavor.Lighting;
+package me.igwb.Excavor.Entities.Lighting;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -3,9 +3,8 @@ package me.igwb.Excavor.Environment;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.util.ArrayList;
-
-import me.igwb.Excavor.Lighting.Light;
 
 
 
@@ -17,7 +16,7 @@ public class Field {
 	private Field[] zFields;
 	private int[] events;
 	
-	private Light light;
+	//private Light light;
 	
 	public static final Dimension SIZE = new Dimension(104,97);
 	public static final int HEIGHT_OFFSET = 70;
@@ -30,8 +29,12 @@ public class Field {
 	public Field(Position loc) throws IllegalArgumentException {
 		
 		setLocation(loc);
-		light = new Light();
+		//light = new Light();
 		
+	}
+	
+	public Rectangle getRenderBounds(Point pos) {
+		return new Rectangle(pos.x, pos.y, SIZE.width, SIZE.height);
 	}
 	
 	public boolean getSeeThru() {
@@ -141,6 +144,7 @@ public class Field {
 		
 	}
 
+	/*
 	public Light getLight() {
 		return light;
 	}
@@ -148,5 +152,5 @@ public class Field {
 	public void setLight(Light light) {
 		this.light = light;
 	}
-	
+	*/
 }
