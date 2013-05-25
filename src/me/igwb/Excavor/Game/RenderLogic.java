@@ -62,17 +62,17 @@ public class RenderLogic {
 
 			//Resetting the canvas!
 			g.setColor(Color.WHITE);
-			g.fillRect(0, 0, 600, 600);			
+			g.fillRect(0, 0, 600, 600);	
 			
 			g.setColor(Color.BLACK);
 			
-			long i = System.currentTimeMillis();
+			//long i = System.currentTimeMillis();
 			
 			Image finalScreen = light ? LightOverlay.multiply(renderFields(), renderLight()) : renderFields(); 
 			
 			g.drawImage(finalScreen, 0, 0, null);
 			
-			System.out.println("time: " + (System.currentTimeMillis() - i));
+			//System.out.println("time: " + (System.currentTimeMillis() - i));
 			
 			//LightRendering.Render(g);
 			//playerLight.Render(new Position(300, 300, 50), g);
@@ -127,53 +127,59 @@ public class RenderLogic {
 		BufferedImage fieldsImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
 		Graphics2D fieldGraphics = fieldsImage.createGraphics();
 		
-		ArrayList<Field> Fields = getRenderFields(ActivePlayer.getPosition(), 7);
-		
-		for (Field field : Fields) {
-			Field[] zFields = field.getZFields();
+		try {
+			ArrayList<Field> Fields = getRenderFields(ActivePlayer.getPosition(), 7);
 			
-			Point pos = new Point();
-			
-			pos.x = field.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
-			pos.y = field.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
-			
-			if(GC.getGameCanvas().getBounds().intersects(field.getRenderBounds(pos))) {
-				for (FieldType t: field.getTypes()) {
+			for (Field field : Fields) {
+				Field[] zFields = field.getZFields();
 				
-					fieldGraphics.drawImage(EnvironmentLoader.getImage(t), pos.x, pos.y, null);
+				Point pos = new Point();
 				
-				}
-			}
-			
-			if(zFields != null) {
+				pos.x = field.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
+				pos.y = field.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
 				
-
-				for(Field zField : zFields) {
-					pos.x = zField.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
-					pos.y = zField.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
+				if(GC.getGameCanvas().getBounds().intersects(field.getRenderBounds(pos))) {
+					for (FieldType t: field.getTypes()) {
 					
-					if(!GC.getGameCanvas().getBounds().intersects(zField.getRenderBounds(pos)))
-						continue;
-					
-					for (FieldType t: zField.getTypes()) {
-						
 						fieldGraphics.drawImage(EnvironmentLoader.getImage(t), pos.x, pos.y, null);
+					
+					}
+				}
+				
+				if(zFields != null) {
+					
+
+					for(Field zField : zFields) {
+						pos.x = zField.getRenderLocation().x - ActivePlayer.getPosition().x + (int)Math.floor(GC.GameCanvasSize.width/2);
+						pos.y = zField.getRenderLocation().y - ActivePlayer.getPosition().y + (int)Math.floor(GC.GameCanvasSize.height/2);
 						
-					}		
+						if(!GC.getGameCanvas().getBounds().intersects(zField.getRenderBounds(pos)))
+							continue;
+						
+						for (FieldType t: zField.getTypes()) {
+							
+							fieldGraphics.drawImage(EnvironmentLoader.getImage(t), pos.x, pos.y, null);
+							
+						}		
+					}
+				}
+				//	GC.log.info("X: " + pos.x + " Y: " + pos.y);
+				//	GC.log.info("Field: " + field.getLocation().getX() + " " + field.getLocation().getY() + "  " + field.toString());
+
+				if(GC.debug) {
+					fieldGraphics.drawRect(pos.x, pos.y, 104, 52);
+					fieldGraphics.setColor(Color.GRAY);
+					fieldGraphics.drawString(field.getLocation().getX() + " " + field.getLocation().getY(), pos.x, pos.y + 20);
+					fieldGraphics.setColor(Color.BLACK);
 				}
 			}
-			//	GC.log.info("X: " + pos.x + " Y: " + pos.y);
-			//	GC.log.info("Field: " + field.getLocation().getX() + " " + field.getLocation().getY() + "  " + field.toString());
-
-			if(GC.debug) {
-				fieldGraphics.drawRect(pos.x, pos.y, 104, 52);
-				fieldGraphics.setColor(Color.GRAY);
-				fieldGraphics.drawString(field.getLocation().getX() + " " + field.getLocation().getY(), pos.x, pos.y + 20);
-				fieldGraphics.setColor(Color.BLACK);
-			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			fieldGraphics.dispose();
 		}
-		fieldGraphics.dispose();
-
+		
 		return fieldsImage;
 	}
 	
@@ -181,13 +187,18 @@ public class RenderLogic {
 		
 		BufferedImage lightImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
 		Graphics2D g = lightImage.createGraphics();
-		//g.setBackground(LightSourceType.BACKGROUNDCOLOR); TODO: get this shit workin'
-		g.setColor(LightSourceType.BACKGROUNDCOLOR);
-		g.fillRect(0, 0, lightImage.getWidth(), lightImage.getHeight());
-		
-		testLight.Render(g);
-		
-		g.dispose();
+		try {
+			//g.setBackground(LightSourceType.BACKGROUNDCOLOR); TODO: get this shit workin'
+			g.setColor(LightSourceType.BACKGROUNDCOLOR);
+			g.fillRect(0, 0, lightImage.getWidth(), lightImage.getHeight());
+			
+			testLight.Render(g);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {		
+			g.dispose();
+		}
 		
 		return lightImage;		
 	}

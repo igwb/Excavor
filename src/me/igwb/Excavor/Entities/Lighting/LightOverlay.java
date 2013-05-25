@@ -1,30 +1,27 @@
 package me.igwb.Excavor.Entities.Lighting;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class LightOverlay {
 
+	private static MultiplicationCache cache = new MultiplicationCache();
+	
 	public static BufferedImage multiply(BufferedImage DST, BufferedImage SRC) {
 		
-		if(DST.getWidth() != SRC.getWidth() || DST.getHeight() != SRC.getHeight())
+		if(DST.getWidth() != SRC.getWidth() || DST.getHeight() != SRC.getHeight() )
 			return DST;
 		
-		HashMap<RGBColor, Point> colors = new HashMap<RGBColor, Point>();
-		
-		for(int X = 0; X < DST.getWidth(); X++)
-			for(int Y = 0; Y < DST.getHeight(); Y++) {
+		for(int X = 0; X < DST.getWidth(); X++ )
+			for(int Y = 0; Y < DST.getHeight(); Y++ ) {
 				
-				colors.put(
-						getPixelData(DST, X, Y).
-							multiply
-								(getPixelData(SRC, X, Y)), 
-							new Point(X, Y));
+				RGBColor DSTcolor = getPixelData(DST, X, Y );
+				RGBColor SRCcolor = getPixelData(SRC, X, Y );
+				
+				DST.setRGB(X, Y, cache.multiply(DSTcolor, SRCcolor ).getColorCode() );								
 			}
-				
-		for(RGBColor color : colors.keySet())
-			DST.setRGB(colors.get(color).x, colors.get(color).y, color.getColor().getRGB());
 		
 		return DST;
 	}

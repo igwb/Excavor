@@ -6,6 +6,10 @@ public class RGBColor {
 	
 	private int R, G, B, A;
 	
+	public RGBColor() {
+		R = G = B = A = 255;
+	}
+	
 	public RGBColor(int r, int g, int b) {		
 		R = r;
 		G = g;
@@ -92,12 +96,23 @@ public class RGBColor {
 		
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(obj instanceof RGBColor) {
+			RGBColor color = ((RGBColor) obj);
+			if(A == color.A && B == color.B && color.G == G && color.R == R)
+				return true;
+		}
+		return false;
+	}
+	
 	public RGBColor multiply(RGBColor color) {
 		R = (R * color.R) / 255;
 		G = (G * color.G) / 255;
 		B = (B * color.B) / 255;
 		A += color.A;
-		
+		/*
 		if(R > 255)
 			R = 255;
 		
@@ -106,7 +121,7 @@ public class RGBColor {
 		
 		if(B > 255)
 			B = 255;
-		
+		*/
 		if(A > 255)
 			A = 255;
 		
