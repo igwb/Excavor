@@ -5,9 +5,10 @@ public enum GameStatus {
 	RUNNING (0),
 	IN_BACKGROUND (1),
 	PAUSED (2),
-	CONVERSATION (3),
-	INVENTORY (4),
-	WORLD_MAP (5);
+	MAIN_MENU (3),
+	CONVERSATION (4),
+	INVENTORY (5),
+	WORLD_MAP (6);
 	
 	public int id;
 	public boolean updateGame;

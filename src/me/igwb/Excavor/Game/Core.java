@@ -32,7 +32,7 @@ public class Core {
 	private RenderLogic renderManager;	
 	private GameLogic Brain;
 	
-	private StatusManager gameStatus;
+	private StatusManager statusManager;
 	
 	public final Dimension GameCanvasSize = new Dimension(600,600), HUDCanvasSize = new Dimension(600,80);
 	
@@ -56,7 +56,7 @@ public class Core {
 			DeveloperConsole.initialize(GameCanvasSize.width, GameCanvasSize.height / 3);
 			EnvironmentLoader.initialize();
 			
-			gameStatus = new StatusManager();
+			statusManager = new StatusManager();
 			
 			GameWindow = new MainWindow();
 			GameCanvas = new MainCanvas();
@@ -101,7 +101,7 @@ public class Core {
 			
 			
 			
-			gameStatus.setGameStatus(GameStatus.RUNNING);
+			statusManager.setGameStatus(GameStatus.RUNNING);
 			isRunning = true;
 			gameLoop();
 			
@@ -140,7 +140,7 @@ public class Core {
 					lastFPSTime = System.nanoTime();
 				}
 				
-				switch (gameStatus.getCurrentStatus()) {
+				switch (statusManager.getCurrentStatus()) {
 				case RUNNING:
 					Brain.update(delta);
 					renderManager.renderGame();
@@ -155,6 +155,9 @@ public class Core {
 					//TODO: Render a pause screen here!
 					renderManager.renderHud();
 					break;
+				case MAIN_MENU:
+					//TODO: Render the menu here!
+					break;
 					
 				case CONVERSATION:
 					//TODO: Render Conversation screen here!
@@ -164,9 +167,11 @@ public class Core {
 				case INVENTORY:
 					//TODO: Render Inventory screen here!
 					renderManager.renderHud();
+					break;
 					
 				case WORLD_MAP:
 					//TODO: Render world map.
+					break;
 					
 				default:
 					break;
@@ -228,7 +233,7 @@ public class Core {
 	
 	public StatusManager getStatusManager() {
 	
-		return gameStatus;
+		return statusManager;
 	}
 	
 	/**
