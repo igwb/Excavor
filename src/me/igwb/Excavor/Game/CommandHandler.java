@@ -15,6 +15,10 @@ public class CommandHandler {
 		
 		switch(cmd[0].toLowerCase()) {
 		
+		case "multiply":
+			RenderLogic.multiply = !RenderLogic.multiply;
+			break;
+		
 		case "exit":
 			System.exit(0);
 			

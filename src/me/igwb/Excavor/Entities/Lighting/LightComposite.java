@@ -9,8 +9,6 @@ import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
-import com.oracle.jrockit.jfr.DataType;
-
 public class LightComposite implements Composite {
 
 	public static final LightComposite applyLight = new LightComposite();
@@ -26,13 +24,13 @@ public class LightComposite implements Composite {
 		@Override
 		public void compose(Raster dst, Raster src, WritableRaster out) {
 
-			if(dst.getSampleModel().getDataType() != DataBuffer.TYPE_INT ||
+			/*if(dst.getSampleModel().getDataType() != DataBuffer.TYPE_INT ||
 					dst.getSampleModel().getDataType() != DataBuffer.TYPE_INT ||
 					out.getSampleModel().getDataType() != DataBuffer.TYPE_INT)
 			{
 				out.setRect(dst);
 				return;
-			}
+			}*/
 			
 			int width = Math.min(src.getWidth(), dst.getWidth() );
 			int height = Math.min(src.getHeight(), dst.getHeight() );

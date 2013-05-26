@@ -30,7 +30,7 @@ public class RenderLogic {
 	private Core GC;
 	private Image aBar, hBar, Armor, Health, redABar, redHBar, viewLimiter;
 	
-	public static boolean light = false;
+	public static boolean light = false, multiply = false;
 	
 	/**
 	 * Creates an instance of the RenderLogic class.
@@ -68,7 +68,7 @@ public class RenderLogic {
 			
 			//long i = System.currentTimeMillis();
 			
-			renderFields((Graphics2D) g); //g.drawImage(renderFields(), 0, 0, null);
+			g.drawImage(renderFields(), 0, 0, null);
 			
 			//System.out.println("time: " + (System.currentTimeMillis() - i));
 			
@@ -119,12 +119,12 @@ public class RenderLogic {
 		}
 	}
 
-	protected void renderFields(Graphics2D fieldGraphics) {
+	protected BufferedImage renderFields() {
 		
 		Player ActivePlayer = GC.getActivePlayer();
 		
-		//BufferedImage fieldsImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
-		//Graphics2D fieldGraphics = fieldsImage.createGraphics();
+		BufferedImage fieldsImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
+		Graphics2D fieldGraphics = fieldsImage.createGraphics();
 		
 		try {
 			ArrayList<Field> Fields = getRenderFields(ActivePlayer.getPosition(), 7);
@@ -165,16 +165,7 @@ public class RenderLogic {
 				//	GC.log.info("X: " + pos.x + " Y: " + pos.y);
 				//	GC.log.info("Field: " + field.getLocation().getX() + " " + field.getLocation().getY() + "  " + field.toString());
 				
-				if(light) {
-					long i = System.currentTimeMillis();
-					
-					fieldGraphics.setComposite(LightComposite.applyLight );
-					fieldGraphics.drawImage(renderLight(), 0, 0, null);
-					
-					System.out.println(System.currentTimeMillis() - i);
-					
-					fieldGraphics.setComposite(LightComposite.normal );
-				}
+				
 				
 				if(GC.debug) {
 					fieldGraphics.drawRect(pos.x, pos.y, 104, 52);
@@ -183,14 +174,21 @@ public class RenderLogic {
 					fieldGraphics.setColor(Color.BLACK);
 				}
 			}
+			
+			if(light) {
+
+				fieldGraphics.setComposite(LightComposite.applyLight );				
+				fieldGraphics.drawImage(renderLight(), 0, 0, null );				
+
+			}
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			//fieldGraphics.dispose();
+			fieldGraphics.dispose();
 		}
 		
-		//return fieldsImage;
+		return fieldsImage;
 	}
 	
 	protected BufferedImage renderLight() {
