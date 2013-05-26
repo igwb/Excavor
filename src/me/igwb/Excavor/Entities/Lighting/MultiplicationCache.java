@@ -1,6 +1,5 @@
 package me.igwb.Excavor.Entities.Lighting;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MultiplicationCache {
@@ -15,16 +14,18 @@ public class MultiplicationCache {
 	public RGBColor multiply(RGBColor dst, RGBColor src) {		
 		CacheEntry entry = new CacheEntry();
 		
-		entry.dst = dst;
-		entry.src = src;		
-
+		entry.setDst(dst);
+		entry.setSrc(src);
+		
 		RGBColor color = cache.get(entry);
 		
 		if(color == null) {
-			color = entry.src.multiply(entry.dst);
+			color = entry.getSrc().multiply(entry.getDst());
 			cache.put(entry, color);
+		} else {
+			System.out.println("FOUND SOMETHING!");
 		}
 		
 		return color;
-	}	
+	}
 }

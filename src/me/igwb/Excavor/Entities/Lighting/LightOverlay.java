@@ -14,6 +14,15 @@ public class LightOverlay {
 		if(DST.getWidth() != SRC.getWidth() || DST.getHeight() != SRC.getHeight() )
 			return DST;
 		
+		/*int[] dst = DST.getRGB(0, 0, DST.getWidth(), DST.getHeight(), new int[0], 0, 0);
+		int[] src = SRC.getRGB(0, 0, SRC.getWidth(), SRC.getHeight(), new int[0], 0, 0);
+		
+		for(int i = 0; i < dst.length; i++ ) {
+			dst[0] = RGBColor.getRGBColor(src[i]).multiply(RGBColor.getRGBColor(dst[i])).getColorCode();
+		}
+		
+		DST.setRGB(0, 0, DST.getWidth(), DST.getHeight(), dst, 0, 0);
+		*/
 		for(int X = 0; X < DST.getWidth(); X++ )
 			for(int Y = 0; Y < DST.getHeight(); Y++ ) {
 				

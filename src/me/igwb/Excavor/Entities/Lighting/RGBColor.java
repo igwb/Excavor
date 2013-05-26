@@ -2,9 +2,16 @@ package me.igwb.Excavor.Entities.Lighting;
 
 import java.awt.Color;
 
-public class RGBColor {
+public class RGBColor extends Color{
+
+	public RGBColor(int r, int g, int b, int a) {
+		super(r, g, b, a);
+		// TODO Auto-generated constructor stub
+	}
+
+	private static final long serialVersionUID = 7435477073249657011L;
 	
-	private int R, G, B, A;
+	/*private int R, G, B, A;
 	
 	public RGBColor() {
 		R = G = B = A = 255;
@@ -24,53 +31,21 @@ public class RGBColor {
 		B = b;
 		A = a;
 		
-	}
+	}*/
 	
-	public Color getColor() {
-		return new Color(R, G, B, A);
+	public Color toColor() {
+		return this;//return new Color(R, G, B, A);
 	}
 	
 	public int[] getArray() {
-		return new int[] { R, G, B, A };
+		return new int[] { getRed(), getGreen(), getBlue(), getAlpha() };
 	}
 	
 	public int getColorCode() {
-		return getColor().getRGB();		
-	}
-	
-	public int getR() {
-		return R;
+		return getRGB();		
 	}
 
-	public void setR(int r) {
-		R = r;
-	}
-
-	public int getG() {
-		return G;
-	}
-
-	public void setG(int g) {
-		G = g;
-	}
-
-	public int getB() {
-		return B;
-	}
-
-	public void setB(int b) {
-		B = b;
-	}
-
-	public int getA() {
-		return A;
-	}
-
-	public void setA(int a) {
-		A = a;
-	}
-
-	public static RGBColor getRGBColor(Color c) {		
+	public static RGBColor toRGBColor(Color c) {		
 		return getRGBColor(c.getRGB());			
 	}
 	
@@ -98,34 +73,23 @@ public class RGBColor {
 	
 	@Override
 	public boolean equals(Object obj) {
+		if(obj instanceof RGBColor)
+			obj = ((RGBColor) obj).toColor();
 		
-		if(obj instanceof RGBColor) {
-			RGBColor color = ((RGBColor) obj);
-			if(A == color.A && B == color.B && color.G == G && color.R == R)
-				return true;
-		}
-		return false;
+		return super.equals(obj);
 	}
 	
 	public RGBColor multiply(RGBColor color) {
-		R = (R * color.R) / 255;
-		G = (G * color.G) / 255;
-		B = (B * color.B) / 255;
-		A += color.A;
-		/*
-		if(R > 255)
-			R = 255;
+		int r = (getRed() * color.getRed()) / 255;
+		int g = (getGreen() * color.getGreen()) / 255;
+		int b = (getBlue() * color.getBlue()) / 255;
+		int a = Math.min(255, getAlpha() + color.getAlpha());
 		
-		if(G > 255)
-			G = 255;
-		
-		if(B > 255)
-			B = 255;
-		*/
-		if(A > 255)
-			A = 255;
-		
-		return this;
+		return new RGBColor(r, g, b, a);
+	}
+	
+	public static int multiply(int SRC, int DST) {
+		return getRGBColor(SRC).multiply(getRGBColor(DST)).getRGB();
 	}
 	
 	public static int[] multiply(int[] SRC, int[] DST) {

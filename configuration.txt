@@ -1,6 +1,6 @@
 [Debugging]
 Debug=true
-throwIntoDeveloperConsole=true;
+throwIntoDeveloperConsole=false
 
 [Sound]
 Master=100

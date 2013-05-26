@@ -2,8 +2,24 @@ package me.igwb.Excavor.Entities.Lighting;
 
 public class CacheEntry {
 	
-	public RGBColor dst = new RGBColor(), src = new RGBColor();
+	private RGBColor dst = new RGBColor(0, 0, 0, 0), src = new RGBColor(0, 0, 0, 0);
 	
+	public RGBColor getDst() {
+		return dst;
+	}
+
+	public void setDst(RGBColor dst) {
+		this.dst = dst;
+	}
+
+	public RGBColor getSrc() {
+		return src;
+	}
+
+	public void setSrc(RGBColor src) {
+		this.src = src;
+	}
+
 	@Override
 	public boolean equals(Object obj) {			
 		if(obj instanceof CacheEntry) {

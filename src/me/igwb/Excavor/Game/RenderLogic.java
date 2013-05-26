@@ -68,9 +68,7 @@ public class RenderLogic {
 			
 			//long i = System.currentTimeMillis();
 			
-			Image finalScreen = light ? LightOverlay.multiply(renderFields(), renderLight()) : renderFields(); 
-			
-			g.drawImage(finalScreen, 0, 0, null);
+			renderFields((Graphics2D) g); //g.drawImage(renderFields(), 0, 0, null);
 			
 			//System.out.println("time: " + (System.currentTimeMillis() - i));
 			
@@ -87,7 +85,7 @@ public class RenderLogic {
 
 				g.drawString(System.getProperty("user.dir"), 50, 50);
 				g.drawString(ActivePlayer.getDirection().name(), 50, 100);
-				g.drawString("FPS: " + GC.getFps(), 100, 100);
+				
 				g.drawString("" + ActivePlayer.isMoving(), 50, 150);
 				g.drawString("X: " + ActivePlayer.getPosition().x, GC.GameCanvasSize.width / 2 + 10, GC.GameCanvasSize.height / 2 - 75);
 				g.drawString("Y: " + ActivePlayer.getPosition().y, GC.GameCanvasSize.width / 2 + 10, GC.GameCanvasSize.height / 2 - 50);
@@ -96,9 +94,10 @@ public class RenderLogic {
 				g.drawLine(GC.GameCanvasSize.width, 0, 0, GC.GameCanvasSize.height);
 			}
 			
-			ConversationManager.render(g);
-			PopUpManager.render(g);
+			g.drawString("FPS: " + GC.getFps(), 100, 100); //DE_BUG
 			
+			ConversationManager.render(g);
+			PopUpManager.render(g);			
 			DeveloperConsole.render(g);
 			
 
@@ -120,12 +119,12 @@ public class RenderLogic {
 		}
 	}
 
-	protected BufferedImage renderFields() {
+	protected void renderFields(Graphics2D fieldGraphics) {
 		
 		Player ActivePlayer = GC.getActivePlayer();
 		
-		BufferedImage fieldsImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
-		Graphics2D fieldGraphics = fieldsImage.createGraphics();
+		//BufferedImage fieldsImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
+		//Graphics2D fieldGraphics = fieldsImage.createGraphics();
 		
 		try {
 			ArrayList<Field> Fields = getRenderFields(ActivePlayer.getPosition(), 7);
@@ -165,7 +164,18 @@ public class RenderLogic {
 				}
 				//	GC.log.info("X: " + pos.x + " Y: " + pos.y);
 				//	GC.log.info("Field: " + field.getLocation().getX() + " " + field.getLocation().getY() + "  " + field.toString());
-
+				
+				if(light) {
+					long i = System.currentTimeMillis();
+					
+					fieldGraphics.setComposite(LightComposite.applyLight );
+					fieldGraphics.drawImage(renderLight(), 0, 0, null);
+					
+					System.out.println(System.currentTimeMillis() - i);
+					
+					fieldGraphics.setComposite(LightComposite.normal );
+				}
+				
 				if(GC.debug) {
 					fieldGraphics.drawRect(pos.x, pos.y, 104, 52);
 					fieldGraphics.setColor(Color.GRAY);
@@ -177,30 +187,34 @@ public class RenderLogic {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			fieldGraphics.dispose();
+			//fieldGraphics.dispose();
 		}
 		
-		return fieldsImage;
+		//return fieldsImage;
 	}
 	
 	protected BufferedImage renderLight() {
 		
-		BufferedImage lightImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
-		Graphics2D g = lightImage.createGraphics();
-		try {
-			//g.setBackground(LightSourceType.BACKGROUNDCOLOR); TODO: get this shit workin'
-			g.setColor(LightSourceType.BACKGROUNDCOLOR);
-			g.fillRect(0, 0, lightImage.getWidth(), lightImage.getHeight());
+		BufferedImage lightImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);
+		Graphics2D lightGraphics = lightImage.createGraphics();
+		
+		try { 
+			lightGraphics.setColor(LightSourceType.BACKGROUNDCOLOR);
+			lightGraphics.fillRect(0, 0, GC.GameCanvasSize.width, GC.GameCanvasSize.height);
 			
-			testLight.Render(g);
+			//-----
+			
+			testLight.Render(lightGraphics);
+			
+			//-----
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {		
-			g.dispose();
+		} finally {
+			lightGraphics.dispose();
 		}
 		
-		return lightImage;		
+		return lightImage;
 	}
 
 	protected void renderHud() {
