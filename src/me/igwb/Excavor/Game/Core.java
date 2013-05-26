@@ -32,7 +32,7 @@ public class Core {
 	private RenderLogic renderManager;	
 	private GameLogic Brain;
 	
-	private GameStatus Status;
+	private StatusManager gameStatus;
 	
 	public final Dimension GameCanvasSize = new Dimension(600,600), HUDCanvasSize = new Dimension(600,80);
 	
@@ -55,6 +55,8 @@ public class Core {
 			ValueManager.loadValuesFrom(System.getProperty("user.dir") + "/configuration.txt");
 			DeveloperConsole.initialize(GameCanvasSize.width, GameCanvasSize.height / 3);
 			EnvironmentLoader.initialize();
+			
+			gameStatus = new StatusManager();
 			
 			GameWindow = new MainWindow();
 			GameCanvas = new MainCanvas();
@@ -97,7 +99,9 @@ public class Core {
 			
 			ActivePlayer = new Player(new Point(0,0));
 			
-			Status = GameStatus.RUNNING;
+			
+			
+			gameStatus.setGameStatus(GameStatus.RUNNING);
 			isRunning = true;
 			gameLoop();
 			
@@ -136,7 +140,7 @@ public class Core {
 					lastFPSTime = System.nanoTime();
 				}
 				
-				switch (Status) {
+				switch (gameStatus.getCurrentStatus()) {
 				case RUNNING:
 					Brain.update(delta);
 					renderManager.renderGame();
@@ -222,11 +226,18 @@ public class Core {
 	}
 	
 	
+	public StatusManager getStatusManager() {
+	
+		return gameStatus;
+	}
+	
 	/**
+	 * @Deprecated Use StatusManager instead!
 	 * Pause or un-pause the game with this method.
 	 * 
 	 * @param paused Sets the game paused state to this value.
 	 */
+	@Deprecated
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 		if(paused) {
@@ -239,9 +250,10 @@ public class Core {
 	}
 	
 	/**
-	 * 
+	 * @Deprecated Use StatusManager instead!
 	 * @return Returns a boolean whether the game is paused or not.
 	 */
+	@Deprecated
 	public boolean getPaused() {
 		
 		return paused;
