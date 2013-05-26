@@ -32,6 +32,8 @@ public class Core {
 	private RenderLogic renderManager;	
 	private GameLogic Brain;
 	
+	private GameStatus Status;
+	
 	public final Dimension GameCanvasSize = new Dimension(600,600), HUDCanvasSize = new Dimension(600,80);
 	
 	boolean isRunning = false, paused = false, debug = true;
@@ -95,6 +97,7 @@ public class Core {
 			
 			ActivePlayer = new Player(new Point(0,0));
 			
+			Status = GameStatus.RUNNING;
 			isRunning = true;
 			gameLoop();
 			
@@ -133,11 +136,43 @@ public class Core {
 					lastFPSTime = System.nanoTime();
 				}
 				
-				if(!paused) {
+				switch (Status) {
+				case RUNNING:
 					Brain.update(delta);
 					renderManager.renderGame();
 					renderManager.renderHud();
+					break;
+
+				case IN_BACKGROUND:
+					//Nothing to do here
+					break;
+					
+				case PAUSED:
+					//TODO: Render a pause screen here!
+					renderManager.renderHud();
+					break;
+					
+				case CONVERSATION:
+					//TODO: Render Conversation screen here!
+					renderManager.renderHud();
+					break;
+					
+				case INVENTORY:
+					//TODO: Render Inventory screen here!
+					renderManager.renderHud();
+					
+				case WORLD_MAP:
+					//TODO: Render world map.
+					
+				default:
+					break;
 				}
+				
+			//	if(!paused) {
+			//		Brain.update(delta);
+			//		renderManager.renderGame();
+			//		renderManager.renderHud();
+			//	}
 				
 				try {
 					Thread.sleep((System.nanoTime() - lastLoop + OPTIMAL_TIME)/1000000);
