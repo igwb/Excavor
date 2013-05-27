@@ -33,9 +33,11 @@ public class SphereLight implements Entity {
 	public void Render(Graphics2D g2D) {
 		Image image = valueChanged ? SourceType.getLight(strength, color) : preRenderedImage;
 		
+		
 		int x = position.getX() - image.getWidth(null) / 2,// - position.getZ(),
 			y = position.getY() - position.getZ() - image.getHeight(null) / 2;
 		
+		g2D.clearRect(x, y, image.getWidth(null), image.getHeight(null));
 		g2D.drawImage(image, x, y, null);
 		valueChanged = false;
 	}

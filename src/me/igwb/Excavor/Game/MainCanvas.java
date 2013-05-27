@@ -8,7 +8,7 @@ public class MainCanvas extends Canvas {
 
 	public MainCanvas() {
 		super();
-
+		
 	    setIgnoreRepaint(true);
 		setVisible(true);
 		setFocusable(false);

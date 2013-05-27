@@ -24,13 +24,13 @@ public class LightComposite implements Composite {
 		@Override
 		public void compose(Raster dst, Raster src, WritableRaster out) {
 
-			/*if(dst.getSampleModel().getDataType() != DataBuffer.TYPE_INT ||
+			if(dst.getSampleModel().getDataType() != DataBuffer.TYPE_INT ||
 					dst.getSampleModel().getDataType() != DataBuffer.TYPE_INT ||
 					out.getSampleModel().getDataType() != DataBuffer.TYPE_INT)
 			{
 				out.setRect(dst);
 				return;
-			}*/
+			}
 			
 			int width = Math.min(src.getWidth(), dst.getWidth() );
 			int height = Math.min(src.getHeight(), dst.getHeight() );
@@ -44,14 +44,12 @@ public class LightComposite implements Composite {
 			
 			int[] cache = new int[] { 0xffffff, 0xffffff, 0xffffff };
 			RGBColor srcColor, dstColor;
-			
-			
+
 			for(int index = 0; 
 					index < inputDst.length && 
 					index < inputSrc.length;
 					index++ )
 			{
-
 				if(cache[0] == inputDst[index] && cache[1] == inputSrc[index] ) {
 					output[index] = cache[2];
 					continue;
@@ -66,33 +64,30 @@ public class LightComposite implements Composite {
 				/**WARNING!**/ 
 				/*if statements without brackets*/
 				
-				if(srcColor.equals(RGBColor.WHITE ) )
+				if(srcColor.equals(RGBColor.WHITE ))
 					output[index] = dstColor.getRGB();
-				
-				else if(srcColor.equals(RGBColor.BLACK ) || dstColor.equals(RGBColor.BLACK ) )
-					output[index] = 0x000000;
-				
-				else if(dstColor.equals(RGBColor.WHITE ) )
+								
+				else if(dstColor.equals(RGBColor.WHITE))
 					output[index] = srcColor.getRGB();
 				
-				else 
-					output[index] = srcColor.multiply(dstColor ).getRGB();
+				else if(srcColor.equals(RGBColor.BLACK) || dstColor.equals(RGBColor.BLACK))
+					output[index] = 0x000000;
+				
+				else if(srcColor.equals(dstColor))
+					output[index] = srcColor.getRGB();
+				
+				else
+					output[index] = srcColor.multiply(dstColor).getRGB();
 				
 				cache[2] = output[index];
 			}
 			
-			out.setDataElements(0, 0, width, height, output);			
+			out.setDataElements(0, 0, width, height, output);
 		}
 
 		@Override
-		public void dispose() {
-
-			
-			
-		}
-		
-		
-		
+		public void dispose() {		
+		}		
 	}
 
 }

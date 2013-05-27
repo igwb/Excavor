@@ -54,11 +54,11 @@ public class RenderLogic {
 	
 	protected void renderGame() {
 		
-		Graphics g = null;
+		Graphics2D g = null;
 		
-		try {			
+		try {
 			BufferStrategy buffer = GameCanvas.getBufferStrategy();			
-			g = buffer.getDrawGraphics();
+			g = (Graphics2D) buffer.getDrawGraphics();
 
 			//Resetting the canvas!
 			g.setColor(Color.WHITE);
@@ -66,11 +66,12 @@ public class RenderLogic {
 			
 			g.setColor(Color.BLACK);
 			
-			//long i = System.currentTimeMillis();
+			long i = System.currentTimeMillis();
 			
-			g.drawImage(renderFields(), 0, 0, null);
+			renderFields(g);
+			//g.drawImage(renderFields(), 0, 0, null);
 			
-			//System.out.println("time: " + (System.currentTimeMillis() - i));
+			System.out.println("time: " + (System.currentTimeMillis() - i));
 			
 			//LightRendering.Render(g);
 			//playerLight.Render(new Position(300, 300, 50), g);
@@ -119,12 +120,12 @@ public class RenderLogic {
 		}
 	}
 
-	protected BufferedImage renderFields() {
+	protected void renderFields(Graphics2D fieldGraphics) {
 		
 		Player ActivePlayer = GC.getActivePlayer();
 		
-		BufferedImage fieldsImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
-		Graphics2D fieldGraphics = fieldsImage.createGraphics();
+		//BufferedImage fieldsImage = new BufferedImage(GC.GameCanvasSize.width, GC.GameCanvasSize.height, 1);		
+		//Graphics2D fieldGraphics = fieldsImage.createGraphics();
 		
 		try {
 			ArrayList<Field> Fields = getRenderFields(ActivePlayer.getPosition(), 7);
@@ -177,18 +178,19 @@ public class RenderLogic {
 			
 			if(light) {
 
-				fieldGraphics.setComposite(LightComposite.applyLight );				
-				fieldGraphics.drawImage(renderLight(), 0, 0, null );				
+				fieldGraphics.setComposite(LightComposite.applyLight);				
+				fieldGraphics.drawImage(renderLight(), 0, 0, null);				
 
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			fieldGraphics.dispose();
+			fieldGraphics.setComposite(LightComposite.normal);
+			//fieldGraphics.dispose();
 		}
 		
-		return fieldsImage;
+		//return fieldsImage;
 	}
 	
 	protected BufferedImage renderLight() {
@@ -327,7 +329,7 @@ public class RenderLogic {
 	 * @param maxHeight Maximum height of the canvas the HUD is drawn on.
 	 * @throws IOException Thrown if there is a problem with some graphics.
 	 */
-	private void initializePlayerBasedHUD(int maxWidth, int maxHeight) throws IOException {
+	protected void initializePlayerBasedHUD(int maxWidth, int maxHeight) throws IOException {
 		
 		URL image = ResourceLoader.getURL("/resources/HUD.png");
 		
@@ -341,7 +343,7 @@ public class RenderLogic {
 		redABar = ImageSplitter.split(image, 10, 1)[5].getScaledInstance(maxWidth, maxHeight, 0);
 	}
 
-	private Image getArmorBar() {
+	protected Image getArmorBar() {
 		Player ActivePlayer = GC.getActivePlayer();
 		int  maxArmor, armor;
 		
@@ -373,7 +375,7 @@ public class RenderLogic {
 		return buffImage;
 	}
 	
-	private Image getHealthBar() {
+	protected Image getHealthBar() {
 		
 		Player ActivePlayer = GC.getActivePlayer();
 		int health, maxHealth;

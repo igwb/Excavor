@@ -73,7 +73,7 @@ public class Core {
 			
 			GameWindow.setVisible(true);
 			
-			GameCanvas.createBufferStrategy(2);
+			GameCanvas.createBufferStrategy(4);
 			MainHUD.createBufferStrategy(2);
 			
 			renderManager = new RenderLogic();
