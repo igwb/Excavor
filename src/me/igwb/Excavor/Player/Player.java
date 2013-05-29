@@ -65,9 +65,11 @@ public class Player {
 	
 	public void setHealth(int newHealth) {
 		
+		if(newHealth > maxHealth)
+			return;
+		
 		if(newHealth <= 0) {
 			//TODO: The player should die here!
-			health = newHealth;
 		} else {
 			health = newHealth;
 		}
@@ -78,8 +80,18 @@ public class Player {
 	}
 
 
-	public void setArmor(int armor) {
-		this.armor = armor;
+	public void setArmor(int newArmor) {
+		
+		if(newArmor > maxArmor)
+			return;
+		
+		if(newArmor <= 0) {
+			//TODO: Armor should be destroyed / removed. 
+		} else {
+			armor = newArmor;
+		}
+		
+		
 	}
 
 
@@ -89,7 +101,16 @@ public class Player {
 
 
 	public void setMaxHealth(int maxHealth) {
+		
+		if(maxHealth <= 0)
+			return;
+		
+		if(health > maxHealth) {
+			health = maxHealth;
+		}
+		
 		this.maxHealth = maxHealth;
+		
 	}
 
 
@@ -99,7 +120,15 @@ public class Player {
 
 
 	public void setMaxArmor(int maxArmor) {
+		if(maxArmor <= 0)
+			return;
+		
+		if(armor > maxArmor) {
+			armor = maxArmor;
+		}
+		
 		this.maxArmor = maxArmor;
+		
 	}
 
 

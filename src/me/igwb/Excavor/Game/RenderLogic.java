@@ -30,7 +30,7 @@ public class RenderLogic {
 	private Core GC;
 	private Image aBar, hBar, Armor, Health, redABar, redHBar, viewLimiter;
 	
-	public static boolean light = false, multiply = false;
+	public static boolean light = true, multiply = false;
 	
 	/**
 	 * Creates an instance of the RenderLogic class.
@@ -66,12 +66,12 @@ public class RenderLogic {
 			
 			g.setColor(Color.BLACK);
 			
-			long i = System.currentTimeMillis();
+			//long i = System.currentTimeMillis();
 			
 			renderFields(g);
 			//g.drawImage(renderFields(), 0, 0, null);
 			
-			System.out.println("time: " + (System.currentTimeMillis() - i));
+			//System.out.println("time: " + (System.currentTimeMillis() - i));
 			
 			//LightRendering.Render(g);
 			//playerLight.Render(new Position(300, 300, 50), g);
@@ -178,9 +178,12 @@ public class RenderLogic {
 			
 			if(light) {
 
+				long i = System.currentTimeMillis();
+				
 				fieldGraphics.setComposite(LightComposite.applyLight);				
 				fieldGraphics.drawImage(renderLight(), 0, 0, null);				
-
+				
+				System.out.println("time: " + (System.currentTimeMillis() - i));
 			}
 			
 		} catch (Exception e) {
